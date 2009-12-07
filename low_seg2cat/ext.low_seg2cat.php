@@ -4,9 +4,9 @@
 * Low Seg2Cat Extension class
 *
 * @package			low-seg2cat-ee2_addon
-* @version			2.0
+* @version			1.9
 * @author			Lodewijk Schutte ~ Low <low@loweblog.com>
-* @link				http://loweblog.com/freelance/article/ee-low-seg2cat-extension/
+* @link				http://loweblog.com/software/low-seg2cat/
 * @license			http://creativecommons.org/licenses/by-sa/3.0/
 */
 class Low_seg2cat_ext
@@ -30,7 +30,7 @@ class Low_seg2cat_ext
 	*
 	* @var	string
 	*/
-	var $version = '2.0';
+	var $version = '2.1';
 
 	/**
 	* Extension description
@@ -51,7 +51,14 @@ class Low_seg2cat_ext
 	*
 	* @var	string
 	*/
-	var $docs_url = 'http://loweblog.com/freelance/article/ee-low-seg2cat-extension/';
+	var $docs_url = 'http://loweblog.com/software/low-seg2cat/';
+
+	/**
+	* NSM Addon Updater link
+	*
+	* @var	string
+	*/
+	var $versions_xml = 'http://loweblog.com/software/low-seg2cat/feed/';
 
 	/**
 	* Format category name?
@@ -85,7 +92,7 @@ class Low_seg2cat_ext
 		/** -------------------------------------
 		/**  Get global instance
 		/** -------------------------------------*/
-
+		
 		$this->EE =& get_instance();
 
 		$this->settings = $settings;
