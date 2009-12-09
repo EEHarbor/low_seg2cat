@@ -4,7 +4,7 @@
 * Low Seg2Cat Extension class
 *
 * @package			low-seg2cat-ee2_addon
-* @version			1.9
+* @version			2.2
 * @author			Lodewijk Schutte ~ Low <low@loweblog.com>
 * @link				http://loweblog.com/software/low-seg2cat/
 * @license			http://creativecommons.org/licenses/by-sa/3.0/
@@ -30,7 +30,7 @@ class Low_seg2cat_ext
 	*
 	* @var	string
 	*/
-	var $version = '2.1';
+	var $version = '2.2';
 
 	/**
 	* Extension description
@@ -44,7 +44,7 @@ class Low_seg2cat_ext
 	*
 	* @var	bool
 	*/
-	var $settings_exist = FALSE;
+	var $settings_exist = TRUE;
 	
 	/**
 	* Documentation link
@@ -108,8 +108,8 @@ class Low_seg2cat_ext
 	*/
 	function settings()
 	{
-		// no settings...
-		return FALSE;
+		// URI pattern to check against
+		return array('uri_pattern' => '');
 	}
 
 	// --------------------------------------------------------------------
@@ -122,9 +122,12 @@ class Low_seg2cat_ext
 	*/
 	function sessions_end()
 	{
-		// Only continue if we have segments to check
-		if (empty($this->EE->uri->segments)) return;
+		// Only continue if request is a page and we have segments to check
+		if (REQ != 'PAGE' || empty($this->EE->uri->segments)) return;
 
+		// Suggestion by Leevi Graham: check for pattern before continuing
+		if ( !empty($this->settings['uri_pattern']) && !preg_match($this->settings['uri_pattern'], $this->EE->uri->uri_string) ) return;
+	
 		// initiate some vars
 		$site = $this->EE->config->item('site_id');
 		$data = $cats = $segs = array();
@@ -140,14 +143,14 @@ class Low_seg2cat_ext
 			$data['segment_'.$nr.'_category_parent_id']		= '';
 			$segs[] = $seg;
 		}
-		
+
 		// Compose query, get results
 		$this->EE->db->select('cat_id, cat_url_title, cat_name, cat_description, cat_image, parent_id');
 		$this->EE->db->from('exp_categories');
 		$this->EE->db->where('site_id', $site);
 		$this->EE->db->where_in('cat_url_title', $segs);
 		$query = $this->EE->db->get();
-		
+
 		// if we have matching categories, continue...
 		if ($query->num_rows())
 		{
