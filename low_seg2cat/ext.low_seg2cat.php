@@ -4,7 +4,7 @@
 * Low Seg2Cat Extension class
 *
 * @package			low-seg2cat-ee2_addon
-* @version			2.2
+* @version			2.3
 * @author			Lodewijk Schutte ~ Low <low@loweblog.com>
 * @link				http://loweblog.com/software/low-seg2cat/
 * @license			http://creativecommons.org/licenses/by-sa/3.0/
@@ -30,7 +30,7 @@ class Low_seg2cat_ext
 	*
 	* @var	string
 	*/
-	var $version = '2.2';
+	var $version = '2.3';
 
 	/**
 	* Extension description
@@ -104,12 +104,16 @@ class Low_seg2cat_ext
 	/**
 	* Settings
 	*
-	* @return	bool
+	* @return	array
 	*/
 	function settings()
 	{
-		// URI pattern to check against
-		return array('uri_pattern' => '');
+		$settings = array();
+		
+		$settings['uri_pattern'] = '';
+		$settings['set_all_segments'] = array('r', array('y' => 'yes', 'n' => 'no'), 'n');
+
+		return $settings;
 	}
 
 	// --------------------------------------------------------------------
@@ -130,25 +134,28 @@ class Low_seg2cat_ext
 	
 		// initiate some vars
 		$site = $this->EE->config->item('site_id');
-		$data = $cats = $segs = array();
+		$data = $cats = array();
 		$data['segment_category_ids'] = '';
 		
+		// Number of segments to register
+		$num_segs = ($this->settings['set_all_segments'] == 'y') ? 9 : $this->EE->uri->total_segments();
+		
 		// loop through segments and set data array thus: segment_1_category_id etc
-		foreach ($this->EE->uri->segments AS $nr => $seg)
+		for ($nr = 1; $nr <= $num_segs; $nr++)
 		{
 			$data['segment_'.$nr.'_category_id']			= '';
 			$data['segment_'.$nr.'_category_name']			= '';
 			$data['segment_'.$nr.'_category_description']	= '';
 			$data['segment_'.$nr.'_category_image']			= '';
 			$data['segment_'.$nr.'_category_parent_id']		= '';
-			$segs[] = $seg;
+			$data['segment_'.$nr.'_category_group_id']		= '';
 		}
 
 		// Compose query, get results
-		$this->EE->db->select('cat_id, cat_url_title, cat_name, cat_description, cat_image, parent_id');
+		$this->EE->db->select('cat_id, cat_url_title, cat_name, cat_description, cat_image, parent_id, group_id');
 		$this->EE->db->from('exp_categories');
 		$this->EE->db->where('site_id', $site);
-		$this->EE->db->where_in('cat_url_title', $segs);
+		$this->EE->db->where_in('cat_url_title', $this->EE->uri->segment_array());
 		$query = $this->EE->db->get();
 
 		// if we have matching categories, continue...
@@ -169,6 +176,7 @@ class Low_seg2cat_ext
 				$data['segment_'.$ids[$row['cat_url_title']].'_category_description']	= $row['cat_description'];
 				$data['segment_'.$ids[$row['cat_url_title']].'_category_image']			= $row['cat_image'];
 				$data['segment_'.$ids[$row['cat_url_title']].'_category_parent_id']		= $row['parent_id'];
+				$data['segment_'.$ids[$row['cat_url_title']].'_category_group_id']		= $row['group_id'];
 				$cats[] = $row['cat_id'];
 			}
 			
