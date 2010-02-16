@@ -1,0 +1,3 @@
+h1. Low Seg2Cat for ExpressionEngine 2.x
+
+Please visit "http://loweblog.com/software/low-seg2cat/":http://loweblog.com/software/low-seg2cat/ for more info.
