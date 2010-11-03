@@ -130,7 +130,7 @@ class Low_seg2cat_ext
 		$this->EE->db->select('group_id, group_name');
 		$this->EE->db->from('category_groups');
 		$this->EE->db->where('site_id', $this->EE->config->item('site_id'));
-		$this->EE->db->order_by('sort_order', 'asc');
+		$this->EE->db->order_by('group_name', 'asc');
 		$query = $this->EE->db->get();
 		
 		foreach ($query->result() AS $row)
