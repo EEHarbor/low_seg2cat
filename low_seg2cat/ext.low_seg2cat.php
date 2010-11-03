@@ -68,6 +68,7 @@ class Low_seg2cat_ext
 	* @var	array
 	*/
 	var $default_settings = array(
+		'category_groups'  => array(),
 		'uri_pattern'      => '',
 		'set_all_segments' => 'n'
 	);
@@ -123,8 +124,21 @@ class Low_seg2cat_ext
 	*/
 	function settings()
 	{
-		$settings = array();
-
+		$settings = $groups = array();
+		
+		// Get category groups
+		$this->EE->db->select('group_id, group_name');
+		$this->EE->db->from('category_groups');
+		$this->EE->db->where('site_id', $this->EE->config->item('site_id'));
+		$this->EE->db->order_by('sort_order', 'asc');
+		$query = $this->EE->db->get();
+		
+		foreach ($query->result() AS $row)
+		{
+			$groups[$row->group_id] = $row->group_name;
+		}
+		
+		$settings['category_groups'] = array('ms', $groups, $this->default_settings['category_groups']);
 		$settings['uri_pattern'] = $this->default_settings['uri_pattern'];
 		$settings['set_all_segments'] = array('r', array('y' => 'yes', 'n' => 'no'), $this->default_settings['set_all_segments']);
 

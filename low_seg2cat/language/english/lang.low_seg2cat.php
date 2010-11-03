@@ -12,6 +12,9 @@
 
 $lang = array(
 
+'category_groups' =>
+'Category groups',
+
 'uri_pattern' =>
 'URI pattern',
 
