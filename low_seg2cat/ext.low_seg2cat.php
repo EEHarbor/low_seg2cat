@@ -186,6 +186,10 @@ class Low_seg2cat_ext
 		$this->EE->db->from('exp_categories');
 		$this->EE->db->where('site_id', $site);
 		$this->EE->db->where_in('LOWER(cat_url_title)', $segment_array);
+		if (isset($this->settings['category_groups']) && ! empty($this->settings['category_groups']))
+		{
+			$this->EE->db->where_in('group_id', $this->settings['category_groups']);
+		}
 		$query = $this->EE->db->get();
 
 		// if we have matching categories, continue...
