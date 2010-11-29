@@ -4,7 +4,6 @@
 * Low Seg2Cat Language file
 *
 * @package			low-seg2cat-ee2_addon
-* @version			2.4
 * @author			Lodewijk Schutte ~ Low <low@loweblog.com>
 * @link				http://loweblog.com/software/low-seg2cat/
 * @license			http://creativecommons.org/licenses/by-sa/3.0/
@@ -12,6 +11,9 @@
 */
 
 $lang = array(
+
+'category_groups' =>
+'Category groups',
 
 'uri_pattern' =>
 'URI pattern',
