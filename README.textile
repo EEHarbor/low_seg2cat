@@ -2,6 +2,12 @@ h1. Low Seg2Cat for ExpressionEngine 2.x
 
 Please visit "http://loweblog.com/software/low-seg2cat/":http://loweblog.com/software/low-seg2cat/ for more info.
 
+h2. Install from Github download
+
+1. Download the "latest stable release":https://github.com/lodewijk/low.seg2cat.ee2_addon/downloads
+2. Rename the folder to lowseg2cat
+3. Move to /system/expressionengine/thirdparty
+
 h2. Install as submodule
 
     git submodule add https://newism@github.com/newism/low.seg2cat.ee2_addon.git {path_to_third_party}/low_seg2cat
