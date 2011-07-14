@@ -11,7 +11,7 @@
 if ( ! defined('LOW_SEG2CAT_NAME'))
 {
 	define('LOW_SEG2CAT_NAME',    'Low Seg2Cat');
-	define('LOW_SEG2CAT_VERSION', '2.5.2');
+	define('LOW_SEG2CAT_VERSION', '2.5.3');
 	define('LOW_SEG2CAT_DOCS',    'http://loweblog.com/software/low-seg2cat/');
 }
 
