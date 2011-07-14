@@ -4,9 +4,9 @@ Please visit "http://loweblog.com/software/low-seg2cat/":http://loweblog.com/sof
 
 h2. Install from Github download
 
-1. Download the "latest stable release":https://github.com/lodewijk/low.seg2cat.ee2_addon/downloads
-2. Rename the folder to lowseg2cat
-3. Move to /system/expressionengine/thirdparty
+# Download the "latest stable release":https://github.com/lodewijk/low.seg2cat.ee2_addon/downloads
+# Rename the folder to low_seg2cat
+# Move to /system/expressionengine/third_party
 
 h2. Install as submodule
 

@@ -2,10 +2,10 @@
 /**
 * Low Seg2Cat Extension class
 *
-* @package			low-seg2cat-ee2_addon
-* @author			Lodewijk Schutte ~ Low <low@loweblog.com>
-* @link				http://loweblog.com/software/low-seg2cat/
-* @license			http://creativecommons.org/licenses/by-sa/3.0/
+* @package         low-seg2cat-ee2_addon
+* @author          Lodewijk Schutte ~ Low <low@loweblog.com>
+* @link            http://loweblog.com/software/low-seg2cat/
+* @license         http://creativecommons.org/licenses/by-sa/3.0/
 */
 
 if ( ! defined('LOW_SEG2CAT_NAME'))
