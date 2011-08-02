@@ -1,16 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 // include config file
-require PATH_THIRD.'low_seg2cat/config'.EXT;
+require PATH_THIRD.'low_seg2cat/config.php';
 
 /**
-* Low Seg2Cat Extension class
-*
-* @package         low-seg2cat-ee2_addon
-* @author          Lodewijk Schutte ~ Low <low@loweblog.com>
-* @link            http://loweblog.com/software/low-seg2cat/
-* @license         http://creativecommons.org/licenses/by-sa/3.0/
-*/
+ * Low Seg2Cat Extension class
+ *
+ * @package         low-seg2cat-ee2_addon
+ * @author          Lodewijk Schutte ~ Low <low@loweblog.com>
+ * @link            http://loweblog.com/software/low-seg2cat/
+ * @license         http://creativecommons.org/licenses/by-sa/3.0/
+ */
 class Low_seg2cat_ext {
 
 	// --------------------------------------------------------------------
@@ -18,85 +18,93 @@ class Low_seg2cat_ext {
 	// --------------------------------------------------------------------
 
 	/**
-	* Extension settings
-	*
-	* @access      public
-	* @var         array
-	*/
+	 * Extension settings
+	 *
+	 * @access      public
+	 * @var         array
+	 */
 	public $settings = array();
 
 	/**
-	* Extension name
-	*
-	* @access      public
-	* @var         string
-	*/
+	 * Extension name
+	 *
+	 * @access      public
+	 * @var         string
+	 */
 	public $name = LOW_SEG2CAT_NAME;
 
 	/**
-	* Extension version
-	*
-	* @access      public
-	* @var         string
-	*/
+	 * Extension version
+	 *
+	 * @access      public
+	 * @var         string
+	 */
 	public $version = LOW_SEG2CAT_VERSION;
 
 	/**
-	* Extension description
-	*
-	* @access      public
-	* @var         string
-	*/
+	 * Extension description
+	 *
+	 * @access      public
+	 * @var         string
+	 */
 	public $description = 'Registers Category information according to URI Segments';
 
 	/**
-	* Do settings exist?
-	*
-	* @access      public
-	* @var         bool
-	*/
+	 * Do settings exist?
+	 *
+	 * @access      public
+	 * @var         bool
+	 */
 	public $settings_exist = TRUE;
 
 	/**
-	* Documentation link
-	*
-	* @access      public
-	* @var         string
-	*/
+	 * Documentation link
+	 *
+	 * @access      public
+	 * @var         string
+	 */
 	public $docs_url = LOW_SEG2CAT_DOCS;
 
 	// --------------------------------------------------------------------
 
 	/**
-	* EE Instance
-	*
-	* @access      private
-	* @var         object
-	*/
+	 * EE Instance
+	 *
+	 * @access      private
+	 * @var         object
+	 */
 	private $EE;
 
 	/**
-	* Current class name
-	*
-	* @access      private
-	* @var         string
-	*/
+	 * Current class name
+	 *
+	 * @access      private
+	 * @var         string
+	 */
 	private $class_name;
 
 	/**
-	* Format category name?
-	*
-	* @access      public
-	* @var         bool
-	*/
+	 * Current site id
+	 *
+	 * @access      private
+	 * @var         int
+	 */
+	private $site_id;
+
+	/**
+	 * Format category name?
+	 *
+	 * @access      public
+	 * @var         bool
+	 */
 	private $format = TRUE;
 
 	/**
-	* Default settings
-	*
-	* @access      public
-	* @var         array
-	*/
+	 * Default settings
+	 *
+	 * @access      public
+	 * @var         array
+	 */
 	private $default_settings = array(
 		'category_groups'  => array(),
 		'uri_pattern'      => '',
@@ -104,11 +112,11 @@ class Low_seg2cat_ext {
 	);
 
 	/**
-	* Category fields to set
-	*
-	* @access      public
-	* @var         array
-	*/
+	 * Category fields to set
+	 *
+	 * @access      public
+	 * @var         array
+	 */
 	private $fields = array(
 		'cat_id'          => 'category_id',
 		'parent_id'       => 'category_parent_id',
@@ -123,11 +131,11 @@ class Low_seg2cat_ext {
 	// --------------------------------------------------------------------
 
 	/**
-	* Legacy Constructor
-	*
-	* @see         __construct()
-	*/
-	public function Low_seg2cat_ext($settings = FALSE)
+	 * Legacy Constructor
+	 *
+	 * @see         __construct()
+	 */
+	public function Low_seg2cat_ext($settings = array())
 	{
 		$this->__construct($settings);
 	}
@@ -135,39 +143,64 @@ class Low_seg2cat_ext {
 	// --------------------------------------------------------------------
 
 	/**
-	* PHP 5 Constructor
-	*
-	* @access      public
-	* @param       mixed     Array with settings or FALSE
-	* @return      null
-	*/
-	public function __construct($settings = FALSE)
+	 * PHP 5 Constructor
+	 *
+	 * @access      public
+	 * @param       mixed     Array with settings or FALSE
+	 * @return      null
+	 */
+	public function __construct($settings = array())
 	{
 		// Get global instance
 		$this->EE =& get_instance();
+
+		// Get site id
+		$this->site_id = $this->EE->config->item('site_id');
 
 		// Set Class name
 		$this->class_name = ucfirst(get_class($this));
 
 		// Set settings
-		$this->settings = $settings;
+		$this->settings = $this->_get_site_settings($settings);
+
+		// Define the package path
+		$this->EE->load->add_package_path(PATH_THIRD.'low_seg2cat');
 	}
 
 	// --------------------------------------------------------------------
 
 	/**
-	* Create settings form
-	*
-	* @access      public
-	* @return      array
-	*/
-	public function settings()
+	 * Settings form
+	 *
+	 * @access      public
+	 * @param       array     Current settings
+	 * @return      string
+	 */
+	function settings_form($current)
 	{
 		// --------------------------------------
-		// Initiate some variables used later on
+		// Load helper
 		// --------------------------------------
 
-		$settings = $groups = array();
+		$this->EE->load->helper('form');
+
+		// --------------------------------------
+		// Get current settings for this site
+		// --------------------------------------
+
+		$data['current'] = $this->_get_site_settings($current);
+
+		// --------------------------------------
+		// Add this extension's name to display data
+		// --------------------------------------
+
+		$data['name'] = LOW_SEG2CAT_CLASS_NAME;
+
+		// --------------------------------------
+		// Category groups
+		// --------------------------------------
+
+		$data['category_groups'] = array();
 
 		// --------------------------------------
 		// Get category groups
@@ -175,52 +208,77 @@ class Low_seg2cat_ext {
 
 		$query = $this->EE->db->select('group_id, group_name')
 		       ->from('category_groups')
-		       ->where('site_id', $this->EE->config->item('site_id'))
+		       ->where('site_id', $this->site_id)
 		       ->order_by('group_name', 'asc')
 		       ->get();
 
 		foreach ($query->result() AS $row)
 		{
-			$groups[$row->group_id] = $row->group_name;
+			$data['category_groups'][$row->group_id] = $row->group_name;
 		}
 
 		// --------------------------------------
-		// Set category groups if there are any
+		// Set breadcrumb
 		// --------------------------------------
 
-		if ($groups)
-		{
-			$settings['category_groups'] = array('ms', $groups, $this->default_settings['category_groups']);
-		}
+		$this->EE->cp->set_breadcrumb('#', LOW_SEG2CAT_NAME);
 
 		// --------------------------------------
-		// URI regex pattern setting
+		// Load view
 		// --------------------------------------
 
-		$settings['uri_pattern'] = $this->default_settings['uri_pattern'];
-
-		// --------------------------------------
-		// Set all segments boolean setting
-		// --------------------------------------
-
-		$settings['set_all_segments'] = array('r', array('y' => 'yes', 'n' => 'no'), $this->default_settings['set_all_segments']);
-
-		// --------------------------------------
-		// Like a movie, like a style
-		// --------------------------------------
-
-		return $settings;
+		return $this->EE->load->view('ext_settings', $data, TRUE);
 	}
 
 	// --------------------------------------------------------------------
 
 	/**
-	* Search URI segments for categories and add those to global variables
-	* Executed at the sessions_end extension hook
-	*
-	* @access      public
-	* @return      null
-	*/
+	 * Save extension settings
+	 *
+	 * @return      void
+	 */
+	public function save_settings()
+	{
+		// --------------------------------------
+		// Get current settings from DB
+		// --------------------------------------
+
+		$settings = $this->_get_current_settings();
+
+		if ( ! is_array($settings))
+		{
+			$settings = array($this->site_id => $this->default_settings);
+		}
+
+		// --------------------------------------
+		// Loop through default settings, check
+		// for POST values, fallback to default
+		// --------------------------------------
+
+		foreach ($this->default_settings AS $key => $val)
+		{
+			if (($settings[$this->site_id][$key] = $this->EE->input->post($key)) === FALSE)
+			{
+				$settings[$this->site_id][$key] = $val;
+			}
+		}
+
+		// --------------------------------------
+		// Save serialized settings
+		// --------------------------------------
+
+		$this->EE->db->update('extensions', array('settings' => serialize($settings)), "class = '".$this->class_name."'");
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Search URI segments for categories and add those to global variables
+	 * Executed at the sessions_end extension hook
+	 *
+	 * @access      public
+	 * @return      null
+	 */
 	public function sessions_end()
 	{
 		// --------------------------------------
@@ -367,11 +425,11 @@ class Low_seg2cat_ext {
 	// --------------------------------------------------------------------
 
 	/**
-	* Activate extension
-	*
-	* @access      public
-	* @return      null
-	*/
+	 * Activate extension
+	 *
+	 * @access      public
+	 * @return      null
+	 */
 	public function activate_extension()
 	{
 		$this->EE->db->insert('extensions', array(
@@ -388,12 +446,12 @@ class Low_seg2cat_ext {
 	// --------------------------------------------------------------------
 
 	/**
-	* Update extension
-	*
-	* @access      public
-	* @param       string    Saved extension version
-	* @return      null
-	*/
+	 * Update extension
+	 *
+	 * @access      public
+	 * @param       string    Saved extension version
+	 * @return      null
+	 */
 	public function update_extension($current = '')
 	{
 		if ($current == '' OR $current == LOW_SEG2CAT_VERSION)
@@ -403,6 +461,15 @@ class Low_seg2cat_ext {
 
 		// init data array
 		$data = array();
+
+		// Update to MSM compatible extension settings
+		if (version_compare($current, '2.6.0', '<'))
+		{
+			if ( ! isset($this->settings[$this->site_id]))
+			{
+				$data['settings'] = serialize(array($this->site_id => $this->settings));
+			}
+		}
 
 		// Add version to data array
 		$data['version'] = LOW_SEG2CAT_VERSION;
@@ -415,11 +482,11 @@ class Low_seg2cat_ext {
 	// --------------------------------------------------------------------
 
 	/**
-	* Disable extension
-	*
-	* @access      public
-	* @return      null
-	*/
+	 * Disable extension
+	 *
+	 * @access      public
+	 * @return      null
+	 */
 	public function disable_extension()
 	{
 		// Delete records
@@ -428,6 +495,40 @@ class Low_seg2cat_ext {
 	}
 
 	// --------------------------------------------------------------------
+	// PRIVATE METHODS
+	// --------------------------------------------------------------------
+
+	/**
+	 * Get current settings from DB
+	 *
+	 * @access      private
+	 * @return      mixed
+	 */
+	private function _get_current_settings()
+	{
+		$query = $this->EE->db->select('settings')
+		       ->from('extensions')
+		       ->where('class', $this->class_name)
+		       ->limit(1)
+		       ->get();
+
+		return @unserialize($query->row('settings'));
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Get settings for this site
+	 *
+	 * @access      private
+	 * @return      mixed
+	 */
+	private function _get_site_settings($current = array())
+	{
+		$current = (array) $current;
+
+		return isset($current[$this->site_id]) ? $current[$this->site_id] : array_merge($this->default_settings, $current);
+	}
 
 }
 // END CLASS
