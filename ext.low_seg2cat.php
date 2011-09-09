@@ -407,6 +407,17 @@ class Low_seg2cat_ext {
 				}
 
 				// --------------------------------------
+				// Set last_segment_category_x vars
+				// --------------------------------------
+
+				$last = $this->EE->uri->total_segments();
+
+				foreach ($this->fields AS $name => $field)
+				{
+					$data['last_segment_'.$field] = $data['segment_'.$last.'_'.$field];
+				}
+
+				// --------------------------------------
 				// Create inclusive stack of all category ids present in segments
 				// --------------------------------------
 
