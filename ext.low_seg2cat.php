@@ -324,6 +324,12 @@ class Low_seg2cat_ext {
 			}
 		}
 
+		// Initiate last segment vars
+		foreach ($this->fields AS $field)
+		{
+			$data["last_segment_{$field}"] = '';
+		}
+
 		// --------------------------------------
 		// Force lowercase segment array
 		// --------------------------------------
