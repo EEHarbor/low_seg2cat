@@ -7,8 +7,8 @@ require PATH_THIRD.'low_seg2cat/config.php';
  * Low Seg2Cat Extension class
  *
  * @package         low-seg2cat-ee2_addon
- * @author          Lodewijk Schutte ~ Low <low@loweblog.com>
- * @link            http://loweblog.com/software/low-seg2cat/
+ * @author          Lodewijk Schutte ~ Low <hi@gotolow.com>
+ * @link            http://gotolow.com/addons/low-seg2cat
  * @license         http://creativecommons.org/licenses/by-sa/3.0/
  */
 class Low_seg2cat_ext {
@@ -259,6 +259,11 @@ class Low_seg2cat_ext {
 		{
 			if (($settings[$this->site_id][$key] = $this->EE->input->post($key)) === FALSE)
 			{
+				if (is_array($val))
+				{
+					$val = array_filter($val);
+				}
+
 				$settings[$this->site_id][$key] = $val;
 			}
 		}
