@@ -191,6 +191,15 @@ class Low_seg2cat_ext {
 		$data['current'] = $this->_get_site_settings($current);
 
 		// --------------------------------------
+		// Allow for 'all groups'
+		// --------------------------------------
+
+		if (empty($data['current']['category_groups']))
+		{
+			$data['current']['category_groups'] = array('0');
+		}
+
+		// --------------------------------------
 		// Add this extension's name to display data
 		// --------------------------------------
 
@@ -200,7 +209,7 @@ class Low_seg2cat_ext {
 		// Category groups
 		// --------------------------------------
 
-		$data['category_groups'] = array();
+		$data['category_groups'] = array('0' => lang('all_groups'));
 
 		// --------------------------------------
 		// Get category groups
@@ -257,15 +266,17 @@ class Low_seg2cat_ext {
 
 		foreach ($this->default_settings AS $key => $val)
 		{
-			if (($settings[$this->site_id][$key] = $this->EE->input->post($key)) === FALSE)
+			if (($post_val = $this->EE->input->post($key)) !== FALSE)
 			{
-				if (is_array($val))
-				{
-					$val = array_filter($val);
-				}
-
-				$settings[$this->site_id][$key] = $val;
+				$val = $post_val;
 			}
+
+			if (is_array($val))
+			{
+				$val = array_filter($val);
+			}
+
+			$settings[$this->site_id][$key] = $val;
 		}
 
 		// --------------------------------------
@@ -284,21 +295,21 @@ class Low_seg2cat_ext {
 	 * @access      public
 	 * @return      null
 	 */
-	public function sessions_end()
+	public function sessions_end($SESS)
 	{
 		// --------------------------------------
 		// Only continue if request is a page
 		// and we have segments to check
 		// --------------------------------------
 
-		if (REQ != 'PAGE' || (empty($this->EE->uri->segments) && $this->settings['set_all_segments'] == 'n')) return;
+		if (REQ != 'PAGE' || (empty($this->EE->uri->segments) && $this->settings['set_all_segments'] == 'n')) return $SESS;
 
 		// --------------------------------------
 		// Suggestion by Leevi Graham:
 		// check for pattern before continuing
 		// --------------------------------------
 
-		if ( ! empty($this->settings['uri_pattern']) && ! preg_match($this->settings['uri_pattern'], $this->EE->uri->uri_string)) return;
+		if ( ! empty($this->settings['uri_pattern']) && ! preg_match($this->settings['uri_pattern'], $this->EE->uri->uri_string)) return $SESS;
 
 		// --------------------------------------
 		// Initiate some vars
@@ -355,16 +366,19 @@ class Low_seg2cat_ext {
 
 			$this->EE->db->select('LOWER(cat_url_title) AS cat_url_title, '. implode(', ', array_keys($this->fields)))
 			             ->from('categories')
-			             ->where('site_id', $this->EE->config->item('site_id'))
+			             ->where('site_id', $this->site_id)
 			             ->where_in('LOWER(cat_url_title)', $segment_array);
 
 			// --------------------------------------
 			// Filter by category groups set in settings
 			// --------------------------------------
 
-			if (isset($this->settings['category_groups']) && ! empty($this->settings['category_groups']))
+			if (isset($this->settings['category_groups']))
 			{
-				$this->EE->db->where_in('group_id', $this->settings['category_groups']);
+				if ($groups = array_filter($this->settings['category_groups']))
+				{
+					$this->EE->db->where_in('group_id', $groups);
+				}
 			}
 
 			// --------------------------------------
@@ -442,6 +456,8 @@ class Low_seg2cat_ext {
 		// --------------------------------------
 
 		$this->EE->config->_global_vars = array_merge($data, $this->EE->config->_global_vars);
+
+		return $SESS;
 	}
 
 	// --------------------------------------------------------------------
