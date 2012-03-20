@@ -1,6 +1,6 @@
 h1. Low Seg2Cat for ExpressionEngine 2.x
 
-Please visit "http://loweblog.com/software/low-seg2cat/":http://loweblog.com/software/low-seg2cat/ for more info.
+Please visit "http://gotolow.com/addons/low-seg2cat/":http://gotolow.com/addons/low-seg2cat/ for more info.
 
 h2. Install from Github download
 
@@ -10,4 +10,4 @@ h2. Install from Github download
 
 h2. Install as submodule
 
-    git submodule add https://newism@github.com/newism/low.seg2cat.ee2_addon.git {path_to_third_party}/low_seg2cat
+    git submodule add https://lodewijk@github.com/lodewijk/low.seg2cat.ee2_addon.git {path_to_third_party}/low_seg2cat
