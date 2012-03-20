@@ -10,4 +10,4 @@ h2. Install from Github download
 
 h2. Install as submodule
 
-    git submodule add https://lodewijk@github.com/lodewijk/low.seg2cat.ee2_addon.git {path_to_third_party}/low_seg2cat
+git submodule add https://lodewijk@github.com/lodewijk/low.seg2cat.ee2_addon.git {path_to_third_party}/low_seg2cat
