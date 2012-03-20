@@ -19,4 +19,4 @@ if ( ! defined('LOW_SEG2CAT_NAME'))
 $config['name']    = LOW_SEG2CAT_NAME;
 $config['version'] = LOW_SEG2CAT_VERSION;
 
-$config['nsm_addon_updater']['versions_xml'] = LOW_SEG2CAT_DOCS.'feed/';
+$config['nsm_addon_updater']['versions_xml'] = LOW_SEG2CAT_DOCS.'/feed';
