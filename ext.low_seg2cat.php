@@ -507,10 +507,9 @@ class Low_seg2cat_ext {
 		$page_uri = str_replace($base_url, '', $page_url);
 		
 		// confirm first character is a slash
-		$page_uri = '/'.ltrim($page_uri, '/');
+		$page_uri = ltrim($page_uri, '/');
 		
 		$page_url = explode('/', $page_uri);
-		unset($page_url[0]);
 
 		return $page_url;
 	}
