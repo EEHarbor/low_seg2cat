@@ -346,12 +346,21 @@ class Low_seg2cat_ext {
 			$data["last_segment_{$field}"] = '';
 		}
 
+		if($this->settings['set_all_segments'] == 'y')
+		{
+			//We'll go ahead and grab all segments.
+			$segment_array = $this->_get_all_segments();
+		}
+		else
+		{
+			$segment_array =  $this->EE->uri->segment_array();
+		}
+		
 		// --------------------------------------
 		// Force lowercase segment array
 		// --------------------------------------
-
-		$segment_array = array_map('strtolower', $this->EE->uri->segment_array());
-
+		
+		$segment_array = array_map('strtolower',$segment_array);
 		// --------------------------------------
 		// Execute the rest only if there are segments to check
 		// --------------------------------------
@@ -458,6 +467,51 @@ class Low_seg2cat_ext {
 		$this->EE->config->_global_vars = array_merge($data, $this->EE->config->_global_vars);
 
 		return $SESS;
+	}
+
+	/**
+	* _get_all_segments
+	*
+	* @access public
+	* @return array
+	*/
+	public function _get_all_segments() 
+	{
+		$page_url = 'http';
+
+		if (!empty($_SERVER["HTTPS"]))
+		{
+			$page_url .= "s";
+		}
+		 $page_url .= "://";
+
+		if ($_SERVER["SERVER_PORT"] != "80") 
+		{
+			$page_url .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+		} 
+		else 
+		{
+			$page_url .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+		}
+
+		// Grab the base url from the config file
+		$base_url = $this->EE->config->config['base_url'];
+		
+		// make sure it has a trailing slash
+		$base_url = rtrim($base_url, '/').'/';
+		
+		// create base with index
+		$base_n_index = $base_url.$this->EE->config->config['site_index'];
+		
+		$page_url = str_replace($base_n_index, '', $page_url);
+		$page_uri = str_replace($base_url, '', $page_url);
+		
+		// confirm first character is a slash
+		$page_uri = '/'.ltrim($page_uri, '/');
+
+		$page_url = explode('/', $page_uri);
+		unset($page_url[0]);
+		return $page_url;
 	}
 
 	// --------------------------------------------------------------------
