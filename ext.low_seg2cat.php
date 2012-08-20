@@ -479,13 +479,13 @@ class Low_seg2cat_ext {
 	{
 		$page_url = 'http';
 
-		if ( !empty($_SERVER["HTTPS"]) )
+		if (!empty($_SERVER["HTTPS"]))
 		{
 			$page_url .= "s";
 		}
 		 $page_url .= "://";
 
-		if ( $_SERVER["SERVER_PORT"] != "80" ) 
+		if ($_SERVER["SERVER_PORT"] != "80") 
 		{
 			$page_url .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
 		} 
@@ -506,11 +506,10 @@ class Low_seg2cat_ext {
 		$page_url = str_replace($base_n_index, '', $page_url);
 		$page_uri = str_replace($base_url, '', $page_url);
 		
-		//in theory we shouldn't have to do this
-		if( $page_uri[0] != '/')
-			$page_uri = '/'.$page_uri;
-			
-		$page_url = explode('/', $_SERVER["REQUEST_URI"]);
+		// confirm first character is a slash
+		$page_uri = '/'.ltrim($page_uri, '/');
+		
+		$page_url = explode('/', $page_uri);
 		unset($page_url[0]);
 
 		return $page_url;
