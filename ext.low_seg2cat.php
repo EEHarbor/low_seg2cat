@@ -478,6 +478,34 @@ class Low_seg2cat_ext {
 	public function _get_all_segments() 
 	{
 		$page_uri = $_SERVER["REQUEST_URI"];
+		// var_dump($_SERVER["SERVER_NAME"]);
+		$page_url = 'http';
+		if ($_SERVER["HTTPS"] == "on")
+		{
+			$page_url .= "s";
+		}
+		 $page_url .= "://";
+
+		if ($_SERVER["SERVER_PORT"] != "80") 
+		{
+			$page_url .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+		} 
+		else 
+		{
+			$page_url .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+		}
+
+		// Grab the base url from the config file
+		$base_url = $this->EE->config->config['base_url'];
+		
+		// make sure it has a trailing slash
+		$base_url = rtrim($base_url, '/').'/';
+		
+		// create base with index
+		$base_n_index = $base_url.$this->EE->config->config['site_index'];
+		
+		$page_url = str_replace($base_n_index, '', $page_url);
+		$page_uri = str_replace($base_url, '', $page_url);
 		
 		//in theory we shouldn't have to do this
 		if( $page_uri[0] != '/')
