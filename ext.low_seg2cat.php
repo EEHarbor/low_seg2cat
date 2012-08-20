@@ -477,16 +477,15 @@ class Low_seg2cat_ext {
 	*/
 	public function _get_all_segments() 
 	{
-		$page_uri = $_SERVER["REQUEST_URI"];
-		// var_dump($_SERVER["SERVER_NAME"]);
 		$page_url = 'http';
-		if ($_SERVER["HTTPS"] == "on")
+
+		if ( !empty($_SERVER["HTTPS"]) )
 		{
 			$page_url .= "s";
 		}
 		 $page_url .= "://";
 
-		if ($_SERVER["SERVER_PORT"] != "80") 
+		if ( $_SERVER["SERVER_PORT"] != "80" ) 
 		{
 			$page_url .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
 		} 
