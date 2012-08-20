@@ -350,7 +350,7 @@ class Low_seg2cat_ext {
 		// Force lowercase segment array
 		// --------------------------------------
 
-		$segment_array = array_map('strtolower', $this->EE->uri->segment_array());
+		$segment_array = array_map('strtolower', $this->_get_segments());
 
 		// --------------------------------------
 		// Execute the rest only if there are segments to check
@@ -458,6 +458,21 @@ class Low_seg2cat_ext {
 		$this->EE->config->_global_vars = array_merge($data, $this->EE->config->_global_vars);
 
 		return $SESS;
+	}
+
+	/**
+	 * Get untainted segments
+	 *
+	 * @access      private
+	 * @return      array
+	 */
+	private function _get_segments()
+	{
+		$uri = new EE_URI();
+		$uri->_fetch_uri_string();
+		$uri->_explode_segments();
+
+		return $uri->segment_array();
 	}
 
 	// --------------------------------------------------------------------
