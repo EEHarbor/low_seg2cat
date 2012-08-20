@@ -508,7 +508,7 @@ class Low_seg2cat_ext {
 		
 		// confirm first character is a slash
 		$page_uri = ltrim($page_uri, '/');
-		
+
 		$page_url = explode('/', $page_uri);
 
 		return $page_url;
