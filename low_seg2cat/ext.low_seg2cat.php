@@ -326,6 +326,7 @@ class Low_seg2cat_ext {
 		$this->uri = new EE_URI;
 		$this->uri->_fetch_uri_string();
 		$this->uri->_explode_segments();
+		$this->uri->_reindex_segments();
 
 		// --------------------------------------
 		// Initiate some vars
