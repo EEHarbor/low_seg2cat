@@ -76,6 +76,14 @@ class Low_seg2cat_ext {
 	private $EE;
 
 	/**
+	 * URI instance
+	 *
+	 * @access      private
+	 * @var         object
+	 */
+	private $uri;
+
+	/**
 	 * Current class name
 	 *
 	 * @access      private
@@ -312,6 +320,14 @@ class Low_seg2cat_ext {
 		if ( ! empty($this->settings['uri_pattern']) && ! preg_match($this->settings['uri_pattern'], $this->EE->uri->uri_string)) return $SESS;
 
 		// --------------------------------------
+		// Initiate uri instance
+		// --------------------------------------
+
+		$this->uri = new EE_URI;
+		$uri->_fetch_uri_string();
+		$uri->_explode_segments();
+
+		// --------------------------------------
 		// Initiate some vars
 		// $data is used to add to global vars
 		// $cats is used to keep track of all category ids found
@@ -326,7 +342,7 @@ class Low_seg2cat_ext {
 		// Number of segments to register - 9 is hardcoded maximum
 		// --------------------------------------
 
-		$num_segs = ($this->settings['set_all_segments'] == 'y') ? 9 : $this->EE->uri->total_segments();
+		$num_segs = ($this->settings['set_all_segments'] == 'y') ? 9 : $this->uri->total_segments();
 
 		// --------------------------------------
 		// loop through segments and set data array thus: segment_1_category_id etc
@@ -350,7 +366,7 @@ class Low_seg2cat_ext {
 		// Force lowercase segment array
 		// --------------------------------------
 
-		$segment_array = array_map('strtolower', $this->_get_segments());
+		$segment_array = array_map('strtolower', $this->uri->segment_array());
 
 		// --------------------------------------
 		// Execute the rest only if there are segments to check
@@ -435,7 +451,7 @@ class Low_seg2cat_ext {
 				// Set last_segment_category_x vars
 				// --------------------------------------
 
-				$last = $this->EE->uri->total_segments();
+				$last = $this->uri->total_segments();
 
 				foreach ($this->fields AS $name => $field)
 				{
@@ -534,23 +550,6 @@ class Low_seg2cat_ext {
 
 	// --------------------------------------------------------------------
 	// PRIVATE METHODS
-	// --------------------------------------------------------------------
-
-	/**
-	 * Get untainted segments
-	 *
-	 * @access      private
-	 * @return      array
-	 */
-	private function _get_segments()
-	{
-		$uri = new EE_URI();
-		$uri->_fetch_uri_string();
-		$uri->_explode_segments();
-
-		return $uri->segment_array();
-	}
-
 	// --------------------------------------------------------------------
 
 	/**
