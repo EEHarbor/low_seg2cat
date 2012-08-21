@@ -164,7 +164,7 @@ class Low_seg2cat_ext {
 		$this->settings = $this->_get_site_settings($settings);
 
 		// Define the package path
-		$this->EE->load->add_package_path(PATH_THIRD.'low_seg2cat');
+		$this->EE->load->add_package_path(PATH_THIRD.LOW_SEG2CAT_PACKAGE);
 	}
 
 	// --------------------------------------------------------------------
@@ -203,7 +203,7 @@ class Low_seg2cat_ext {
 		// Add this extension's name to display data
 		// --------------------------------------
 
-		$data['name'] = LOW_SEG2CAT_CLASS_NAME;
+		$data['name'] = ucfirst(LOW_SEG2CAT_PACKAGE);
 
 		// --------------------------------------
 		// Category groups
@@ -460,21 +460,6 @@ class Low_seg2cat_ext {
 		return $SESS;
 	}
 
-	/**
-	 * Get untainted segments
-	 *
-	 * @access      private
-	 * @return      array
-	 */
-	private function _get_segments()
-	{
-		$uri = new EE_URI();
-		$uri->_fetch_uri_string();
-		$uri->_explode_segments();
-
-		return $uri->segment_array();
-	}
-
 	// --------------------------------------------------------------------
 
 	/**
@@ -549,6 +534,23 @@ class Low_seg2cat_ext {
 
 	// --------------------------------------------------------------------
 	// PRIVATE METHODS
+	// --------------------------------------------------------------------
+
+	/**
+	 * Get untainted segments
+	 *
+	 * @access      private
+	 * @return      array
+	 */
+	private function _get_segments()
+	{
+		$uri = new EE_URI();
+		$uri->_fetch_uri_string();
+		$uri->_explode_segments();
+
+		return $uri->segment_array();
+	}
+
 	// --------------------------------------------------------------------
 
 	/**
