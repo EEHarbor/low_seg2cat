@@ -435,10 +435,10 @@ class Low_seg2cat_ext {
 			// for when DB collation is case sensitive
 			// --------------------------------------
 
-			$this->EE->db->select('LOWER(cat_url_title) AS cat_url_title, '. implode(', ', array_keys($this->fields)))
+			$this->EE->db->select('cat_url_title, '. implode(', ', array_keys($this->fields)))
 			             ->from('categories')
 			             ->where('site_id', $this->site_id)
-			             ->where_in('LOWER(cat_url_title)', $segment_array);
+			             ->where_in('cat_url_title', $segment_array);
 
 			// --------------------------------------
 			// Filter by category groups set in settings
