@@ -102,15 +102,26 @@ class Low_seg2cat_ext {
 	/**
 	 * Format category name?
 	 *
-	 * @access      public
+	 * @access      private
 	 * @var         bool
 	 */
 	private $format = TRUE;
 
 	/**
+	 * Hooks used
+	 *
+	 * @access      private
+	 * @var         array
+	 */
+	private $hooks = array(
+		'sessions_end',
+		'template_fetch_template'
+	);
+
+	/**
 	 * Default settings
 	 *
-	 * @access      public
+	 * @access      private
 	 * @var         array
 	 */
 	private $default_settings = array(
@@ -291,33 +302,69 @@ class Low_seg2cat_ext {
 		// Save serialized settings
 		// --------------------------------------
 
-		$this->EE->db->update('extensions', array('settings' => serialize($settings)), "class = '".$this->class_name."'");
+		$this->EE->db->where('class', $this->class_name);
+		$this->EE->db->update('extensions', array('settings' => serialize($settings)));
 	}
 
 	// --------------------------------------------------------------------
 
 	/**
-	 * Search URI segments for categories and add those to global variables
-	 * Executed at the sessions_end extension hook
-	 *
-	 * @access      public
-	 * @return      null
+	 * EE 2.4.0+ uses template_fetch_template to add vars
+	 */
+	public function template_fetch_template($row)
+	{
+		// Get the latest version of $row
+		if ($this->EE->extensions->last_call !== FALSE)
+		{
+			$row = $this->EE->extensions->last_call;
+		}
+
+		// Remember if vars were added
+		static $added;
+
+		// If not yet added...
+		if ( ! $added)
+		{
+			// ...add the vars...
+			$this->_add_vars();
+
+			// ...only once
+			$added = TRUE;
+		}
+
+		// Play nice, return it
+		return $row;
+	}
+
+	/**
+	 * EE 2.4.0- uses sessions_end to add vars
 	 */
 	public function sessions_end($SESS)
+	{
+		//  Check app version to see what to do
+		if (version_compare(APP_VER, '2.4.0', '<') && REQ == 'PAGE')
+		{
+			$this->_add_vars();
+		}
+
+		// Return it again
+		return $SESS;
+	}
+
+	/**
+	 * Search URI segments for categories and add those to global variables
+	 *
+	 * @access      private
+	 * @return      null
+	 */
+	private function _add_vars()
 	{
 		// --------------------------------------
 		// Only continue if request is a page
 		// and we have segments to check
 		// --------------------------------------
 
-		if (REQ != 'PAGE' || (empty($this->EE->uri->segments) && $this->settings['set_all_segments'] == 'n')) return $SESS;
-
-		// --------------------------------------
-		// Suggestion by Leevi Graham:
-		// check for pattern before continuing
-		// --------------------------------------
-
-		if ( ! empty($this->settings['uri_pattern']) && ! preg_match($this->settings['uri_pattern'], $this->EE->uri->uri_string)) return $SESS;
+		if (empty($this->EE->uri->segments) && $this->settings['set_all_segments'] == 'n') return;
 
 		// --------------------------------------
 		// Initiate uri instance
@@ -327,6 +374,13 @@ class Low_seg2cat_ext {
 		$this->uri->_fetch_uri_string();
 		$this->uri->_explode_segments();
 		$this->uri->_reindex_segments();
+
+		// --------------------------------------
+		// Suggestion by Leevi Graham:
+		// check for pattern before continuing
+		// --------------------------------------
+
+		if ( ! empty($this->settings['uri_pattern']) && ! preg_match($this->settings['uri_pattern'], $this->uri->uri_string)) return;
 
 		// --------------------------------------
 		// Initiate some vars
@@ -473,8 +527,6 @@ class Low_seg2cat_ext {
 		// --------------------------------------
 
 		$this->EE->config->_global_vars = array_merge($data, $this->EE->config->_global_vars);
-
-		return $SESS;
 	}
 
 	// --------------------------------------------------------------------
@@ -487,15 +539,10 @@ class Low_seg2cat_ext {
 	 */
 	public function activate_extension()
 	{
-		$this->EE->db->insert('extensions', array(
-			'class'    => $this->class_name,
-			'method'   => 'sessions_end',
-			'hook'     => 'sessions_end',
-			'priority' => 1,
-			'version'  => LOW_SEG2CAT_VERSION,
-			'enabled'  => 'y',
-			'settings' => serialize($this->default_settings)
-		));
+		foreach ($this->hooks AS $hook)
+		{
+			$this->_add_hook($hook);
+		}
 	}
 
 	// --------------------------------------------------------------------
@@ -524,6 +571,13 @@ class Low_seg2cat_ext {
 			{
 				$data['settings'] = serialize(array($this->site_id => $this->settings));
 			}
+		}
+
+		// Add template_fetch_template hook
+		if (version_compare($current, '2.7.0', '<'))
+		{
+			$this->_add_hook('template_fetch_template');
+			$this->save_settings();
 		}
 
 		// Add version to data array
@@ -583,6 +637,28 @@ class Low_seg2cat_ext {
 		$current = (array) $current;
 
 		return isset($current[$this->site_id]) ? $current[$this->site_id] : array_merge($this->default_settings, $current);
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Add hook to table
+	 *
+	 * @access	private
+	 * @param	string
+	 * @return	void
+	 */
+	private function _add_hook($hook)
+	{
+		$this->EE->db->insert('extensions', array(
+			'class'    => $this->class_name,
+			'method'   => $hook,
+			'hook'     => $hook,
+			'settings' => serialize($this->settings),
+			'priority' => 5,
+			'version'  => $this->version,
+			'enabled'  => 'y'
+		));
 	}
 
 }
