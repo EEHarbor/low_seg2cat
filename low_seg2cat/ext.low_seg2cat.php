@@ -465,6 +465,12 @@ class Low_seg2cat_ext {
 			if ($query->num_rows())
 			{
 				// --------------------------------------
+				// Associate the results
+				// --------------------------------------
+
+				$rows = $this->_associate_results($query->result_array(), 'cat_url_title');
+
+				// --------------------------------------
 				// Load typography if private var is set
 				// --------------------------------------
 
@@ -474,17 +480,17 @@ class Low_seg2cat_ext {
 				}
 
 				// --------------------------------------
-				// Flip segment array to get 'segment_1' => '1'
+				// loop through segments
 				// --------------------------------------
 
-				$ids = array_flip($segment_array);
-
-				// --------------------------------------
-				// loop through categories found in DB
-				// --------------------------------------
-
-				foreach ($query->result_array() as $row)
+				foreach ($segment_array as $n => $seg)
 				{
+					// Skip non-matching segments
+					if ( ! isset($rows[$seg])) continue;
+
+					// Get the category row
+					$row = $rows[$seg];
+
 					// Overwrite values in data array
 					foreach ($this->fields AS $name => $field)
 					{
@@ -495,7 +501,7 @@ class Low_seg2cat_ext {
 						}
 
 						// Set value in for segment_x_yyy
-						$data['segment_'.$ids[$row['cat_url_title']].'_'.$field] = $row[$name];
+						$data["segment_{$n}_{$field}"] = $row[$name];
 					}
 
 					// Add found id to cats array
@@ -523,10 +529,11 @@ class Low_seg2cat_ext {
 
 		// --------------------------------------
 		// Finally, add data to global vars
-		// Swapping $data and existing global vars makes no difference...
+		// Swapping $data and existing global vars makes a difference in EE2.4+
 		// --------------------------------------
 
-		$this->EE->config->_global_vars = array_merge($data, $this->EE->config->_global_vars);
+		$this->EE->config->_global_vars = array_merge($this->EE->config->_global_vars, $data);
+		//$this->EE->config->_global_vars = array_merge($data, $this->EE->config->_global_vars);
 	}
 
 	// --------------------------------------------------------------------
@@ -605,6 +612,39 @@ class Low_seg2cat_ext {
 
 	// --------------------------------------------------------------------
 	// PRIVATE METHODS
+	// --------------------------------------------------------------------
+
+	/**
+	 * Associate results
+	 *
+	 * Given a DB result set, this will return an (associative) array
+	 * based on the keys given
+	 *
+	 * @param      array
+	 * @param      string    key of array to use as key
+	 * @param      bool      sort by key or not
+	 * @return     array
+	 */
+	private function _associate_results($resultset, $key, $sort = FALSE)
+	{
+		$array = array();
+
+		foreach ($resultset AS $row)
+		{
+			if (array_key_exists($key, $row) && ! array_key_exists($row[$key], $array))
+			{
+				$array[$row[$key]] = $row;
+			}
+		}
+
+		if ($sort === TRUE)
+		{
+			ksort($array);
+		}
+
+		return $array;
+	}
+
 	// --------------------------------------------------------------------
 
 	/**
