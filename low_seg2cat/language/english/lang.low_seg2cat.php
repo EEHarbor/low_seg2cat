@@ -21,7 +21,10 @@ $lang = array(
 'URI pattern',
 
 'set_all_segments' =>
-'Set all segments'
+'Set all segments',
+
+'ignore_pagination' =>
+'Ignore pagination'
 
 );
 

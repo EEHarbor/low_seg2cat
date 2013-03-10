@@ -47,6 +47,15 @@
 					<label style="margin-left:10px"><input type="radio" name="set_all_segments" value="n"<?php if ($current['set_all_segments'] == 'n'): ?> checked="checked"<?php endif; ?> /> <?=lang('no')?></label>
 				</td>
 			</tr>
+			<tr class="<?=(++$i % 2 ? 'odd' : 'even')?>">
+				<td>
+					<strong><?=lang('ignore_pagination')?></label>
+				</td>
+				<td>
+					<label><input type="radio" name="ignore_pagination" value="y"<?php if ($current['ignore_pagination'] == 'y'): ?> checked="checked"<?php endif; ?> /> <?=lang('yes')?></label>
+					<label style="margin-left:10px"><input type="radio" name="ignore_pagination" value="n"<?php if ($current['ignore_pagination'] == 'n'): ?> checked="checked"<?php endif; ?> /> <?=lang('no')?></label>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 	<input type="submit" class="submit" value="<?=lang('save')?>" />

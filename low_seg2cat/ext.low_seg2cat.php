@@ -127,7 +127,8 @@ class Low_seg2cat_ext {
 	private $default_settings = array(
 		'category_groups'  => array(),
 		'uri_pattern'      => '',
-		'set_all_segments' => 'n'
+		'set_all_segments' => 'n',
+		'ignore_pagination'=> 'n'
 	);
 
 	/**
@@ -372,6 +373,13 @@ class Low_seg2cat_ext {
 
 		$this->uri = new EE_URI;
 		$this->uri->_fetch_uri_string();
+
+		if ($this->settings['ignore_pagination'] == 'y')
+		{
+			// Get rid of possible pagination segment at the end
+			$this->uri->uri_string = preg_replace('#/[PC]\d+$#', '', $this->uri->uri_string);
+		}
+
 		$this->uri->_explode_segments();
 		$this->uri->_reindex_segments();
 
@@ -674,9 +682,9 @@ class Low_seg2cat_ext {
 	 */
 	private function _get_site_settings($current = array())
 	{
-		$current = (array) $current;
+		$current = (array) (isset($current[$this->site_id]) ? $current[$this->site_id] : $current);
 
-		return isset($current[$this->site_id]) ? $current[$this->site_id] : array_merge($this->default_settings, $current);
+		return array_merge($this->default_settings, $current);
 	}
 
 	// --------------------------------------------------------------------
