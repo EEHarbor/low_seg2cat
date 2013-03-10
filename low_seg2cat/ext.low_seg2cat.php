@@ -600,7 +600,7 @@ class Low_seg2cat_ext {
 
 		// Update records using data array
 		$this->EE->db->where('class', $this->class_name);
-		$this->EE->db->update('exp_extensions', $data);
+		$this->EE->db->update('extensions', $data);
 	}
 
 	// --------------------------------------------------------------------
@@ -615,7 +615,7 @@ class Low_seg2cat_ext {
 	{
 		// Delete records
 		$this->EE->db->where('class', $this->class_name);
-		$this->EE->db->delete('exp_extensions');
+		$this->EE->db->delete('extensions');
 	}
 
 	// --------------------------------------------------------------------
