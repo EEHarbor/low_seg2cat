@@ -6,10 +6,10 @@ require PATH_THIRD.'low_seg2cat/config.php';
 /**
  * Low Seg2Cat Extension class
  *
- * @package         low-seg2cat-ee2_addon
- * @author          Lodewijk Schutte ~ Low <hi@gotolow.com>
- * @link            http://gotolow.com/addons/low-seg2cat
- * @license         http://creativecommons.org/licenses/by-sa/3.0/
+ * @package        low_seg2cat
+ * @author         Lodewijk Schutte <hi@gotolow.com>
+ * @link           http://gotolow.com/addons/low-seg2cat
+ * @license        http://creativecommons.org/licenses/by-sa/3.0/
  */
 class Low_seg2cat_ext {
 
@@ -68,14 +68,6 @@ class Low_seg2cat_ext {
 	// --------------------------------------------------------------------
 
 	/**
-	 * EE Instance
-	 *
-	 * @access      private
-	 * @var         object
-	 */
-	private $EE;
-
-	/**
 	 * URI instance
 	 *
 	 * @access      private
@@ -128,7 +120,8 @@ class Low_seg2cat_ext {
 		'category_groups'  => array(),
 		'uri_pattern'      => '',
 		'set_all_segments' => 'n',
-		'ignore_pagination'=> 'n'
+		'ignore_pagination'=> 'n',
+		'parse_file_paths' => 'n'
 	);
 
 	/**
@@ -151,19 +144,7 @@ class Low_seg2cat_ext {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Legacy Constructor
-	 *
-	 * @see         __construct()
-	 */
-	public function Low_seg2cat_ext($settings = array())
-	{
-		$this->__construct($settings);
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * PHP 5 Constructor
+	 * Constructor
 	 *
 	 * @access      public
 	 * @param       mixed     Array with settings or FALSE
@@ -171,11 +152,8 @@ class Low_seg2cat_ext {
 	 */
 	public function __construct($settings = array())
 	{
-		// Get global instance
-		$this->EE =& get_instance();
-
 		// Get site id
-		$this->site_id = $this->EE->config->item('site_id');
+		$this->site_id = ee()->config->item('site_id');
 
 		// Set Class name
 		$this->class_name = ucfirst(get_class($this));
@@ -184,7 +162,7 @@ class Low_seg2cat_ext {
 		$this->settings = $this->_get_site_settings($settings);
 
 		// Define the package path
-		$this->EE->load->add_package_path(PATH_THIRD.LOW_SEG2CAT_PACKAGE);
+		ee()->load->add_package_path(PATH_THIRD.LOW_SEG2CAT_PACKAGE);
 	}
 
 	// --------------------------------------------------------------------
@@ -202,7 +180,7 @@ class Low_seg2cat_ext {
 		// Load helper
 		// --------------------------------------
 
-		$this->EE->load->helper('form');
+		ee()->load->helper('form');
 
 		// --------------------------------------
 		// Get current settings for this site
@@ -235,7 +213,7 @@ class Low_seg2cat_ext {
 		// Get category groups
 		// --------------------------------------
 
-		$query = $this->EE->db->select('group_id, group_name')
+		$query = ee()->db->select('group_id, group_name')
 		       ->from('category_groups')
 		       ->where('site_id', $this->site_id)
 		       ->order_by('group_name', 'asc')
@@ -250,13 +228,13 @@ class Low_seg2cat_ext {
 		// Set breadcrumb
 		// --------------------------------------
 
-		$this->EE->cp->set_breadcrumb('#', LOW_SEG2CAT_NAME);
+		ee()->cp->set_breadcrumb('#', LOW_SEG2CAT_NAME);
 
 		// --------------------------------------
 		// Load view
 		// --------------------------------------
 
-		return $this->EE->load->view('ext_settings', $data, TRUE);
+		return ee()->load->view('ext_settings', $data, TRUE);
 	}
 
 	// --------------------------------------------------------------------
@@ -286,7 +264,7 @@ class Low_seg2cat_ext {
 
 		foreach ($this->default_settings AS $key => $val)
 		{
-			if (($post_val = $this->EE->input->post($key)) !== FALSE)
+			if (($post_val = ee()->input->post($key)) !== FALSE)
 			{
 				$val = $post_val;
 			}
@@ -303,8 +281,8 @@ class Low_seg2cat_ext {
 		// Save serialized settings
 		// --------------------------------------
 
-		$this->EE->db->where('class', $this->class_name);
-		$this->EE->db->update('extensions', array('settings' => serialize($settings)));
+		ee()->db->where('class', $this->class_name);
+		ee()->db->update('extensions', array('settings' => serialize($settings)));
 	}
 
 	// --------------------------------------------------------------------
@@ -315,9 +293,9 @@ class Low_seg2cat_ext {
 	public function template_fetch_template($row)
 	{
 		// Get the latest version of $row
-		if ($this->EE->extensions->last_call !== FALSE)
+		if (ee()->extensions->last_call !== FALSE)
 		{
-			$row = $this->EE->extensions->last_call;
+			$row = ee()->extensions->last_call;
 		}
 
 		// Remember if vars were added
@@ -365,7 +343,7 @@ class Low_seg2cat_ext {
 		// and we have segments to check
 		// --------------------------------------
 
-		if (empty($this->EE->uri->segments) && $this->settings['set_all_segments'] == 'n') return;
+		if (empty(ee()->uri->segments) && $this->settings['set_all_segments'] == 'n') return;
 
 		// --------------------------------------
 		// Initiate uri instance
@@ -443,7 +421,7 @@ class Low_seg2cat_ext {
 			// for when DB collation is case sensitive
 			// --------------------------------------
 
-			$this->EE->db->select('cat_url_title, '. implode(', ', array_keys($this->fields)))
+			ee()->db->select('cat_url_title, '. implode(', ', array_keys($this->fields)))
 			             ->from('categories')
 			             ->where('site_id', $this->site_id)
 			             ->where_in('cat_url_title', $segment_array);
@@ -456,7 +434,7 @@ class Low_seg2cat_ext {
 			{
 				if ($groups = array_filter($this->settings['category_groups']))
 				{
-					$this->EE->db->where_in('group_id', $groups);
+					ee()->db->where_in('group_id', $groups);
 				}
 			}
 
@@ -464,7 +442,7 @@ class Low_seg2cat_ext {
 			// Execute query and get results
 			// --------------------------------------
 
-			$query = $this->EE->db->get();
+			$query = ee()->db->get();
 
 			// --------------------------------------
 			// If we have matching categories, continue...
@@ -482,9 +460,9 @@ class Low_seg2cat_ext {
 				// Load typography if private var is set
 				// --------------------------------------
 
-				if ($this->format)
+				if ($this->format || $this->settings['parse_file_paths'] == 'y')
 				{
-					$this->EE->load->library('typography');
+					ee()->load->library('typography');
 				}
 
 				// --------------------------------------
@@ -505,7 +483,13 @@ class Low_seg2cat_ext {
 						// Format category name if private var is set
 						if ($name == 'cat_name' && $this->format)
 						{
-							$row[$name] = $this->EE->typography->format_characters($row[$name]);
+							$row[$name] = ee()->typography->format_characters($row[$name]);
+						}
+
+						// Parse file paths
+						if ($name == 'cat_image' && $this->settings['parse_file_paths'] == 'y')
+						{
+							$row[$name] = ee()->typography->parse_file_paths($row[$name]);
 						}
 
 						// Set value in for segment_x_yyy
@@ -540,8 +524,8 @@ class Low_seg2cat_ext {
 		// Swapping $data and existing global vars makes a difference in EE2.4+
 		// --------------------------------------
 
-		$this->EE->config->_global_vars = array_merge($this->EE->config->_global_vars, $data);
-		//$this->EE->config->_global_vars = array_merge($data, $this->EE->config->_global_vars);
+		ee()->config->_global_vars = array_merge(ee()->config->_global_vars, $data);
+		//ee()->config->_global_vars = array_merge($data, ee()->config->_global_vars);
 	}
 
 	// --------------------------------------------------------------------
@@ -599,8 +583,8 @@ class Low_seg2cat_ext {
 		$data['version'] = LOW_SEG2CAT_VERSION;
 
 		// Update records using data array
-		$this->EE->db->where('class', $this->class_name);
-		$this->EE->db->update('extensions', $data);
+		ee()->db->where('class', $this->class_name);
+		ee()->db->update('extensions', $data);
 	}
 
 	// --------------------------------------------------------------------
@@ -614,8 +598,8 @@ class Low_seg2cat_ext {
 	public function disable_extension()
 	{
 		// Delete records
-		$this->EE->db->where('class', $this->class_name);
-		$this->EE->db->delete('extensions');
+		ee()->db->where('class', $this->class_name);
+		ee()->db->delete('extensions');
 	}
 
 	// --------------------------------------------------------------------
@@ -663,7 +647,7 @@ class Low_seg2cat_ext {
 	 */
 	private function _get_current_settings()
 	{
-		$query = $this->EE->db->select('settings')
+		$query = ee()->db->select('settings')
 		       ->from('extensions')
 		       ->where('class', $this->class_name)
 		       ->limit(1)
@@ -698,7 +682,7 @@ class Low_seg2cat_ext {
 	 */
 	private function _add_hook($hook)
 	{
-		$this->EE->db->insert('extensions', array(
+		ee()->db->insert('extensions', array(
 			'class'    => $this->class_name,
 			'method'   => $hook,
 			'hook'     => $hook,
