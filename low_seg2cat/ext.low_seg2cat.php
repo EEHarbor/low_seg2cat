@@ -378,6 +378,7 @@ class Low_seg2cat_ext {
 
 		// Also initiate this single var to an empty string
 		$data['segment_category_ids'] = '';
+		$data['segment_category_ids_piped'] = '';
 
 		// --------------------------------------
 		// Number of segments to register - 9 is hardcoded maximum
@@ -516,6 +517,7 @@ class Low_seg2cat_ext {
 				// --------------------------------------
 
 				$data['segment_category_ids'] = implode('&',$cats);
+				$data['segment_category_ids_piped'] = implode('|',$cats);
 			}
 		}
 
