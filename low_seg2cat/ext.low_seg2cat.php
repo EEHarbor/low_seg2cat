@@ -117,6 +117,7 @@ class Low_seg2cat_ext {
 	 * @var         array
 	 */
 	private $default_settings = array(
+		'all_sites'        => 'n',
 		'category_groups'  => array(),
 		'uri_pattern'      => '',
 		'set_all_segments' => 'n',
@@ -198,10 +199,11 @@ class Low_seg2cat_ext {
 		}
 
 		// --------------------------------------
-		// Add this extension's name to display data
+		// Add this extension's name and save path to display data
 		// --------------------------------------
 
-		$data['name'] = ucfirst(LOW_SEG2CAT_PACKAGE);
+		$data['name'] = LOW_SEG2CAT_PACKAGE;
+		$data['save'] = 'C=addons_extensions&M=save_extension_settings';
 
 		// --------------------------------------
 		// Category groups
@@ -417,17 +419,19 @@ class Low_seg2cat_ext {
 			// --------------------------------------
 
 			ee()->db->select('cat_url_title, '. implode(', ', array_keys($this->fields)))
-			             ->from('categories')
-			             ->where('site_id', $this->site_id)
-			             ->where_in('cat_url_title', $segment_array);
+			         ->from('categories')
+			         ->where_in('cat_url_title', $segment_array);
 
 			// --------------------------------------
-			// Filter by category groups set in settings
+			// Filter by site and its category groups
 			// --------------------------------------
 
-			if (isset($this->settings['category_groups']))
+			if ($this->settings['all_sites'] == 'n')
 			{
-				if ($groups = array_filter($this->settings['category_groups']))
+				ee()->db->where('site_id', $this->site_id);
+
+				if (isset($this->settings['category_groups']) &&
+				   ($groups = array_filter($this->settings['category_groups'])))
 				{
 					ee()->db->where_in('group_id', $groups);
 				}

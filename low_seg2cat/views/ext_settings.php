@@ -1,8 +1,4 @@
-<form method="post" action="<?=BASE?>&amp;C=addons_extensions&amp;M=save_extension_settings">
-	<div>
-		<input type="hidden" name="file" value="<?=strtolower($name)?>" />
-		<input type="hidden" name="XID" value="<?=XID_SECURE_HASH?>" />
-	</div>
+<?=form_open($save, '', array('file' => $name))?>
 	<table cellpadding="0" cellspacing="0" style="width:100%" class="mainTable low-extension-settings">
 		<colgroup>
 			<col style="width:50%" />
@@ -16,6 +12,15 @@
 		</thead>
 		<tbody>
 			<?php $i = 0; ?>
+			<tr class="<?=(++$i % 2 ? 'odd' : 'even')?>">
+				<td>
+					<strong><?=lang('all_sites')?></label>
+				</td>
+				<td>
+					<label><input type="radio" name="all_sites" value="y"<?php if ($current['all_sites'] == 'y'): ?> checked="checked"<?php endif; ?> /> <?=lang('yes')?></label>
+					<label style="margin-left:10px"><input type="radio" name="all_sites" value="n"<?php if ($current['all_sites'] == 'n'): ?> checked="checked"<?php endif; ?> /> <?=lang('no')?></label>
+				</td>
+			</tr>
 			<tr class="<?=(++$i % 2 ? 'odd' : 'even')?>">
 				<td style="vertical-align:top">
 					<label for="category_groups"><?=lang('category_groups')?></label>

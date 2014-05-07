@@ -11,6 +11,9 @@
 
 $lang = array(
 
+'all_sites' =>
+'Search all sites',
+
 'category_groups' =>
 'Category groups',
 
