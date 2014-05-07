@@ -227,6 +227,12 @@ class Low_seg2cat_ext {
 		}
 
 		// --------------------------------------
+		// Add JS
+		// --------------------------------------
+
+		ee()->cp->add_to_foot($this->_js());
+
+		// --------------------------------------
 		// Set breadcrumb
 		// --------------------------------------
 
@@ -691,6 +697,32 @@ class Low_seg2cat_ext {
 			'version'  => $this->version,
 			'enabled'  => 'y'
 		));
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * JavaScript for the settings page
+	 *
+	 * @access	private
+	 * @param	string
+	 * @return	void
+	 */
+	private function _js()
+	{
+		return <<<EOJS
+		<script>
+			(function($){
+				var \$radio = \$('input[name="all_sites"]');
+				var toggle  = function(){
+					var val = \$radio.filter(':checked').val();
+					\$('#category_groups').attr('disabled', (val == 'y'));
+				};
+				\$radio.on('change', toggle);
+				toggle();
+			})(jQuery);
+		</script>
+EOJS;
 	}
 
 }
