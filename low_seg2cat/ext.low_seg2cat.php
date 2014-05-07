@@ -405,16 +405,10 @@ class Low_seg2cat_ext {
 		}
 
 		// --------------------------------------
-		// Force lowercase segment array
-		// --------------------------------------
-
-		$segment_array = array_map('strtolower', $this->uri->segment_array());
-
-		// --------------------------------------
 		// Execute the rest only if there are segments to check
 		// --------------------------------------
 
-		if ($segment_array)
+		if ($segment_array = $this->uri->segment_array())
 		{
 			// --------------------------------------
 			// Query database for these segments
