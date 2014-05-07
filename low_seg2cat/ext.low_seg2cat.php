@@ -120,7 +120,7 @@ class Low_seg2cat_ext {
 		'all_sites'        => 'n',
 		'category_groups'  => array(),
 		'uri_pattern'      => '',
-		'set_all_segments' => 'n',
+		'set_all_segments' => 'y',
 		'ignore_pagination'=> 'n',
 		'parse_file_paths' => 'n'
 	);
