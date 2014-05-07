@@ -13,7 +13,7 @@ if ( ! defined('LOW_SEG2CAT_NAME'))
 {
 	define('LOW_SEG2CAT_NAME',    'Low Seg2Cat');
 	define('LOW_SEG2CAT_PACKAGE', 'low_seg2cat');
-	define('LOW_SEG2CAT_VERSION', '2.8.0');
+	define('LOW_SEG2CAT_VERSION', '2.8.1');
 	define('LOW_SEG2CAT_DOCS',    'http://gotolow.com/addons/low-seg2cat');
 }
 
