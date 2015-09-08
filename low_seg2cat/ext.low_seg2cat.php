@@ -174,7 +174,7 @@ class Low_seg2cat_ext {
 		$current = $this->_get_site_settings($current);
 
 		// --------------------------------------
-		// Allow for 'all groups'
+		// Make sure All Groups is active when none are selected
 		// --------------------------------------
 
 		if (empty($current['category_groups']))
@@ -186,27 +186,18 @@ class Low_seg2cat_ext {
 		// Get category groups
 		// --------------------------------------
 
-		$groups = array(lang('all_groups'));
+		$groups = ee('Model')
+			->get('CategoryGroup')
+			->filter('site_id', $this->site_id)
+			->all();
 
-		$query = ee()->db->select('group_id, group_name')
-		       ->from('category_groups')
-		       ->where('site_id', $this->site_id)
-		       ->order_by('group_name', 'asc')
-		       ->get();
-
-		foreach ($query->result() AS $row)
-		{
-			$groups[$row->group_id] = $row->group_name;
-		}
+		$groups = $groups->sortBy('group_name');
+		$groups = $groups->getDictionary('group_id', 'group_name');
+		$groups = array(lang('all_groups')) + $groups;
 
 		// --------------------------------------
-		// Add JS
+		// Compose vars for view
 		// --------------------------------------
-
-		// print_r($current);
-		// exit;
-
-		// ee()->cp->add_to_foot($this->_js());
 
 		$vars = array(
 			'base_url' => $base_url,
@@ -271,9 +262,15 @@ class Low_seg2cat_ext {
 							)
 						)
 					)
-				)
-			)
+				) // End single section
+			) // End sections
 		);
+
+		// --------------------------------------
+		// Add JS
+		// --------------------------------------
+
+		ee()->cp->add_to_foot($this->js());
 
 		// --------------------------------------
 		// Load view
@@ -731,7 +728,7 @@ class Low_seg2cat_ext {
 	 * @param	string
 	 * @return	void
 	 */
-	private function _js()
+	private function js()
 	{
 		return <<<EOJS
 		<script>
@@ -739,7 +736,7 @@ class Low_seg2cat_ext {
 				var \$radio = \$('input[name="all_sites"]');
 				var toggle  = function(){
 					var val = \$radio.filter(':checked').val();
-					\$('#category_groups').attr('disabled', (val == 'y'));
+					\$('input[name="category_groups\[\]"]').attr('disabled', (val == 'y'));
 				};
 				\$radio.on('change', toggle);
 				toggle();
