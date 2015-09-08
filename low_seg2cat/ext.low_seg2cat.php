@@ -1,8 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-// include config file
-require PATH_THIRD.'low_seg2cat/config.php';
-
 /**
  * Low Seg2Cat Extension class
  *
@@ -26,46 +23,30 @@ class Low_seg2cat_ext {
 	public $settings = array();
 
 	/**
-	 * Extension name
+	 * Version (still needed)
 	 *
 	 * @access      public
 	 * @var         string
 	 */
-	public $name = LOW_SEG2CAT_NAME;
-
-	/**
-	 * Extension version
-	 *
-	 * @access      public
-	 * @var         string
-	 */
-	public $version = LOW_SEG2CAT_VERSION;
-
-	/**
-	 * Extension description
-	 *
-	 * @access      public
-	 * @var         string
-	 */
-	public $description = 'Registers Category information according to URI Segments';
-
-	/**
-	 * Do settings exist?
-	 *
-	 * @access      public
-	 * @var         bool
-	 */
-	public $settings_exist = TRUE;
-
-	/**
-	 * Documentation link
-	 *
-	 * @access      public
-	 * @var         string
-	 */
-	public $docs_url = LOW_SEG2CAT_DOCS;
+	public $version;
 
 	// --------------------------------------------------------------------
+
+	/**
+	 * Name of this package
+	 *
+	 * @access      private
+	 * @var         string
+	 */
+	private $package = 'low_seg2cat';
+
+	/**
+	 * This add-on's info based on setup file
+	 *
+	 * @access      private
+	 * @var         object
+	 */
+	private $info;
 
 	/**
 	 * URI instance
@@ -74,14 +55,6 @@ class Low_seg2cat_ext {
 	 * @var         object
 	 */
 	private $uri;
-
-	/**
-	 * Current class name
-	 *
-	 * @access      private
-	 * @var         string
-	 */
-	private $class_name;
 
 	/**
 	 * Current site id
@@ -106,7 +79,6 @@ class Low_seg2cat_ext {
 	 * @var         array
 	 */
 	private $hooks = array(
-		'sessions_end',
 		'template_fetch_template'
 	);
 
@@ -153,17 +125,17 @@ class Low_seg2cat_ext {
 	 */
 	public function __construct($settings = array())
 	{
+		// Set the info
+		$this->info = ee('App')->get($this->package);
+
+		// And version
+		$this->version = $this->info->getVersion();
+
 		// Get site id
 		$this->site_id = ee()->config->item('site_id');
 
-		// Set Class name
-		$this->class_name = ucfirst(get_class($this));
-
 		// Set settings
 		$this->settings = $this->_get_site_settings($settings);
-
-		// Define the package path
-		ee()->load->add_package_path(PATH_THIRD.LOW_SEG2CAT_PACKAGE);
 	}
 
 	// --------------------------------------------------------------------
@@ -175,45 +147,46 @@ class Low_seg2cat_ext {
 	 * @param       array     Current settings
 	 * @return      string
 	 */
-	function settings_form($current)
+	public function settings_form($current)
 	{
 		// --------------------------------------
-		// Load helper
+		// The base URL for this add-on
 		// --------------------------------------
 
-		ee()->load->helper('form');
+		$base_url = ee('CP/URL', 'addons/settings/'.$this->package);
+
+		// --------------------------------------
+		// Save when posted
+		// --------------------------------------
+
+		if ( ! empty($_POST))
+		{
+			$this->save_settings($current);
+
+			// Redirect back, so we don't get the send POST vars msg on F5.
+			ee()->functions->redirect($base_url);
+		}
 
 		// --------------------------------------
 		// Get current settings for this site
 		// --------------------------------------
 
-		$data['current'] = $this->_get_site_settings($current);
+		$current = $this->_get_site_settings($current);
 
 		// --------------------------------------
 		// Allow for 'all groups'
 		// --------------------------------------
 
-		if (empty($data['current']['category_groups']))
+		if (empty($current['category_groups']))
 		{
-			$data['current']['category_groups'] = array('0');
+			$current['category_groups'] = array(0);
 		}
-
-		// --------------------------------------
-		// Add this extension's name and save path to display data
-		// --------------------------------------
-
-		$data['name'] = LOW_SEG2CAT_PACKAGE;
-		$data['save'] = 'C=addons_extensions&M=save_extension_settings';
-
-		// --------------------------------------
-		// Category groups
-		// --------------------------------------
-
-		$data['category_groups'] = array('0' => lang('all_groups'));
 
 		// --------------------------------------
 		// Get category groups
 		// --------------------------------------
+
+		$groups = array(lang('all_groups'));
 
 		$query = ee()->db->select('group_id, group_name')
 		       ->from('category_groups')
@@ -223,26 +196,90 @@ class Low_seg2cat_ext {
 
 		foreach ($query->result() AS $row)
 		{
-			$data['category_groups'][$row->group_id] = $row->group_name;
+			$groups[$row->group_id] = $row->group_name;
 		}
 
 		// --------------------------------------
 		// Add JS
 		// --------------------------------------
 
-		ee()->cp->add_to_foot($this->_js());
+		// print_r($current);
+		// exit;
 
-		// --------------------------------------
-		// Set breadcrumb
-		// --------------------------------------
+		// ee()->cp->add_to_foot($this->_js());
 
-		ee()->cp->set_breadcrumb('#', LOW_SEG2CAT_NAME);
+		$vars = array(
+			'base_url' => $base_url,
+			'cp_page_title' => $this->info->getName(),
+			'save_btn_text' => 'btn_save_settings',
+			'save_btn_text_working' => 'btn_saving',
+			'sections' => array(
+				array(
+					array(
+						'title' => 'all_sites',
+						'fields' => array(
+							'all_sites' => array(
+								'type' => 'yes_no',
+								'value' => $current['all_sites']
+							)
+						),
+					),
+					array(
+						'title' => 'category_groups',
+						'fields' => array(
+							'category_groups' => array(
+								'type' => 'checkbox',
+								'wrap' => TRUE,
+								'choices' => $groups,
+								'value' => $current['category_groups']
+							)
+						),
+					),
+					array(
+						'title' => 'uri_pattern',
+						'fields' => array(
+							'uri_pattern' => array(
+								'type' => 'text',
+								'value' => $current['uri_pattern']
+							)
+						)
+					),
+					array(
+						'title' => 'set_all_segments',
+						'fields' => array(
+							'set_all_segments' => array(
+								'type' => 'yes_no',
+								'value' => $current['set_all_segments']
+							)
+						)
+					),
+					array(
+						'title' => 'ignore_pagination',
+						'fields' => array(
+							'ignore_pagination' => array(
+								'type' => 'yes_no',
+								'value' => $current['ignore_pagination']
+							)
+						)
+					),
+					array(
+						'title' => 'parse_file_paths',
+						'fields' => array(
+							'parse_file_paths' => array(
+								'type' => 'yes_no',
+								'value' => $current['parse_file_paths']
+							)
+						)
+					)
+				)
+			)
+		);
 
 		// --------------------------------------
 		// Load view
 		// --------------------------------------
 
-		return ee()->load->view('ext_settings', $data, TRUE);
+		return ee('View')->make($this->package.':settings')->render($vars);
 	}
 
 	// --------------------------------------------------------------------
@@ -252,19 +289,8 @@ class Low_seg2cat_ext {
 	 *
 	 * @return      void
 	 */
-	public function save_settings()
+	private function save_settings($settings)
 	{
-		// --------------------------------------
-		// Get current settings from DB
-		// --------------------------------------
-
-		$settings = $this->_get_current_settings();
-
-		if ( ! is_array($settings))
-		{
-			$settings = array($this->site_id => $this->default_settings);
-		}
-
 		// --------------------------------------
 		// Loop through default settings, check
 		// for POST values, fallback to default
@@ -279,17 +305,27 @@ class Low_seg2cat_ext {
 
 			if (is_array($val))
 			{
-				$val = array_filter($val);
+				$val = array_values(array_filter($val));
 			}
 
 			$settings[$this->site_id][$key] = $val;
 		}
 
 		// --------------------------------------
+		// Add alert to page
+		// --------------------------------------
+
+		ee('CP/Alert')->makeInline('shared-form')
+			->asSuccess()
+			->withTitle(lang('settings_saved'))
+			->addToBody(sprintf(lang('settings_saved_desc'), $this->info->getName()))
+			->defer();
+
+		// --------------------------------------
 		// Save serialized settings
 		// --------------------------------------
 
-		ee()->db->where('class', $this->class_name);
+		ee()->db->where('class', __CLASS__);
 		ee()->db->update('extensions', array('settings' => serialize($settings)));
 	}
 
@@ -313,7 +349,7 @@ class Low_seg2cat_ext {
 		if ( ! $added)
 		{
 			// ...add the vars...
-			$this->_add_vars();
+			$this->add_vars();
 
 			// ...only once
 			$added = TRUE;
@@ -324,17 +360,10 @@ class Low_seg2cat_ext {
 	}
 
 	/**
-	 * EE 2.4.0- uses sessions_end to add vars
+	 * Leave for upgrade compatibility
 	 */
 	public function sessions_end($SESS)
 	{
-		//  Check app version to see what to do
-		if (version_compare(APP_VER, '2.4.0', '<') && REQ == 'PAGE')
-		{
-			$this->_add_vars();
-		}
-
-		// Return it again
 		return $SESS;
 	}
 
@@ -344,7 +373,7 @@ class Low_seg2cat_ext {
 	 * @access      private
 	 * @return      null
 	 */
-	private function _add_vars()
+	private function add_vars()
 	{
 		// --------------------------------------
 		// Only continue if request is a page
@@ -389,7 +418,7 @@ class Low_seg2cat_ext {
 		$data['segment_category_ids_piped'] = '';
 
 		// --------------------------------------
-		// Number of segments to register - 9 is hardcoded maximum
+		// Number of segments to register
 		// --------------------------------------
 
 		$num_segs = ($this->settings['set_all_segments'] == 'y') ? 9 : $this->uri->total_segments();
@@ -561,7 +590,7 @@ class Low_seg2cat_ext {
 	 */
 	public function update_extension($current = '')
 	{
-		if ($current == '' OR $current == LOW_SEG2CAT_VERSION)
+		if ($current == '' OR $current == $this->info->getVersion())
 		{
 			return FALSE;
 		}
@@ -585,11 +614,17 @@ class Low_seg2cat_ext {
 			$this->save_settings();
 		}
 
+		// Remove sessions_end hook
+		if (version_compare($current, '3.0.0', '<'))
+		{
+			// REMOVE HOOK
+		}
+
 		// Add version to data array
-		$data['version'] = LOW_SEG2CAT_VERSION;
+		$data['version'] = $this->info->getVersion();
 
 		// Update records using data array
-		ee()->db->where('class', $this->class_name);
+		ee()->db->where('class', __CLASS__);
 		ee()->db->update('extensions', $data);
 	}
 
@@ -604,7 +639,7 @@ class Low_seg2cat_ext {
 	public function disable_extension()
 	{
 		// Delete records
-		ee()->db->where('class', $this->class_name);
+		ee()->db->where('class', __CLASS__);
 		ee()->db->delete('extensions');
 	}
 
@@ -646,35 +681,23 @@ class Low_seg2cat_ext {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Get current settings from DB
-	 *
-	 * @access      private
-	 * @return      mixed
-	 */
-	private function _get_current_settings()
-	{
-		$query = ee()->db->select('settings')
-		       ->from('extensions')
-		       ->where('class', $this->class_name)
-		       ->limit(1)
-		       ->get();
-
-		return @unserialize($query->row('settings'));
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
 	 * Get settings for this site
 	 *
 	 * @access      private
 	 * @return      mixed
 	 */
-	private function _get_site_settings($current = array())
+	private function _get_site_settings(array $settings)
 	{
-		$current = (array) (isset($current[$this->site_id]) ? $current[$this->site_id] : $current);
+		// Are there settings for this site?
+		$settings = array_key_exists($this->site_id, $settings)
+			? $settings[$this->site_id]
+			: array();
 
-		return array_merge($this->default_settings, $current);
+		// Always make sure all settings are set
+		$settings = array_merge($this->default_settings, $settings);
+
+		// And return it
+		return $settings;
 	}
 
 	// --------------------------------------------------------------------
@@ -689,12 +712,12 @@ class Low_seg2cat_ext {
 	private function _add_hook($hook)
 	{
 		ee()->db->insert('extensions', array(
-			'class'    => $this->class_name,
+			'class'    => __CLASS__,
 			'method'   => $hook,
 			'hook'     => $hook,
-			'settings' => serialize($this->settings),
+			'settings' => serialize(array($this->site_id => $this->settings)),
 			'priority' => 5,
-			'version'  => $this->version,
+			'version'  => $this->info->getVersion(),
 			'enabled'  => 'y'
 		));
 	}
