@@ -135,7 +135,7 @@ class Low_seg2cat_ext {
 		$this->site_id = ee()->config->item('site_id');
 
 		// Set settings
-		$this->settings = $this->_get_site_settings($settings);
+		$this->settings = $this->get_site_settings($settings);
 	}
 
 	// --------------------------------------------------------------------
@@ -171,7 +171,7 @@ class Low_seg2cat_ext {
 		// Get current settings for this site
 		// --------------------------------------
 
-		$current = $this->_get_site_settings($current);
+		$current = $this->get_site_settings($current);
 
 		// --------------------------------------
 		// Make sure All Groups is active when none are selected
@@ -196,75 +196,53 @@ class Low_seg2cat_ext {
 		$groups = array(lang('all_groups')) + $groups;
 
 		// --------------------------------------
-		// Compose vars for view
+		// Create form field for each setting
 		// --------------------------------------
 
 		$vars = array(
 			'base_url' => $base_url,
 			'cp_page_title' => $this->info->getName(),
 			'save_btn_text' => 'btn_save_settings',
-			'save_btn_text_working' => 'btn_saving',
-			'sections' => array(
-				array(
-					array(
-						'title' => 'all_sites',
-						'fields' => array(
-							'all_sites' => array(
-								'type' => 'yes_no',
-								'value' => $current['all_sites']
-							)
-						),
-					),
-					array(
-						'title' => 'category_groups',
-						'fields' => array(
-							'category_groups' => array(
-								'type' => 'checkbox',
-								'wrap' => TRUE,
-								'choices' => $groups,
-								'value' => $current['category_groups']
-							)
-						),
-					),
-					array(
-						'title' => 'uri_pattern',
-						'fields' => array(
-							'uri_pattern' => array(
-								'type' => 'text',
-								'value' => $current['uri_pattern']
-							)
-						)
-					),
-					array(
-						'title' => 'set_all_segments',
-						'fields' => array(
-							'set_all_segments' => array(
-								'type' => 'yes_no',
-								'value' => $current['set_all_segments']
-							)
-						)
-					),
-					array(
-						'title' => 'ignore_pagination',
-						'fields' => array(
-							'ignore_pagination' => array(
-								'type' => 'yes_no',
-								'value' => $current['ignore_pagination']
-							)
-						)
-					),
-					array(
-						'title' => 'parse_file_paths',
-						'fields' => array(
-							'parse_file_paths' => array(
-								'type' => 'yes_no',
-								'value' => $current['parse_file_paths']
-							)
-						)
-					)
-				) // End single section
-			) // End sections
+			'save_btn_text_working' => 'btn_saving'
 		);
+
+		//foreach ($this->default_settings as $key => $val)
+		foreach ($current as $key => $val)
+		{
+			$row = array('title' => $key);
+
+			switch ($key)
+			{
+				// Category Groups is a checkbox selection
+				case 'category_groups':
+					$row['fields'] = array($key => array(
+						'type'    => 'checkbox',
+						'wrap'    => TRUE,
+						'choices' => $groups,
+						'value'   => $val
+					));
+				break;
+
+				// URI pattern is a regular text input
+				case 'uri_pattern':
+					$row['fields'] = array($key => array(
+						'type'    => 'text',
+						'value'   => $val
+					));
+				break;
+
+				// The rest are yes/no booleans
+				default:
+					$row['fields'] = array($key => array(
+						'type'    => 'yes_no',
+						'value'   => $val
+					));
+				break;
+			}
+
+			// There's only one section here
+			$vars['sections'][0][] = $row;
+		}
 
 		// --------------------------------------
 		// Add JS
@@ -293,12 +271,9 @@ class Low_seg2cat_ext {
 		// for POST values, fallback to default
 		// --------------------------------------
 
-		foreach ($this->default_settings AS $key => $val)
+		foreach ($this->default_settings as $key => $val)
 		{
-			if (($post_val = ee()->input->post($key)) !== FALSE)
-			{
-				$val = $post_val;
-			}
+			$val = ee('Request')->post($key, $val);
 
 			if (is_array($val))
 			{
@@ -326,6 +301,8 @@ class Low_seg2cat_ext {
 		ee()->db->update('extensions', array('settings' => serialize($settings)));
 	}
 
+	// --------------------------------------------------------------------
+	// HOOKS
 	// --------------------------------------------------------------------
 
 	/**
@@ -405,10 +382,10 @@ class Low_seg2cat_ext {
 		// --------------------------------------
 		// Initiate some vars
 		// $data is used to add to global vars
-		// $cats is used to keep track of all category ids found
+		// $ids is used to keep track of all category ids found
 		// --------------------------------------
 
-		$data = $cats = array();
+		$data = $ids = array();
 
 		// Also initiate this single var to an empty string
 		$data['segment_category_ids'] = '';
@@ -418,7 +395,9 @@ class Low_seg2cat_ext {
 		// Number of segments to register
 		// --------------------------------------
 
-		$num_segs = ($this->settings['set_all_segments'] == 'y') ? 9 : $this->uri->total_segments();
+		$max = (int) (ee()->config->item('max_url_segments') ?: 12);
+
+		$num_segs = ($this->settings['set_all_segments'] == 'y') ? $max : $this->uri->total_segments();
 
 		// --------------------------------------
 		// loop through segments and set data array thus: segment_1_category_id etc
@@ -426,14 +405,14 @@ class Low_seg2cat_ext {
 
 		for ($nr = 1; $nr <= $num_segs; $nr++)
 		{
-			foreach ($this->fields AS $field)
+			foreach ($this->fields as $field)
 			{
 				$data["segment_{$nr}_{$field}"] = '';
 			}
 		}
 
 		// Initiate last segment vars
-		foreach ($this->fields AS $field)
+		foreach ($this->fields as $field)
 		{
 			$data["last_segment_{$field}"] = '';
 		}
@@ -445,14 +424,13 @@ class Low_seg2cat_ext {
 		if ($segment_array = $this->uri->segment_array())
 		{
 			// --------------------------------------
-			// Query database for these segments
-			// Use lowercase for case insensitive comparison,
-			// for when DB collation is case sensitive
+			// Use Model to get the categories
 			// --------------------------------------
 
-			ee()->db->select('cat_url_title, '. implode(', ', array_keys($this->fields)))
-			         ->from('categories')
-			         ->where_in('cat_url_title', $segment_array);
+			$model = ee('Model')
+				->get('Category')
+				->filter('cat_url_title', 'IN', $segment_array)
+				->limit($num_segs);
 
 			// --------------------------------------
 			// Filter by site and its category groups
@@ -460,12 +438,12 @@ class Low_seg2cat_ext {
 
 			if ($this->settings['all_sites'] == 'n')
 			{
-				ee()->db->where('site_id', $this->site_id);
+				$model->filter('site_id', $this->site_id);
 
 				if (isset($this->settings['category_groups']) &&
 				   ($groups = array_filter($this->settings['category_groups'])))
 				{
-					ee()->db->where_in('group_id', $groups);
+					$model->filter('group_id', 'IN', $groups);
 				}
 			}
 
@@ -473,19 +451,19 @@ class Low_seg2cat_ext {
 			// Execute query and get results
 			// --------------------------------------
 
-			$query = ee()->db->get();
+			$cats = $model->all();
 
 			// --------------------------------------
 			// If we have matching categories, continue...
 			// --------------------------------------
 
-			if ($query->num_rows())
+			if ($cats->count())
 			{
 				// --------------------------------------
 				// Associate the results
 				// --------------------------------------
 
-				$rows = $this->_associate_results($query->result_array(), 'cat_url_title');
+				$cats = $cats->indexBy('cat_url_title');
 
 				// --------------------------------------
 				// Load typography if private var is set
@@ -503,32 +481,35 @@ class Low_seg2cat_ext {
 				foreach ($segment_array as $n => $seg)
 				{
 					// Skip non-matching segments
-					if ( ! isset($rows[$seg])) continue;
+					if ( ! isset($cats[$seg])) continue;
 
 					// Get the category row
-					$row = $rows[$seg];
+					$cat = $cats[$seg];
 
 					// Overwrite values in data array
-					foreach ($this->fields AS $name => $field)
+					foreach ($this->fields as $name => $field)
 					{
+						// Value of this key
+						$val = $cat->$name;
+
 						// Format category name if private var is set
 						if ($name == 'cat_name' && $this->format)
 						{
-							$row[$name] = ee()->typography->format_characters($row[$name]);
+							$val = ee()->typography->format_characters($val);
 						}
 
 						// Parse file paths
 						if ($name == 'cat_image' && $this->settings['parse_file_paths'] == 'y')
 						{
-							$row[$name] = ee()->typography->parse_file_paths($row[$name]);
+							$val = ee()->typography->parse_file_paths($val);
 						}
 
 						// Set value in for segment_x_yyy
-						$data["segment_{$n}_{$field}"] = $row[$name];
+						$data["segment_{$n}_{$field}"] = $val;
 					}
 
 					// Add found id to cats array
-					$cats[] = $row['cat_id'];
+					$ids[] = $cat->cat_id;
 				}
 
 				// --------------------------------------
@@ -537,7 +518,7 @@ class Low_seg2cat_ext {
 
 				$last = $this->uri->total_segments();
 
-				foreach ($this->fields AS $name => $field)
+				foreach ($this->fields as $name => $field)
 				{
 					$data['last_segment_'.$field] = $data['segment_'.$last.'_'.$field];
 				}
@@ -546,8 +527,8 @@ class Low_seg2cat_ext {
 				// Create inclusive stack of all category ids present in segments
 				// --------------------------------------
 
-				$data['segment_category_ids'] = implode('&',$cats);
-				$data['segment_category_ids_piped'] = implode('|',$cats);
+				$data['segment_category_ids'] = implode('&', $ids);
+				$data['segment_category_ids_piped'] = implode('|', $ids);
 			}
 		}
 
@@ -570,9 +551,9 @@ class Low_seg2cat_ext {
 	 */
 	public function activate_extension()
 	{
-		foreach ($this->hooks AS $hook)
+		foreach ($this->hooks as $hook)
 		{
-			$this->_add_hook($hook);
+			$this->add_hook($hook);
 		}
 	}
 
@@ -587,7 +568,7 @@ class Low_seg2cat_ext {
 	 */
 	public function update_extension($current = '')
 	{
-		if ($current == '' OR $current == $this->info->getVersion())
+		if ($current == '' || $current == $this->info->getVersion())
 		{
 			return FALSE;
 		}
@@ -607,14 +588,17 @@ class Low_seg2cat_ext {
 		// Add template_fetch_template hook
 		if (version_compare($current, '2.7.0', '<'))
 		{
-			$this->_add_hook('template_fetch_template');
+			$this->add_hook('template_fetch_template');
 			$this->save_settings();
 		}
 
-		// Remove sessions_end hook
+		// Remove obsolete sessions_end hook
 		if (version_compare($current, '3.0.0', '<'))
 		{
-			// REMOVE HOOK
+			ee()->db->delete('extensions', array(
+				'class' => __CLASS__,
+				'hook' => 'sessions_end'
+			));
 		}
 
 		// Add version to data array
@@ -641,40 +625,7 @@ class Low_seg2cat_ext {
 	}
 
 	// --------------------------------------------------------------------
-	// PRIVATE METHODS
-	// --------------------------------------------------------------------
-
-	/**
-	 * Associate results
-	 *
-	 * Given a DB result set, this will return an (associative) array
-	 * based on the keys given
-	 *
-	 * @param      array
-	 * @param      string    key of array to use as key
-	 * @param      bool      sort by key or not
-	 * @return     array
-	 */
-	private function _associate_results($resultset, $key, $sort = FALSE)
-	{
-		$array = array();
-
-		foreach ($resultset AS $row)
-		{
-			if (array_key_exists($key, $row) && ! array_key_exists($row[$key], $array))
-			{
-				$array[$row[$key]] = $row;
-			}
-		}
-
-		if ($sort === TRUE)
-		{
-			ksort($array);
-		}
-
-		return $array;
-	}
-
+	// HELPER METHODS
 	// --------------------------------------------------------------------
 
 	/**
@@ -683,7 +634,7 @@ class Low_seg2cat_ext {
 	 * @access      private
 	 * @return      mixed
 	 */
-	private function _get_site_settings(array $settings)
+	private function get_site_settings(array $settings)
 	{
 		// Are there settings for this site?
 		$settings = array_key_exists($this->site_id, $settings)
@@ -706,7 +657,7 @@ class Low_seg2cat_ext {
 	 * @param	string
 	 * @return	void
 	 */
-	private function _add_hook($hook)
+	private function add_hook($hook)
 	{
 		ee()->db->insert('extensions', array(
 			'class'    => __CLASS__,
