@@ -85,7 +85,7 @@ class Low_seg2cat_ext extends Ext
      * @access      private
      * @var         array
      */
-    private $hooks = array(
+    public $hooks = array(
         'template_fetch_template'
     );
 
