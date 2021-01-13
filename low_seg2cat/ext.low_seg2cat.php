@@ -10,7 +10,11 @@
  * @link           http://gotolow.com/addons/low-seg2cat
  * @license        http://creativecommons.org/licenses/by-sa/3.0/
  */
-class Low_seg2cat_ext
+
+include_once "addon.setup.php";
+use Low\Seg2Cat\FluxCapacitor\Base\Ext;
+
+class Low_seg2cat_ext extends Ext
 {
 
     // --------------------------------------------------------------------
@@ -128,6 +132,8 @@ class Low_seg2cat_ext
      */
     public function __construct($settings = array())
     {
+        parent::__construct();
+
         // Set the info
         $this->info = ee('App')->get($this->package);
 
@@ -634,9 +640,9 @@ class Low_seg2cat_ext
     /**
      * Add hook to table
      *
-     * @access	private
-     * @param	string
-     * @return	void
+     * @access  private
+     * @param   string
+     * @return  void
      */
     private function add_hook($hook)
     {
@@ -656,24 +662,24 @@ class Low_seg2cat_ext
     /**
      * JavaScript for the settings page
      *
-     * @access	private
-     * @param	string
-     * @return	void
+     * @access  private
+     * @param   string
+     * @return  void
      */
     private function js()
     {
         return <<<EOJS
-		<script>
-			(function($){
-				var \$radio = \$('input[name="all_sites"]');
-				var toggle  = function(){
-					var val = \$radio.filter(':checked').val();
-					\$('input[name="category_groups\[\]"]').attr('disabled', (val == 'y'));
-				};
-				\$radio.on('change', toggle);
-				toggle();
-			})(jQuery);
-		</script>
+        <script>
+            (function($){
+                var \$radio = \$('input[name="all_sites"]');
+                var toggle  = function(){
+                    var val = \$radio.filter(':checked').val();
+                    \$('input[name="category_groups\[\]"]').attr('disabled', (val == 'y'));
+                };
+                \$radio.on('change', toggle);
+                toggle();
+            })(jQuery);
+        </script>
 EOJS;
     }
 }
