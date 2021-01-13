@@ -1,0 +1,14 @@
+{
+  "name": "Low Seg2Cat",
+  "shortname": "low_seg2cat",
+  "version": "3.0.0",
+  "foundation_version": "",
+  "description": "Registers Category information according to URI Segments",
+  "license": "EEHarbor",
+  "namespace": "Low\\Seg2Cat",
+  "require": {
+    "php": ">=5.6.*",
+    "expressionengine/core": ">=3"
+  },
+  "resources": {}
+}
