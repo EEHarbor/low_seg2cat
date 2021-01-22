@@ -1,4 +1,6 @@
-<?php if (! defined('BASEPATH')) {
+<?php
+
+if (! defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
@@ -10,13 +12,11 @@
  * @link           http://gotolow.com/addons/low-seg2cat
  * @license        http://creativecommons.org/licenses/by-sa/3.0/
  */
-
 include_once "addon.setup.php";
 use Low\Seg2Cat\FluxCapacitor\Base\Ext;
 
 class Low_seg2cat_ext extends Ext
 {
-
     // --------------------------------------------------------------------
     // PROPERTIES
     // --------------------------------------------------------------------
@@ -162,7 +162,7 @@ class Low_seg2cat_ext extends Ext
         // The base URL for this add-on
         // --------------------------------------
 
-        $base_url = ee('CP/URL', 'addons/settings/'.$this->package);
+        $base_url = ee('CP/URL', 'addons/settings/' . $this->package);
 
         // --------------------------------------
         // Save when posted
@@ -226,6 +226,7 @@ class Low_seg2cat_ext extends Ext
                         'choices' => $groups,
                         'value'   => $val
                     ));
+
                 break;
 
                 // URI pattern is a regular text input
@@ -234,6 +235,7 @@ class Low_seg2cat_ext extends Ext
                         'type'    => 'text',
                         'value'   => $val
                     ));
+
                 break;
 
                 // The rest are yes/no booleans
@@ -242,6 +244,7 @@ class Low_seg2cat_ext extends Ext
                         'type'    => 'yes_no',
                         'value'   => $val
                     ));
+
                 break;
             }
 
@@ -259,7 +262,7 @@ class Low_seg2cat_ext extends Ext
         // Load view
         // --------------------------------------
 
-        return ee('View')->make($this->package.':settings')->render($vars);
+        return ee('View')->make($this->package . ':settings')->render($vars);
     }
 
     // --------------------------------------------------------------------
@@ -363,7 +366,7 @@ class Low_seg2cat_ext extends Ext
         // Initiate uri instance
         // --------------------------------------
 
-        $this->uri = new EE_URI;
+        $this->uri = new EE_URI();
         $this->uri->_fetch_uri_string();
 
         if ($this->settings['ignore_pagination'] == 'y') {
@@ -513,7 +516,7 @@ class Low_seg2cat_ext extends Ext
                 $last = $this->uri->total_segments();
 
                 foreach ($this->fields as $name => $field) {
-                    $data['last_segment_'.$field] = $data['segment_'.$last.'_'.$field];
+                    $data['last_segment_' . $field] = $data['segment_' . $last . '_' . $field];
                 }
 
                 // --------------------------------------

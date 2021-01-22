@@ -13,7 +13,6 @@
  * @license    https://eeharbor.com/license EEHarbor Add-on License
  * @link       https://eeharbor.com/low_seg2cat
  */
-
 spl_autoload_register(
     function ($class_name) {
         // This is the PHAR path for this addon

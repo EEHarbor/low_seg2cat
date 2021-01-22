@@ -8,7 +8,6 @@
  * @link           http://gotolow.com/addons/low-seg2cat
  * @license        http://creativecommons.org/licenses/by-sa/3.0/
  */
-
 $lang = array(
     'all_sites'         =>    'Search all sites',
     'category_groups'   =>    'Category groups',
