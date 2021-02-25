@@ -1,21 +1,15 @@
 <?php
 
-/**
- * Low Seg2Cat Add-On Setup file for EE3
- *
- * @package        low_seg2cat
- * @author         Lodewijk Schutte <hi@gotolow.com>
- * @link           http://gotolow.com/addons/low-seg2cat
- * @license        http://creativecommons.org/licenses/by-sa/3.0/
- */
+require_once 'autoload.php';
+$addonJson = json_decode(file_get_contents(__DIR__ . '/addon.json'));
 
 return array(
-	'author'         => 'Low',
-	'author_url'     => 'http://gotolow.com/',
-	'docs_url'       => 'http://gotolow.com/addons/low-seg2cat',
-	'name'           => 'Low Seg2Cat',
-	'description'    => 'Registers Category information according to URI Segments',
-	'version'        => '3.0.0',
-	'namespace'      => 'Low\Seg2Cat',
-	'settings_exist' => TRUE
+    'name'              => $addonJson->name,
+    'description'       => $addonJson->description,
+    'version'           => $addonJson->version,
+    'namespace'         => $addonJson->namespace,
+    'author'            => 'EEHarbor',
+    'author_url'        => 'http://eeharbor.com/low_seg2cat',
+    'docs_url'          => 'http://eeharbor.com/low_seg2cat/documentation',
+    'settings_exist'    => true,
 );
