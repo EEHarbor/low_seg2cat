@@ -100,7 +100,7 @@ class Low_seg2cat_ext extends Ext
         'category_groups'  => array(),
         'uri_pattern'      => '',
         'set_all_segments' => 'y',
-        'ignore_pagination'=> 'n',
+        'ignore_pagination' => 'n',
         'parse_file_paths' => 'n'
     );
 
@@ -227,7 +227,7 @@ class Low_seg2cat_ext extends Ext
                         'value'   => $val
                     ));
 
-                break;
+                    break;
 
                 // URI pattern is a regular text input
                 case 'uri_pattern':
@@ -236,7 +236,7 @@ class Low_seg2cat_ext extends Ext
                         'value'   => $val
                     ));
 
-                break;
+                    break;
 
                 // The rest are yes/no booleans
                 default:
@@ -245,7 +245,7 @@ class Low_seg2cat_ext extends Ext
                         'value'   => $val
                     ));
 
-                break;
+                    break;
             }
 
             // There's only one section here
@@ -442,8 +442,10 @@ class Low_seg2cat_ext extends Ext
             if ($this->settings['all_sites'] == 'n') {
                 $model->filter('site_id', $this->site_id);
 
-                if (isset($this->settings['category_groups']) &&
-                   ($groups = array_filter($this->settings['category_groups']))) {
+                if (
+                    isset($this->settings['category_groups']) &&
+                    ($groups = array_filter($this->settings['category_groups']))
+                ) {
                     $model->filter('group_id', 'IN', $groups);
                 }
             }
