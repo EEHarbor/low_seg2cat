@@ -1,8 +1,8 @@
 {
     "name": "Low Seg2Cat",
     "shortname": "low_seg2cat",
-    "version": "4.0.0",
-    "foundation_version": "4.6.1",
+    "version": "4.0.1",
+    "foundation_version": "4.9.0",
     "description": "Registers Category information according to URI Segments",
     "license": "EEHarbor",
     "namespace": "Low\\Seg2Cat",
