@@ -1,0 +1,69 @@
+---
+title: Installation
+---
+
+<h3>Compatibility</h3>
+Low Seg2Cat v3 is compatible with EE3 and up. The EE1 and EE2 compatible versions are no longer under development, but are still available on Github.
+
+<h3>Installation</h3>
+<li>Download and unzip Low Seg2Cat</li>
+<li>Copy the low_seg2cat folder to your /system/user/addons directory</li>
+<li>In your Control Panel, go to the Add-on Manager and click the Install-link in the Low Seg2Cat row</li>
+<li>All set!</li>
+
+<h3>Upgrade</h3>
+To upgrade Low Seg2Cat from a previous version, download and overwrite the files as per the installation instructions. The add-on will be upgraded automatically.
+
+<h3>Settings</h3>
+
+<b>Search all sites</b>
+
+<li>When set to Yes, all categories across all MSM sites will be matched. This will ignore any Category Groups selected.</li>
+
+<b>Category Groups</b>
+
+<li>Limit the search for matching categories by selected groups. When no groups are selected, all groups will be searched.</li>
+
+<b>URI Pattern</b>
+
+<li>	Enter a regex pattern or leave blank. If you enter a pattern, the variables will only be registered if the current URI matches it.</li>
+
+<b>Set all segments</b>
+
+<li>If set to Yes, Low Seg2Cat will always set variables for all (9) segments, regardless of their presence.</li>
+
+<b>Ignore pagination</b>
+
+<li>If set to Yes, Low Seg2Cat will ignore the presence of a pagination segment at the end of a URI.</li>
+
+<b>Parse file paths</b>
+
+<li>If set to Yes, Low Seg2Cat will parse `{filedir_x}` variables inside the Category Image field.</li>
+
+
+<h3>Template Variables</h3>
+
+<li>{segment_n_category_id}</li>
+<li>{segment_n_category_name}</li>
+<li>{segment_n_category_description}</li>
+<li>{segment_n_category_image}</li>
+<li>{segment_n_category_parent_id}</li>
+<li>{segment_n_category_group_id}</li>
+<li>{last_segment_category_id}</li>
+<li>{last_segment_category_name}</li>
+<li>{last_segment_category_description}</li>
+<li>{last_segment_category_image}</li>
+<li>{last_segment_category_parent_id}</li>
+<li>{last_segment_category_group_id}</li>
+<li>{segment_category_ids}</li>
+<li>{segment_category_ids_piped}</li>
+
+where n is the segment number. {segment_category_ids} will return an inclusive stack of all found category ids, for example: 4&amp;12. {segment_category_ids_piped} will return an exclusive list: 4|12.
+
+<h3>Caveats</h3>
+
+If there are multiple categories with the same url_title, but in different groups, this extension will only return one of those. So best make sure your category url_titles are unique, or you select the relevant Category Groups in the settings so they are.
+
+
+
+
