@@ -500,7 +500,7 @@ class Low_seg2cat_ext extends Ext
 
                         // Parse file paths
                         if ($name == 'cat_image' && $this->settings['parse_file_paths'] == 'y') {
-                            $val = ee()->typography->parse_file_paths($val);
+                            $val = $this->parse_category_image($val);
                         }
 
                         // Set value in for segment_x_yyy
@@ -638,6 +638,38 @@ class Low_seg2cat_ext extends Ext
 
         // And return it
         return $settings;
+    }
+
+    // --------------------------------------------------------------------
+
+    /**
+     * Parse category image data across EE file field storage formats.
+     *
+     * @access  private
+     * @param   string
+     * @return  string
+     */
+    private function parse_category_image($value)
+    {
+        if ($value === '' || $value === null) {
+            return '';
+        }
+
+        ee()->load->library('file_field');
+
+        $parsed = ee()->file_field->parse_field($value);
+
+        if (is_array($parsed) && ! empty($parsed['url'])) {
+            if (
+                $parsed['url'] !== $value ||
+                is_numeric($value) ||
+                strpos((string) $value, '{file:') !== false
+            ) {
+                return $parsed['url'];
+            }
+        }
+
+        return ee()->file_field->parse_string($value, true);
     }
 
     // --------------------------------------------------------------------
