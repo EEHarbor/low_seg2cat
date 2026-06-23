@@ -38,7 +38,7 @@ To upgrade Low Seg2Cat from a previous version, download and overwrite the files
 
 <b>Parse file paths</b>
 
-<li>If set to Yes, Low Seg2Cat will parse `{filedir_x}` variables inside the Category Image field.</li>
+<li>If set to Yes, Low Seg2Cat will parse EE file references inside the Category Image field, including newer file IDs, `{file:id:url}` tags, and legacy `{filedir_x}` variables.</li>
 
 
 <h3>Template Variables</h3>
@@ -63,7 +63,6 @@ where n is the segment number. {segment_category_ids} will return an inclusive s
 <h3>Caveats</h3>
 
 If there are multiple categories with the same url_title, but in different groups, this extension will only return one of those. So best make sure your category url_titles are unique, or you select the relevant Category Groups in the settings so they are.
-
 
 
 

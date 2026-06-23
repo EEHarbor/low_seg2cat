@@ -112,7 +112,7 @@
             <p><em>You can retrieve your license key from <b><a target="_blank" href="https://eeharbor.com/members">your Account page on EEHarbor.com</a></b>.</em></p>
         </div>
         <div class="setting-field col w-8 last">
-            <?php echo form_input('license_key', strpos($license_key, 'ignore-site-') !== false ? '' : $license_key); ?>
+            <?php echo form_input('license_key', strpos((string) $license_key, 'ignore-site-') !== false ? '' : $license_key); ?>
         </div>
     </fieldset>
 
