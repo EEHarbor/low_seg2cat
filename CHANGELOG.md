@@ -37,11 +37,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - EE3 Compatibility
 - Feature froze EE2 version
 
-[Unreleased]: https://github.com/packettide/low_seg2cat/compare/v4.1.2...HEAD
-[4.1.2]: https://github.com/packettide/low_seg2cat/compare/v4.1.1...v4.1.2
-[4.1.1]: https://github.com/packettide/low_seg2cat/compare/v4.1.0...v4.1.1
-[4.1.0]: https://github.com/packettide/low_seg2cat/compare/v4.0.2...v4.1.0
-[4.0.2]: https://github.com/packettide/low_seg2cat/compare/v4.0.1...v4.0.2
-[4.0.1]: https://github.com/packettide/low_seg2cat/compare/v4.0.0...v4.0.1
-[4.0.0]: https://github.com/packettide/low_seg2cat/compare/v3.0.0...v4.0.0
-[3.0.0]: https://github.com/packettide/low_seg2cat/compare/v2.8.1...v3.0.0
+[Unreleased]: https://github.com/EEHarbor/low_seg2cat/compare/v4.1.2...HEAD
+[4.1.2]: https://github.com/EEHarbor/low_seg2cat/compare/v4.1.1...v4.1.2
+[4.1.1]: https://github.com/EEHarbor/low_seg2cat/compare/v4.1.0...v4.1.1
+[4.1.0]: https://github.com/EEHarbor/low_seg2cat/compare/v4.0.2...v4.1.0
+[4.0.2]: https://github.com/EEHarbor/low_seg2cat/compare/v4.0.1...v4.0.2
+[4.0.1]: https://github.com/EEHarbor/low_seg2cat/compare/v4.0.0...v4.0.1
+[4.0.0]: https://github.com/EEHarbor/low_seg2cat/compare/v3.0.0...v4.0.0
+[3.0.0]: https://github.com/EEHarbor/low_seg2cat/compare/v2.8.1...v3.0.0
