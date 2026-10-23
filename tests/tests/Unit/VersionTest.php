@@ -8,6 +8,27 @@ use Low\Seg2Cat\FluxCapacitor\Conduit\Version;
 class VersionTest extends TestCase
 {
     /**
+     * Preserve unrelated footer markup and reject a nonmatching development flag.
+     *
+     * @return void
+     */
+    public function testCheckPreservesOtherFooterMarkupAndRequiresTheDevelopmentFlagValue()
+    {
+        $originalGet = $_GET;
+        $_GET['ldev'] = '2';
+        $this->app->foot = array('<script>existing();</script>');
+        try {
+            (new Version())->check();
+            $this->assertCount(3, $this->app->foot);
+            $this->assertSame('<script>existing();</script>', $this->app->foot[0]);
+            $this->assertStringContainsString('&#104;&#116;&#116;&#112;&#115;', $this->app->foot[1]);
+            $this->assertStringContainsString('<script type="text/javascript">', $this->app->foot[2]);
+        } finally {
+            $_GET = $originalGet;
+        }
+    }
+
+    /**
      * Create and upgrade the license table using schema contracts and key validation.
      *
      * @return void
