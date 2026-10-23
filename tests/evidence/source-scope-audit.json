@@ -1,0 +1,43 @@
+{
+  "source_baseline": "38a3d826df9b2ef2fbf96eca08efce5211386e68",
+  "inventory_units": 29,
+  "loose_non_php_phar_files": [
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 1297,
+      "sha256": "3f8e687b30f7989930e4f4060b43ea3fb532058bacc1a5ab72032d1da6b234f9",
+      "opening_tags": [],
+      "classification": "No PHP opening tag."
+    },
+    {
+      "path": "documentation/01.installation.html",
+      "bytes": 2584,
+      "sha256": "02edbe4df5c34cdaa1afbcf6b59791f35709fc4e0ccdafe0cbe3ed243c652577",
+      "opening_tags": [],
+      "classification": "No PHP opening tag."
+    },
+    {
+      "path": "low_seg2cat/addon.json",
+      "bytes": 384,
+      "sha256": "7aa535537aa560016de590377b57d9c3fed52dfdea1834a841aafaad9c398d36",
+      "opening_tags": [],
+      "classification": "No PHP opening tag."
+    },
+    {
+      "path": "phpcs.xml",
+      "bytes": 895,
+      "sha256": "c99b9552633f38a0a84655990b500e59fc0158a9a177f5677c9ba12d107839a5",
+      "opening_tags": [
+        "<?"
+      ],
+      "classification": "XML declaration only; XML configuration is not loaded as PHP."
+    }
+  ],
+  "archive_non_php_members": [],
+  "scope": "All tracked original loose file bytes and every original PHAR member were inspected without extension-only candidate filtering. Every archive member is already inventoried as PHP. Physical stub is inventoried separately.",
+  "result": "No omitted executable mixed-PHP unit found. Inventory/filter scope remains unchanged.",
+  "limits": [
+    "Tag inspection does not establish behavior coverage.",
+    "No source or archive byte is changed."
+  ]
+}

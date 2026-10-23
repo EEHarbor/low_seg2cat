@@ -1,0 +1,240 @@
+{
+  "source_baseline": "38a3d826df9b2ef2fbf96eca08efce5211386e68",
+  "ee_reference_root": "/Users/tomjaeger/Sites/ee_repo_2",
+  "ee_reference_head": "ad6358a2b67db30cd2286fa39711caa975aceee1",
+  "references": [
+    {
+      "path": "system/ee/legacy/libraries/Functions.php",
+      "sha256": "531e15f16141f2ba129012a54287235362fa963d9fcf1946050ca34956f7541b",
+      "contract": "Ordinary Functions::redirect prepares the response then exits. The local fixture uses an owned termination exception only at the tested source caller boundary; routing, URL sanitization and HTTP headers are not implemented."
+    },
+    {
+      "path": "system/ee/ExpressionEngine/Controller/Addons/Addons.php",
+      "sha256": "1ee85a1b79bb24beda62e4cd65c17df023f0ff0fe7be0e1d51c16d227fc7a11d",
+      "contract": "The update caller invokes UPD->update with the installed version and advances module_version only after a non-false return. This does not establish a promise to swallow extension callback exceptions."
+    },
+    {
+      "path": "system/ee/ExpressionEngine/Library/CP/Pagination.php",
+      "sha256": "bf16067a9ab441baaa50c51bc646498e95e598fca0b2253af26746596e79f4b0",
+      "contract": "Pagination::render requires a CP Url object, returns null below two pages and otherwise rendered markup. The ordinary fixture asserts URL-marker identity and nullable forwarding only; these primary definitions are independently checked below."
+    },
+    {
+      "path": "system/ee/ExpressionEngine/Library/CP/Url.php",
+      "sha256": "bda89e3f46b897d77d35bf02d28d7f94cc34bdb69eb69dfc651cc58926dc54be",
+      "contract": "Pagination::render requires a CP Url object, returns null below two pages and otherwise rendered markup. The ordinary fixture asserts URL-marker identity and nullable forwarding only; these primary definitions are independently checked below."
+    }
+  ],
+  "updater": {
+    "unit": "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Base/Upd.php",
+    "source_sha256": "d1062072c568c2acbadebda03e53277365c4311e730209caca82ff48231feee0",
+    "vectors": [
+      "Missing or already-current versions return false without invoking the callback.",
+      "Existing module-specific extension receives the exact installed version once.",
+      "A different module without a matching extension completes without calling the first module callback."
+    ],
+    "execution": "Both normal vectors execute the unchanged original PHAR method in one fresh process and one compiled graph.",
+    "exception_handling": {
+      "status": "unknown_intent_not_graded",
+      "observation": "A private PHP7.4/8.5 callback throwing global RuntimeException escapes the original unqualified catch. No intended-success assertion is added because the inspected caller supplies no swallowing contract.",
+      "remaining_question": "Should an extension callback failure propagate to update orchestration or be swallowed by this base updater?"
+    },
+    "measurement": {
+      "label": "child-89",
+      "probe_sha256": "8f6eb50f116dd73d0da72547317a09e8b44c19e6331a4f90d653e10b746547d5",
+      "raw_sha256": "5b9c6ab9519d602c957c1007d90d4e3272686d7dde0fedb2dd42f0bfd0c640ce",
+      "basic_block_covered": 8,
+      "basic_block_total": 9,
+      "ordinary_exit_covered": 9,
+      "ordinary_exit_total": 10,
+      "remaining_ordinary_exits": [
+        {
+          "source": "42",
+          "target": 43,
+          "line": 72,
+          "hit": 0,
+          "synthetic_exit": false
+        }
+      ],
+      "limits": "The catch block/outcome remains unhit and its intended exception policy is unknown. No fabricated namespaced exception is used to close it."
+    }
+  },
+  "unknown_cache_modes": {
+    "implementations": [
+      "EE3",
+      "EE4",
+      "EE5"
+    ],
+    "modes": [
+      null,
+      false,
+      []
+    ],
+    "contract": "An unrecognized mode returns false and performs no persistent or session cache operation. These cases exercise public API type boundaries; a normal EE caller is not claimed to supply these values.",
+    "measured_result": {
+      "per_implementation_basic_blocks": [
+        14,
+        14
+      ],
+      "per_implementation_ordinary_exits": [
+        14,
+        19
+      ],
+      "limits": "Type-boundary behavior passes, but the five switch dispatch outcomes remain unhit in the retained native graph. No additional branch closure is inferred."
+    }
+  },
+  "redirect_fixture": {
+    "sentinel": "Tests\\Support\\RedirectTermination",
+    "callers": [
+      "Low_seg2cat_ext::settings_form POST branch",
+      "Base\\Mcp::index"
+    ],
+    "checks": [
+      "Exact redirect destination.",
+      "POST settings perform no subsequent view rendering or footer emission."
+    ],
+    "limits": "The sentinel permits the owning unit test to regain control; it is not a complete EE request or a general replacement for process exit.",
+    "coverage_effect": {
+      "settings_form_ordinary_exits_before": [
+        19,
+        23
+      ],
+      "settings_form_ordinary_exits_now": [
+        18,
+        23
+      ],
+      "extension_file_ordinary_exits_before": [
+        130,
+        144
+      ],
+      "extension_file_ordinary_exits_now": [
+        129,
+        144
+      ],
+      "reason": "The source edge continuing after redirect is no longer executed. All extension file line counts remain162/163."
+    }
+  },
+  "limits": [
+    "No production source, PHAR, external service or global PHP configuration is changed.",
+    "Unqualified exception-catch intent remains unknown; its uncovered outcome is not forced with a fabricated namespaced exception.",
+    "Raw graphs retain their own runtime/context; ordinary and synthetic outcomes are separate, and function paths remain omitted with null coverage."
+  ],
+  "retention": {
+    "graph_count": 89,
+    "prior_native_representations_exact_after_verified_copy_mapping": 87,
+    "parent_changed_units": [
+      "low_seg2cat/ext.low_seg2cat.php"
+    ],
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null,
+    "paired_307_junit_sha256": "c09e5552053d54d888355b9d02f73f9d6374f0e052872123836206381032da46",
+    "excluded_obsolete_false_fixture_graph": "child-41"
+  },
+  "owned_process_cleanup": {
+    "historical_probe": "A deadline child left its newly allocated root0500 and caused unlink Permission denied; this was a harness failure, not a source defect.",
+    "repair": "Restore only owned directory permissions before descent; remove symlinks without following their targets.",
+    "controls": [
+      "ordinary exit with root0500, nested0000 and an external symlink sentinel",
+      "deadline termination with the same filesystem state, child reaping and complete owned cleanup"
+    ],
+    "limits": [
+      "No arbitrary directory or external target chmod/cleanup.",
+      "Direct owned PHP child only; no general descendant supervisor claim."
+    ]
+  },
+  "pagination": {
+    "probe_source": "<?php\nrequire '/Users/tomjaeger/Sites/ee_repo_2/system/ee/ExpressionEngine/Library/CP/Url.php';\nrequire '/Users/tomjaeger/Sites/ee_repo_2/system/ee/ExpressionEngine/Library/CP/Pagination.php';\n$url = new ExpressionEngine\\Library\\CP\\URL('list', '', array(), 'https://cp.example/');\n$pagination = (new ReflectionClass(ExpressionEngine\\Library\\CP\\Pagination::class))->newInstanceWithoutConstructor();\n$total = new ReflectionProperty(ExpressionEngine\\Library\\CP\\Pagination::class, 'total_count');\nif (PHP_VERSION_ID < 80100) { $total->setAccessible(true); }\n$total->setValue($pagination, 0);\nif ($pagination->render($url) !== null) { throw new RuntimeException('Zero-row result must be null.'); }\n$rejected = false;\ntry { $pagination->render('/list'); } catch (TypeError $error) { $rejected = true; }\nif (!$rejected) { throw new RuntimeException('String URL was accepted.'); }\necho json_encode(array('binary' => PHP_BINARY, 'php' => PHP_VERSION, 'url_class' => get_class($url), 'zero_rows_null' => true, 'string_rejected' => true));\n",
+    "probe_sha256": "0fd2c9ef11548f9890647810c73c70ec91f696e62f693275911fcbff404a2f76",
+    "controls": [
+      {
+        "runtime": "74",
+        "command": [
+          "/Users/tomjaeger/Library/Application Support/Herd/bin/php74",
+          "-d",
+          "auto_prepend_file=/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/diagnostics.php",
+          "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/pagination-contract-probe.php"
+        ],
+        "status": 0,
+        "stdout": "{\"binary\":\"\\/Users\\/tomjaeger\\/Library\\/Application Support\\/Herd\\/bin\\/php74\",\"php\":\"7.4.33\",\"url_class\":\"ExpressionEngine\\\\Library\\\\CP\\\\URL\",\"zero_rows_null\":true,\"string_rejected\":true}",
+        "stderr": ""
+      },
+      {
+        "runtime": "80",
+        "command": [
+          "/Users/tomjaeger/Library/Application Support/Herd/bin/php80",
+          "-d",
+          "auto_prepend_file=/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/diagnostics.php",
+          "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/pagination-contract-probe.php"
+        ],
+        "status": 0,
+        "stdout": "{\"binary\":\"\\/Users\\/tomjaeger\\/Library\\/Application Support\\/Herd\\/bin\\/php80\",\"php\":\"8.0.30\",\"url_class\":\"ExpressionEngine\\\\Library\\\\CP\\\\URL\",\"zero_rows_null\":true,\"string_rejected\":true}",
+        "stderr": ""
+      },
+      {
+        "runtime": "81",
+        "command": [
+          "/Users/tomjaeger/Library/Application Support/Herd/bin/php81",
+          "-d",
+          "auto_prepend_file=/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/diagnostics.php",
+          "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/pagination-contract-probe.php"
+        ],
+        "status": 0,
+        "stdout": "{\"binary\":\"\\/Users\\/tomjaeger\\/Library\\/Application Support\\/Herd\\/bin\\/php81\",\"php\":\"8.1.33\",\"url_class\":\"ExpressionEngine\\\\Library\\\\CP\\\\URL\",\"zero_rows_null\":true,\"string_rejected\":true}",
+        "stderr": ""
+      },
+      {
+        "runtime": "82",
+        "command": [
+          "/Users/tomjaeger/Library/Application Support/Herd/bin/php82",
+          "-d",
+          "auto_prepend_file=/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/diagnostics.php",
+          "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/pagination-contract-probe.php"
+        ],
+        "status": 0,
+        "stdout": "{\"binary\":\"\\/Users\\/tomjaeger\\/Library\\/Application Support\\/Herd\\/bin\\/php82\",\"php\":\"8.2.30\",\"url_class\":\"ExpressionEngine\\\\Library\\\\CP\\\\URL\",\"zero_rows_null\":true,\"string_rejected\":true}",
+        "stderr": ""
+      },
+      {
+        "runtime": "83",
+        "command": [
+          "/Users/tomjaeger/Library/Application Support/Herd/bin/php83",
+          "-d",
+          "auto_prepend_file=/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/diagnostics.php",
+          "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/pagination-contract-probe.php"
+        ],
+        "status": 0,
+        "stdout": "{\"binary\":\"\\/Users\\/tomjaeger\\/Library\\/Application Support\\/Herd\\/bin\\/php83\",\"php\":\"8.3.28\",\"url_class\":\"ExpressionEngine\\\\Library\\\\CP\\\\URL\",\"zero_rows_null\":true,\"string_rejected\":true}",
+        "stderr": ""
+      },
+      {
+        "runtime": "84",
+        "command": [
+          "/Users/tomjaeger/Library/Application Support/Herd/bin/php84",
+          "-d",
+          "auto_prepend_file=/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/diagnostics.php",
+          "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/pagination-contract-probe.php"
+        ],
+        "status": 0,
+        "stdout": "{\"binary\":\"\\/Users\\/tomjaeger\\/Library\\/Application Support\\/Herd\\/bin\\/php84\",\"php\":\"8.4.15\",\"url_class\":\"ExpressionEngine\\\\Library\\\\CP\\\\URL\",\"zero_rows_null\":true,\"string_rejected\":true}",
+        "stderr": ""
+      },
+      {
+        "runtime": "85",
+        "command": [
+          "/Users/tomjaeger/Library/Application Support/Herd/bin/php85",
+          "-d",
+          "auto_prepend_file=/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/diagnostics.php",
+          "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/pagination-contract-probe.php"
+        ],
+        "status": 0,
+        "stdout": "{\"binary\":\"\\/Users\\/tomjaeger\\/Library\\/Application Support\\/Herd\\/bin\\/php85\",\"php\":\"8.5.0\",\"url_class\":\"ExpressionEngine\\\\Library\\\\CP\\\\URL\",\"zero_rows_null\":true,\"string_rejected\":true}",
+        "stderr": ""
+      }
+    ],
+    "fixture": "Existing URL-factory protocol object is forwarded unchanged. Mock renderer returns markup for42 rows/perPage10 and null for zero rows; exact factory count, current page, optional settings and render identity are asserted. Model callers use the bounded typed URL renderer with exact row totals, explicit URL identity, ordinary outer-method route inference and nullable marker results.",
+    "limits": [
+      "Real unmodified EE definitions are loaded only by this bounded primary control; reflection bypasses Pagination constructor solely to set zero rows.",
+      "No View/container/full EE integration or add-on source coverage is claimed by this control."
+    ],
+    "unknown_top_level_intent": "The unsupported configured top-level success oracle is removed; exact TypeError observations in top-level-pagination-observation.json are non-grading and provide no current strict graph credit."
+  }
+}
