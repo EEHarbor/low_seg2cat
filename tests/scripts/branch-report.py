@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Describe one unmerged compiled graph; never equate blocks with branch outcomes."""
 import argparse
+from collections import defaultdict
 import hashlib
 import json
 from pathlib import Path
@@ -52,6 +53,21 @@ for name, entry in inventory.items():
     record['line_covered'] = sum(hit > 0 for hit in lines.values())
     record['line_executable'] = len(lines)
     record['uncovered_lines'] = [line for line, hit in lines.items() if hit == -1]
+    declarations = defaultdict(list)
+    for declaration in entry.get('functions', []):
+        if declaration['name'] != '{closure}':
+            declarations[declaration['name']].append(declaration['line'])
+    collisions = {function: locations for function, locations in declarations.items() if len(locations) > 1}
+    if collisions:
+        record['graph_collisions'] = [
+            dict(name=function, declaration_lines=locations, attribution='unknown')
+            for function, locations in collisions.items()
+        ]
+        record['ambiguous_declarations'] = [
+            dict(name=function, line=line, status='unknown', line_covered=None, line_executable=None,
+                 basic_block_covered=None, basic_block_total=None, outcome_covered=None, outcome_total=None)
+            for function, locations in collisions.items() for line in locations
+        ]
     for function, graph in (source.get('functions') or {}).items():
         branches = graph.get('branches') or {}
         pairs = list(branches.items()) if isinstance(branches, dict) else list(enumerate(branches))
@@ -67,11 +83,20 @@ for name, entry in inventory.items():
                 edges.append(dict(source=index, target=target, line=branch['line_end'], hit=hit,
                                   synthetic_exit=target in (2147483645, 2147483646, 2147483647)))
         outcomes = [edge for edge in edges if not edge['synthetic_exit']]
-        record['functions'].append(dict(name=function, basic_block_covered=sum(bool(block['hit']) for block in blocks),
+        metrics = dict(name=function, basic_block_covered=sum(bool(block['hit']) for block in blocks),
             basic_block_total=len(blocks), outcome_covered=sum(bool(edge['hit']) for edge in outcomes),
             outcome_total=len(outcomes), blocks=blocks, exits=edges,
             branch_status='unknown' if any(edge['hit'] is None for edge in outcomes) else 'measured',
-            synthetic_exit_limitation='Retained separately; Xdebug may report zero for a taken VM exit.'))
+            synthetic_exit_limitation='Retained separately; Xdebug may report zero for a taken VM exit.')
+        declaration_name = function.rsplit('->', 1)[-1].rsplit('::', 1)[-1]
+        if declaration_name in collisions:
+            metrics = dict(name=function, declaration_lines=collisions[declaration_name],
+                line_status='unknown', line_covered=None, line_executable=None,
+                basic_block_covered=None, basic_block_total=None,
+                outcome_covered=None, outcome_total=None, branch_status='unknown',
+                attribution='One shared graph cannot identify the executed conditional declaration.',
+                raw_graph_metrics=metrics)
+        record['functions'].append(metrics)
     records.append(record)
 if not any(record['measured'] for record in records):
     raise RuntimeError('No inventoried source matched this graph. Set --recorded-root to its original checkout root.')
@@ -82,7 +107,8 @@ for record in records:
     if not record['measured']:
         print(record['file'], 'UNMEASURED')
         continue
-    functions = record['functions']
+    functions = [function for function in record['functions'] if function['outcome_total'] is not None]
     outcomes = sum(function['outcome_total'] for function in functions)
     covered = sum(function['outcome_covered'] for function in functions)
-    print(record['file'], f"lines {record['line_covered']}/{record['line_executable']}", f"outcomes {covered}/{outcomes}")
+    ambiguity = f"; {len(record['ambiguous_declarations'])} declarations unknown" if record.get('ambiguous_declarations') else ''
+    print(record['file'], f"lines {record['line_covered']}/{record['line_executable']}", f"known outcomes {covered}/{outcomes}{ambiguity}")

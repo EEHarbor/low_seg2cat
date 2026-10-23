@@ -68,5 +68,51 @@ class PrimaryMeasurementTest(unittest.TestCase):
         self.assertFalse(self.output.exists())
 
 
+class ConditionalDeclarationTest(unittest.TestCase):
+    def measure(self, functions):
+        with tempfile.TemporaryDirectory(prefix='low-seg2cat-conditional-control-') as directory:
+            directory = Path(directory)
+            raw = directory / 'raw.json'
+            output = directory / 'derived.json'
+            key = 'phar://' + str(ROOT / 'low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE.php')
+            raw.write_text(json.dumps({key: {'lines': {'84': 1, '85': 1}, 'functions': functions}}))
+            result = subprocess.run([sys.executable, str(ROOT / 'tests/scripts/branch-report.py'), str(raw),
+                                     '--output', str(output)], capture_output=True, text=True)
+            self.assertEqual(0, result.returncode, result.stderr)
+            return next(row for row in json.loads(output.read_text())['files'] if row['file'].endswith('Bridge/EE.php'))
+
+    def test_shared_constructor_graph_does_not_close_any_conditional_declaration(self):
+        name = 'Low\\Seg2Cat\\FluxCapacitor\\Bridge\\EE->__construct'
+        graph = {'branches': {'0': {'line_start': 42, 'line_end': 45, 'hit': 1,
+                                   'out': [2147483645], 'out_hit': [0]}}}
+        record = self.measure({name: graph})
+        self.assertEqual([42, 50, 58, 66, 74, 82], record['graph_collisions'][0]['declaration_lines'])
+        function = record['functions'][0]
+        self.assertIsNone(function['basic_block_covered'])
+        self.assertIsNone(function['outcome_total'])
+        self.assertEqual('unknown', function['line_status'])
+        self.assertEqual('unknown', function['branch_status'])
+        self.assertEqual(1, function['raw_graph_metrics']['basic_block_covered'])
+        self.assertEqual(2147483645, function['raw_graph_metrics']['exits'][0]['target'])
+
+    def test_absent_constructor_graph_retains_all_six_unknown_declarations(self):
+        record = self.measure({})
+        self.assertEqual(6, len(record['ambiguous_declarations']))
+        self.assertTrue(all(row['status'] == 'unknown' for row in record['ambiguous_declarations']))
+        self.assertTrue(all(row['line_covered'] is None and row['outcome_total'] is None
+                            for row in record['ambiguous_declarations']))
+        self.assertEqual([], record['functions'])
+
+    def test_single_global_function_keeps_its_own_measured_metrics(self):
+        graph = {'branches': {'0': {'line_start': 20, 'line_end': 21, 'hit': 1, 'out': [], 'out_hit': []}}}
+        record = self.measure({'ee': graph})
+        function = record['functions'][0]
+        self.assertEqual('ee', function['name'])
+        self.assertEqual(1, function['basic_block_covered'])
+        self.assertEqual(1, function['basic_block_total'])
+        self.assertEqual('measured', function['branch_status'])
+        self.assertNotIn('raw_graph_metrics', function)
+
+
 if __name__ == '__main__':
     unittest.main()
