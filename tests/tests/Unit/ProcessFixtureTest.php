@@ -21,6 +21,40 @@ class ProcessFixtureTest extends TestCase
     }
 
     /**
+     * Install diagnostics before PHP compiles the owned generated probe.
+     *
+     * @return void
+     */
+    public function testNativeProbeRejectsCompilationDiagnostics()
+    {
+        $result = Process::probe('switch (1) { case 1: continue; } echo "continued";',
+            array('harness_only' => true));
+        $this->assertSame(255, $result['status']);
+        $this->assertStringNotContainsString('continued', $result['stdout']);
+        $this->assertStringContainsString('continue', $result['stdout'] . $result['stderr']);
+        $this->assertStringContainsString('ErrorException', $result['stdout'] . $result['stderr']);
+    }
+
+    /**
+     * Keep nested generated diagnostics strict after support installs its handler.
+     *
+     * @return void
+     */
+    public function testNativeProbeRejectsSuppressedNestedDiagnostics()
+    {
+        $code = <<<'CODE'
+$file = sys_get_temp_dir() . '/nested.php';
+file_put_contents($file, '<?php @trigger_error("nested-generated-sentinel", E_USER_DEPRECATED); echo "continued";');
+require $file;
+CODE;
+        $result = Process::probe($code, array('harness_only' => true));
+        $this->assertSame(255, $result['status']);
+        $this->assertStringNotContainsString('continued', $result['stdout']);
+        $this->assertStringContainsString('nested-generated-sentinel', $result['stdout'] . $result['stderr']);
+        $this->assertStringContainsString('ErrorException', $result['stdout'] . $result['stderr']);
+    }
+
+    /**
      * Preserve a nonzero ordinary exit after polling and reaping the child.
      *
      * @return void

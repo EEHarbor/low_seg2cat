@@ -11,8 +11,12 @@ fi
 report_directory="$(mktemp -d "${TMPDIR:-/tmp}/low-seg2cat-junit.XXXXXXXX")"
 trap 'rm -rf "$report_directory"' EXIT
 "$php_binary" -d error_reporting=-1 -d display_errors=stderr "$script_dir/runner.php" prepare "$report_directory/arguments.json" "$@"
+forwarded=()
+while IFS= read -r -d '' argument; do
+    forwarded+=("$argument")
+done < "$report_directory/arguments.json.nul"
 set +e
-"$php_binary" -d error_reporting=-1 -d display_errors=1 "$script_dir/phpunit-9.phar" "$@" --log-junit "$report_directory/junit.xml"
+"$php_binary" -d error_reporting=-1 -d display_errors=1 -d "auto_prepend_file=$script_dir/../Support/diagnostics.php" "$script_dir/phpunit-9.phar" "${forwarded[@]}"
 suite_status=$?
 set -e
 "$php_binary" -d error_reporting=-1 -d display_errors=stderr "$script_dir/runner.php" validate "$report_directory/arguments.json" "$report_directory/junit.xml"

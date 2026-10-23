@@ -1,5 +1,6 @@
 <?php
 
+require_once dirname(__DIR__) . '/Support/diagnostics.php';
 if (!extension_loaded('xdebug') || !function_exists('xdebug_start_code_coverage')) {
     fwrite(STDERR, "Branch-capable Xdebug is required.\n");
     exit(2);
@@ -18,11 +19,11 @@ if (hash_file('sha256', $phpunit) !== '6b5235f282c6ccab3674ac27c5b1ddbd1da838e74
 require $phpunit;
 require $root . '/tests/.phpunit/runner.php';
 $junit = $destination . '.junit.xml';
-$arguments = low_seg2cat_runner_arguments($_SERVER['argv']);
+$arguments = low_seg2cat_runner_arguments($_SERVER['argv'], $junit);
+$_SERVER['argv'] = array_merge(array($_SERVER['argv'][0]), $arguments['forwarded']);
 if ($arguments['inspection']) {
     exit(\PHPUnit\TextUI\Command::main(false));
 }
-$_SERVER['argv'] = array_merge($_SERVER['argv'], array('--log-junit', $junit));
 $source = $root . '/low_seg2cat/';
 $childDirectory = $destination . '.children';
 if (!mkdir($childDirectory, 0700)) {

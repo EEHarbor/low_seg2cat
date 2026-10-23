@@ -8,6 +8,19 @@ use Tests\Support\QueryResult;
 class DatabaseFixtureTest extends TestCase
 {
     /**
+     * Match EE's string helper without collapsing a protocol-relative authority.
+     *
+     * @return void
+     */
+    public function testSlashHelperPreservesUrlAuthorities()
+    {
+        $this->assertSame('https://example.test/path', reduce_double_slashes('https://example.test//path'));
+        $this->assertSame('relative/path', reduce_double_slashes('relative///path'));
+        $this->assertSame('//cdn.example.test/path', reduce_double_slashes('//cdn.example.test//path'));
+        $this->assertSame('', reduce_double_slashes(''));
+    }
+
+    /**
      * Return fresh service builders and EE's false fallback for a null config item.
      *
      * @return void

@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__DIR__) . '/Support/diagnostics.php';
+
 /**
  * Reject missing, malformed, inconsistent or empty fresh PHPUnit reports.
  *

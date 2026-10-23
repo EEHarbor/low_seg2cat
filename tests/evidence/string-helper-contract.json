@@ -1,0 +1,31 @@
+{
+  "source": "/Users/tomjaeger/Sites/ee_repo_2/system/ee/legacy/helpers/string_helper.php",
+  "source_sha256": "d19a2001b006dcf96c7d2a1b1a0aad971e750a86637126cc3fc7e6a8630312ef",
+  "ee_commit": "ad6358a2b67db30cd2286fa39711caa975aceee1",
+  "results": [
+    {
+      "runtime": "74",
+      "command": [
+        "/Users/tomjaeger/Library/Application Support/Herd/bin/php74",
+        "-d",
+        "error_reporting=-1"
+      ],
+      "stdin": "<?php error_reporting(E_ALL); set_error_handler(function($n,$m,$f,$l){throw new ErrorException($m,0,$n,$f,$l);}); define(\"BASEPATH\",true); require '/Users/tomjaeger/Sites/ee_repo_2/system/ee/legacy/helpers/string_helper.php'; echo json_encode(array_map(\"reduce_double_slashes\", array(\"https://example.test//path\",\"relative///path\",\"//cdn.example.test//path\",\"\")));",
+      "stdout": "[\"https:\\/\\/example.test\\/path\",\"relative\\/path\",\"\\/\\/cdn.example.test\\/path\",\"\"]",
+      "stderr": "",
+      "status": 0
+    },
+    {
+      "runtime": "85",
+      "command": [
+        "/Users/tomjaeger/Library/Application Support/Herd/bin/php85",
+        "-d",
+        "error_reporting=-1"
+      ],
+      "stdin": "<?php error_reporting(E_ALL); set_error_handler(function($n,$m,$f,$l){throw new ErrorException($m,0,$n,$f,$l);}); define(\"BASEPATH\",true); require '/Users/tomjaeger/Sites/ee_repo_2/system/ee/legacy/helpers/string_helper.php'; echo json_encode(array_map(\"reduce_double_slashes\", array(\"https://example.test//path\",\"relative///path\",\"//cdn.example.test//path\",\"\")));",
+      "stdout": "[\"https:\\/\\/example.test\\/path\",\"relative\\/path\",\"\\/\\/cdn.example.test\\/path\",\"\"]",
+      "stderr": "",
+      "status": 0
+    }
+  ]
+}

@@ -1,27 +1,60 @@
 <?php
 
+require_once dirname(__DIR__) . '/Support/diagnostics.php';
 require_once __DIR__ . '/check-junit.php';
 
 /**
  * Interpret options with the pinned runner's own parser, including option values.
  *
  * @param array $arguments
+ * @param string $junit Fresh owned report path.
  * @return array
- * @throws \PHPUnit\TextUI\CliArguments\Exception
+ * @throws \Throwable
  */
-function low_seg2cat_runner_arguments(array $arguments)
+function low_seg2cat_runner_arguments(array $arguments, $junit)
 {
     $parsed = (new \PHPUnit\TextUI\CliArguments\Builder())->fromParameters($arguments, array());
     $inspection = false;
     foreach (array('Help', 'Version', 'AtLeastVersion', 'CheckVersion', 'ListGroups', 'ListSuites', 'ListTests', 'ListTestsXml') as $option) {
         $has = 'has' . $option;
         $get = lcfirst($option);
-        if ($parsed->$has() && $parsed->$get()) {
+        if (!$parsed->$has()) {
+            continue;
+        }
+        $value = $parsed->$get();
+        if ($value === true || (is_string($value) && $value !== '')) {
             $inspection = true;
         }
     }
+    // The checksum pin also fixes the parser's option definitions.
+    $definitions = new ReflectionClass(\PHPUnit\TextUI\CliArguments\Builder::class);
+    $options = (new \PHPUnitPHAR\SebastianBergmann\CliParser\Parser())->parse($arguments,
+        $definitions->getConstant('SHORT_OPTIONS'), $definitions->getConstant('LONG_OPTIONS'));
+    $forwarded = array();
+    foreach ($options[0] as $option) {
+        if ($option[0] === '--log-junit') {
+            continue;
+        }
+        $name = strpos($option[0], '--') === 0 ? $option[0] : '-' . $option[0];
+        if ($option[1] === null) {
+            $forwarded[] = $name;
+            continue;
+        }
+        if (strpos($name, '--') === 0) {
+            $forwarded[] = $name . '=' . $option[1];
+            continue;
+        }
+        $forwarded[] = $name;
+        $forwarded[] = $option[1];
+    }
+    $forwarded[] = '--log-junit=' . $junit;
+    if ($options[1]) {
+        $forwarded[] = '--';
+        $forwarded = array_merge($forwarded, $options[1]);
+    }
     return array('inspection' => $inspection,
-        'caller_junit' => $parsed->hasJunitLogfile() ? $parsed->junitLogfile() : null);
+        'caller_junit' => $parsed->hasJunitLogfile() ? $parsed->junitLogfile() : null,
+        'forwarded' => $forwarded);
 }
 
 /**
@@ -58,7 +91,12 @@ if (realpath(isset($_SERVER['SCRIPT_FILENAME']) ? $_SERVER['SCRIPT_FILENAME'] : 
                 throw new RuntimeException('Pinned PHPUnit 9.6.38 checksum mismatch.');
             }
             require $phpunit;
-            $arguments = low_seg2cat_runner_arguments(array_merge(array($phpunit), array_slice($argv, 3)));
+            $arguments = low_seg2cat_runner_arguments(array_merge(array($phpunit), array_slice($argv, 3)),
+                dirname($argv[2]) . '/junit.xml');
+            if (file_put_contents($argv[2] . '.nul', implode("\0", $arguments['forwarded']) . "\0") === false) {
+                throw new RuntimeException('Could not record fresh runner options.');
+            }
+            unset($arguments['forwarded']);
             if (file_put_contents($argv[2], json_encode($arguments)) === false) {
                 throw new RuntimeException('Could not record fresh runner arguments.');
             }

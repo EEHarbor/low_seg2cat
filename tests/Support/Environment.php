@@ -100,21 +100,13 @@ namespace Tests\Support {
         }
 
         /**
-         * Convert source diagnostics, including @-hidden diagnostics, to errors.
+         * Reject every diagnostic, including @-hidden nested/generated diagnostics.
          *
-         * @param array $additionalFiles Exact owned generated or measurement files.
          * @return void
          */
-        public static function installDiagnostics(array $additionalFiles = array())
+        public static function installDiagnostics()
         {
-            set_error_handler(function ($severity, $message, $file, $line) use ($additionalFiles) {
-                $source = LOW_SEG2CAT_ROOT . '/low_seg2cat/';
-                if (in_array($file, $additionalFiles, true) || $file === 'Command line code' || strpos($file, $source) === 0 || strpos($file, 'phar://' . $source) === 0 ||
-                    strpos($file, LOW_SEG2CAT_ROOT . '/tests/') === 0) {
-                    throw new \ErrorException($message, 0, $severity, $file, $line);
-                }
-                return false;
-            });
+            require __DIR__ . '/diagnostics.php';
         }
 
         /**
@@ -979,7 +971,7 @@ namespace {
      */
     function reduce_double_slashes($string)
     {
-        return preg_replace('#(^|[^:])//+#', '\\1/', $string);
+        return preg_replace('#([^/:])/+#', '\\1/', $string);
     }
 
     /**

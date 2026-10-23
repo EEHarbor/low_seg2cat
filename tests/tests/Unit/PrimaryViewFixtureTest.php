@@ -25,7 +25,11 @@ class PrimaryViewFixtureTest extends TestCase
     public static function rejectedPreparations()
     {
         return array('early zero exit' => array('exit(0);', 'Primary view did not complete.'),
-            'suppressed generated diagnostic' => array('@trigger_error("primary-generated-sentinel", E_USER_DEPRECATED);', 'primary-generated-sentinel'));
+            'suppressed generated diagnostic' => array('@trigger_error("primary-generated-sentinel", E_USER_DEPRECATED);', 'primary-generated-sentinel'),
+            'generated compile diagnostic' => array('switch (1) { case 1: continue; }', 'continue'),
+            'nested generated diagnostic' => array('file_put_contents(sys_get_temp_dir() . "/nested.php", ' .
+                '\'<?php @trigger_error("primary-nested-sentinel", E_USER_DEPRECATED);\'); ' .
+                'require sys_get_temp_dir() . "/nested.php";', 'primary-nested-sentinel'));
     }
 
     /**

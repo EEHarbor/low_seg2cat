@@ -42,20 +42,21 @@ class PrimaryView
                 throw new \RuntimeException('Primary measurement bytes differ from shipped source.');
             }
             $prepend = $temporary . '/prepend.php';
+            $gate = $temporary . '/gate.php';
             $append = $temporary . '/append.php';
             $completed = $temporary . '/completed';
             $provenance = array('inventory_name' => $unit, 'original_source' => $original,
                 'original_sha256' => $sourceHash, 'measured_source' => $measured, 'measurement_sha256' => $sourceHash);
             $prefix = '<?php require ' . var_export(__DIR__ . '/native.php', true) . '; ' .
                 'ini_set("display_errors", "stderr"); ' .
-                '\Tests\Support\Environment::installDiagnostics(' . var_export(array($prepend, $append, $measured), true) . '); ' .
+                '\Tests\Support\Environment::installDiagnostics(); ' .
                 '$GLOBALS["low_seg2cat_app"] = new \Tests\Support\Environment(); ' .
                 '$GLOBALS["low_seg2cat_app"]->services["CP/Alert"] = new \Tests\Support\CallbackService(array(' .
                 '"getAllInlines" => function () { return "<aside>alerts</aside>"; })); ';
             $coverageDirectory = getenv('LOW_SEG2CAT_CHILD_COVERAGE_DIR');
             $extension = getenv('LOW_SEG2CAT_XDEBUG_EXTENSION');
             $command = array(PHP_BINARY, '-d', 'error_reporting=-1', '-d', 'display_errors=stderr', '-d', 'log_errors=0',
-                '-d', 'sys_temp_dir=' . $temporary, '-d', 'auto_prepend_file=' . $prepend, '-d', 'auto_append_file=' . $append);
+                '-d', 'sys_temp_dir=' . $temporary, '-d', 'auto_prepend_file=' . $gate, '-d', 'auto_append_file=' . $append);
             if ($coverageDirectory) {
                 if (!$extension || !is_file($extension) || !is_dir($coverageDirectory)) {
                     throw new \RuntimeException('Primary coverage needs an explicit matching Xdebug extension and owned report directory.');
@@ -70,7 +71,9 @@ class PrimaryView
                 $prefix .= self::collector($measured, $completed, $destination, $metadata);
             }
             $prefix .= 'extract(' . var_export($variables, true) . '); ' . $prepare;
-            if (file_put_contents($prepend, $prefix) === false ||
+            if (file_put_contents($gate, '<?php require ' . var_export(__DIR__ . '/diagnostics.php', true) .
+                '; require ' . var_export($prepend, true) . ';') === false ||
+                file_put_contents($prepend, $prefix) === false ||
                 file_put_contents($append, '<?php file_put_contents(' . var_export($completed, true) . ', "complete");') === false) {
                 throw new \RuntimeException('Cannot prepare primary-view bootstrap files.');
             }

@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__DIR__) . '/Support/diagnostics.php';
+
 /**
  * Inventory named methods and closures without executing a source unit.
  *

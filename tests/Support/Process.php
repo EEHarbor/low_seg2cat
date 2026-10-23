@@ -23,13 +23,21 @@ class Process
         if (!mkdir($temporary, 0700)) {
             throw new \RuntimeException('Cannot create isolated process directory.');
         }
+        $canonical = realpath($temporary);
+        if ($canonical === false) {
+            rmdir($temporary);
+            throw new \RuntimeException('Cannot resolve the owned native probe directory.');
+        }
+        $temporary = $canonical;
+        $probe = $temporary . '/probe.php';
         $bootstrap = var_export(__DIR__ . '/native.php', true);
         $prefix = 'require ' . $bootstrap . '; \Tests\Support\Environment::installDiagnostics(); ' .
             '$GLOBALS["low_seg2cat_app"] = new \Tests\Support\Environment(); ';
         if (empty($context['harness_only'])) {
             $prefix .= 'require LOW_SEG2CAT_ROOT . "/low_seg2cat/autoload.php"; ';
         }
-        $command = array(PHP_BINARY, '-d', 'error_reporting=-1', '-d', 'display_errors=stderr', '-d', 'sys_temp_dir=' . $temporary);
+        $command = array(PHP_BINARY, '-d', 'error_reporting=-1', '-d', 'display_errors=stderr',
+            '-d', 'auto_prepend_file=' . __DIR__ . '/diagnostics.php', '-d', 'sys_temp_dir=' . $temporary);
         if (!empty($context['opcache_permission'])) {
             $command = array_merge($command, array('-d', 'opcache.enable_cli=1', '-d', 'opcache.validate_permission=1'));
         }
@@ -78,8 +86,11 @@ class Process
             if (!empty($context['fieldtype_layout'])) {
                 $environment = array_merge($environment, self::fieldtypeEnvironment($context['fieldtype_layout'], $temporary));
             }
+            if (file_put_contents($probe, '<?php ' . $prefix . $code) === false) {
+                throw new \RuntimeException('Cannot prepare the owned native probe.');
+            }
             $timeout = isset($context['timeout_seconds']) ? $context['timeout_seconds'] : 15.0;
-            return self::execute(array_merge($command, array('-r', $prefix . $code)), $environment, $timeout);
+            return self::execute(array_merge($command, array($probe)), $environment, $timeout);
         } finally {
             self::removeDirectory($temporary);
         }
