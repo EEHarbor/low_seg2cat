@@ -151,6 +151,24 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"http action prefix\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"http within action\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"uppercase external scheme\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\NativeStubHelperTest",
       "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
       "kind": "failure",
@@ -389,6 +407,24 @@
     {
       "class_name": "Tests\\NativeModuleNavigationTest",
       "case": "testToolbarPreservesZeroStringTitle",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"http action prefix\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"http within action\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"uppercase external scheme\"",
       "kind": "failure",
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
@@ -653,6 +689,24 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"http action prefix\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"http within action\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"uppercase external scheme\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\NativeStubHelperTest",
       "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
       "kind": "failure",
@@ -909,6 +963,24 @@
     {
       "class_name": "Tests\\NativeModuleNavigationTest",
       "case": "testToolbarPreservesZeroStringTitle",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"http action prefix\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"http within action\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"uppercase external scheme\"",
       "kind": "failure",
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
@@ -1173,6 +1245,24 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"http action prefix\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"http within action\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"uppercase external scheme\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\NativeStubHelperTest",
       "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
       "kind": "failure",
@@ -1433,6 +1523,24 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"http action prefix\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"http within action\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"uppercase external scheme\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\NativeStubHelperTest",
       "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
       "kind": "failure",
@@ -1689,6 +1797,24 @@
     {
       "class_name": "Tests\\NativeModuleNavigationTest",
       "case": "testToolbarPreservesZeroStringTitle",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"http action prefix\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"http within action\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testModuleUrlActionNamesAndExternalSchemes with data set \"uppercase external scheme\"",
       "kind": "failure",
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },

@@ -1,7 +1,7 @@
 [
   {
     "label": "main",
-    "raw_sha256": "1418c52aeedc3ce8d1a274dbd9a63f1a7e4eef9487c7e1fdbf0603390071710e",
+    "raw_sha256": "6fc1c3fd2c4b5efd94c5d16acaa1bf476a7d55f18a1818ff71139850c9198230",
     "compressed_file": "main.json.gz",
     "metadata": {
       "php": "8.2.30",
@@ -9,11 +9,13 @@
       "xdebug": "3.5.3",
       "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
       "flags": "UNUSED|DEAD_CODE|BRANCH_CHECK",
-      "children": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/coverage.4QO9vT/raw.json.children"
+      "children": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/coverage.GB5Nwg/raw.json.children"
     },
     "scope": "complete configured suite",
-    "selected_case_count": 272,
-    "junit_sha256": "b87c7a16df967e48ab2f4c8e136827ef2cb7b8f422c2e8b81f53bd2c95ac5bc0"
+    "selected_case_count": 294,
+    "junit_sha256": "39357d2f749b5f36f38325b020ba432fd7ec401758e479966446322cdbbc72af",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-1",
@@ -35,7 +37,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-2",
@@ -57,7 +61,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-3",
@@ -79,7 +85,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-4",
@@ -101,7 +109,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-5",
@@ -123,7 +133,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-6",
@@ -145,7 +157,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-7",
@@ -167,7 +181,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-8",
@@ -189,7 +205,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-9",
@@ -211,7 +229,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-10",
@@ -233,7 +253,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-11",
@@ -255,7 +277,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-12",
@@ -277,7 +301,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-13",
@@ -299,7 +325,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-14",
@@ -321,7 +349,9 @@
       "fieldtype_trait_sha256": "20431c4d7373c059f5531498c66c94354745d16bc9cfbe2aafd01cec7cde87f6",
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-15",
@@ -343,7 +373,9 @@
       "fieldtype_trait_sha256": "20431c4d7373c059f5531498c66c94354745d16bc9cfbe2aafd01cec7cde87f6",
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-16",
@@ -365,7 +397,9 @@
       "fieldtype_trait_sha256": "20431c4d7373c059f5531498c66c94354745d16bc9cfbe2aafd01cec7cde87f6",
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-17",
@@ -387,7 +421,9 @@
       "fieldtype_trait_sha256": "20431c4d7373c059f5531498c66c94354745d16bc9cfbe2aafd01cec7cde87f6",
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-18",
@@ -409,7 +445,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-19",
@@ -431,7 +469,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-20",
@@ -453,7 +493,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-21",
@@ -475,7 +517,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-22",
@@ -497,7 +541,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-23",
@@ -519,7 +565,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-24",
@@ -541,7 +589,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-25",
@@ -563,7 +613,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-26",
@@ -585,7 +637,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-27",
@@ -607,7 +661,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-28",
@@ -629,7 +685,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-29",
@@ -651,7 +709,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-30",
@@ -673,7 +733,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-31",
@@ -695,7 +757,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-32",
@@ -717,7 +781,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-33",
@@ -739,7 +805,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-34",
@@ -761,7 +829,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-35",
@@ -783,7 +853,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-36",
@@ -805,7 +877,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-37",
@@ -827,7 +901,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-38",
@@ -849,7 +925,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-39",
@@ -871,7 +949,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-40",
@@ -893,7 +973,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-41",
@@ -915,7 +997,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-42",
@@ -937,7 +1021,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-43",
@@ -959,7 +1045,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-44",
@@ -981,7 +1069,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-45",
@@ -1003,7 +1093,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-46",
@@ -1025,7 +1117,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-47",
@@ -1047,7 +1141,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-48",
@@ -1090,7 +1186,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-49",
@@ -1133,7 +1231,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-50",
@@ -1176,7 +1276,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-51",
@@ -1219,7 +1321,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-52",
@@ -1241,7 +1345,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-53",
@@ -1284,7 +1390,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-54",
@@ -1327,7 +1435,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-55",
@@ -1370,7 +1480,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-56",
@@ -1413,7 +1525,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-57",
@@ -1456,7 +1570,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-58",
@@ -1499,7 +1615,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-59",
@@ -1521,7 +1639,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-60",
@@ -1564,7 +1684,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-61",
@@ -1607,7 +1729,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-62",
@@ -1650,7 +1774,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-63",
@@ -1672,7 +1798,9 @@
       "fieldtype_trait_sha256": null,
       "module_nav_provenance": null
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-64",
@@ -1715,7 +1843,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-65",
@@ -1758,7 +1888,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-66",
@@ -1784,7 +1916,9 @@
       "request": "CP",
       "raw_sha256": "c40b590c7ffeb702e598d363006da6ce0a1c40e9b0d6187a776b74f4e4ee70e6"
     },
-    "scope": "one fresh primary-script source probe"
+    "scope": "one fresh primary-script source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-67",
@@ -1827,7 +1961,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-68",
@@ -1853,7 +1989,9 @@
       "request": "CP",
       "raw_sha256": "c40b590c7ffeb702e598d363006da6ce0a1c40e9b0d6187a776b74f4e4ee70e6"
     },
-    "scope": "one fresh primary-script source probe"
+    "scope": "one fresh primary-script source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-69",
@@ -1879,7 +2017,9 @@
       "request": "CP",
       "raw_sha256": "b602d8f49858ef58911e1c69a1c0bc81ed933cf8d489b78179d5bd1c805e2535"
     },
-    "scope": "one fresh primary-script source probe"
+    "scope": "one fresh primary-script source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-70",
@@ -1905,11 +2045,13 @@
       "request": "CP",
       "raw_sha256": "7c11cd7253a80bcc442a60c6410cd25dbbd113cc549177ab48547e3fe1b8020e"
     },
-    "scope": "one fresh primary-script source probe"
+    "scope": "one fresh primary-script source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-71",
-    "raw_sha256": "945d2027234f26076b103c194425b3d38f24334f2a9da3599aa83c52eeba7bf4",
+    "raw_sha256": "db6980a64d1c5d55579a2437389ed86ebef3f1dbc4872291e157b8823d7218e4",
     "compressed_file": "child-71.json.gz",
     "metadata": {
       "probe_sha256": "538ef4fecafe155ed98414606537c18fabff70520f2ee4ef316299c65b220608",
@@ -1922,16 +2064,18 @@
         "inventory_name": "low_seg2cat/low_seg2cat.phar::Views/license.php",
         "original_source": "phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/Views/license.php",
         "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
-        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-c5b287e1d03d24ca/license.php",
+        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-d75bae7802bdb933/license.php",
         "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
       },
       "php": "8.2.30",
       "xdebug": "3.5.3",
       "application_version": "7.5.0",
       "request": "CP",
-      "raw_sha256": "945d2027234f26076b103c194425b3d38f24334f2a9da3599aa83c52eeba7bf4"
+      "raw_sha256": "db6980a64d1c5d55579a2437389ed86ebef3f1dbc4872291e157b8823d7218e4"
     },
-    "scope": "one fresh primary-script source probe"
+    "scope": "one fresh primary-script source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-72",
@@ -1974,7 +2118,9 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-73",
@@ -2000,11 +2146,13 @@
       "request": "CP",
       "raw_sha256": "c40b590c7ffeb702e598d363006da6ce0a1c40e9b0d6187a776b74f4e4ee70e6"
     },
-    "scope": "one fresh primary-script source probe"
+    "scope": "one fresh primary-script source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-74",
-    "raw_sha256": "0ff8200d818f4304c2cc1caee96ccdd1cbbcb98691785f3c2b35a5169b466063",
+    "raw_sha256": "fa4e2bed90d98c091cd75ec8c89286a061d1498c24c844a2b61a8774bbd6230b",
     "compressed_file": "child-74.json.gz",
     "metadata": {
       "probe_sha256": "b9e823c0d9518d108c96a2ecdd106c93161b7a3273030db5e244a20fa0636602",
@@ -2017,20 +2165,22 @@
         "inventory_name": "low_seg2cat/low_seg2cat.phar::Views/license.php",
         "original_source": "phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/Views/license.php",
         "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
-        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-324e28bd3553cf27/license.php",
+        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-37ac4e0ac21c2e99/license.php",
         "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
       },
       "php": "8.2.30",
       "xdebug": "3.5.3",
       "application_version": "7.5.0",
       "request": "CP",
-      "raw_sha256": "0ff8200d818f4304c2cc1caee96ccdd1cbbcb98691785f3c2b35a5169b466063"
+      "raw_sha256": "fa4e2bed90d98c091cd75ec8c89286a061d1498c24c844a2b61a8774bbd6230b"
     },
-    "scope": "one fresh primary-script source probe"
+    "scope": "one fresh primary-script source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-75",
-    "raw_sha256": "23c666c53b6dddd5aaac3468f51129907ee9cf63f18d1b773a8acfcce1724c77",
+    "raw_sha256": "8546d095b811b2ef63729844108a7f9a1a56af0785461efc48b832edd8da78cb",
     "compressed_file": "child-75.json.gz",
     "metadata": {
       "probe_sha256": "be8da05afa43f0da1257d4b02d4780957c4023c76eabcb0f193a0e09e1bc6065",
@@ -2043,20 +2193,22 @@
         "inventory_name": "low_seg2cat/low_seg2cat.phar::Views/license.php",
         "original_source": "phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/Views/license.php",
         "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
-        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-3a995d5902f84ee0/license.php",
+        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-18b022269224773c/license.php",
         "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
       },
       "php": "8.2.30",
       "xdebug": "3.5.3",
       "application_version": "7.5.0",
       "request": "CP",
-      "raw_sha256": "23c666c53b6dddd5aaac3468f51129907ee9cf63f18d1b773a8acfcce1724c77"
+      "raw_sha256": "8546d095b811b2ef63729844108a7f9a1a56af0785461efc48b832edd8da78cb"
     },
-    "scope": "one fresh primary-script source probe"
+    "scope": "one fresh primary-script source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-76",
-    "raw_sha256": "a028d1dadaedf00a23d95ed37bbe5e92eaccd553e9c245d6cab16e7dd56295d7",
+    "raw_sha256": "84450683e02daa5006cdfad45985a6c43f9b5b79ee218cb1d195b2c531fa4044",
     "compressed_file": "child-76.json.gz",
     "metadata": {
       "probe_sha256": "bf861138bb415b36c09aaa37737ae3151cd6324165a1cfc1b5bd0b6911c08df9",
@@ -2069,16 +2221,18 @@
         "inventory_name": "low_seg2cat/low_seg2cat.phar::Views/license.php",
         "original_source": "phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/Views/license.php",
         "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
-        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-ff696b35c263c170/license.php",
+        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-575237cfc632dcc7/license.php",
         "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
       },
       "php": "8.2.30",
       "xdebug": "3.5.3",
       "application_version": "7.5.0",
       "request": "CP",
-      "raw_sha256": "a028d1dadaedf00a23d95ed37bbe5e92eaccd553e9c245d6cab16e7dd56295d7"
+      "raw_sha256": "84450683e02daa5006cdfad45985a6c43f9b5b79ee218cb1d195b2c531fa4044"
     },
-    "scope": "one fresh primary-script source probe"
+    "scope": "one fresh primary-script source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-77",
@@ -2121,11 +2275,13 @@
         }
       }
     },
-    "scope": "one fresh native source probe"
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   },
   {
     "label": "child-78",
-    "raw_sha256": "a18d745794f73cf34810c1ef4a24b9c0330982674493a95b29157729e1761a34",
+    "raw_sha256": "1677622b5d4d377b7171d2997c7458e964b8fcef750d17980c7e9d782fed6bec",
     "compressed_file": "child-78.json.gz",
     "metadata": {
       "probe_sha256": "dcba37f49bca8ecbe0fa2f3db11f15b9e794b90cf8f5869996d6b83e20b1527e",
@@ -2138,15 +2294,200 @@
         "inventory_name": "low_seg2cat/low_seg2cat.phar::Views/license.php",
         "original_source": "phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/Views/license.php",
         "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
-        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-9388514649faeae5/license.php",
+        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-dd35845fcd0cdb94/license.php",
         "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
       },
       "php": "8.2.30",
       "xdebug": "3.5.3",
       "application_version": "7.5.0",
       "request": "CP",
-      "raw_sha256": "a18d745794f73cf34810c1ef4a24b9c0330982674493a95b29157729e1761a34"
+      "raw_sha256": "1677622b5d4d377b7171d2997c7458e964b8fcef750d17980c7e9d782fed6bec"
     },
-    "scope": "one fresh primary-script source probe"
+    "scope": "one fresh primary-script source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
+  },
+  {
+    "label": "child-79",
+    "raw_sha256": "b8fc27970a2e917025bde0fa4af53d9e694277543ad251f37afd16cc2fa72e87",
+    "compressed_file": "child-79.json.gz",
+    "metadata": {
+      "probe_sha256": "eb62949f8107fcf76c7f71fa395cb006c6d12ffb61d5f4add75f516ac2c3ed0b",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "2.11.0",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "module_nav_layout": null,
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null,
+      "module_nav_provenance": null
+    },
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
+  },
+  {
+    "label": "child-80",
+    "raw_sha256": "4086f4ff0a3a02d2509d03f07b79a90a36ce7609a2257f3bcb56f10e84bf6e71",
+    "compressed_file": "child-80.json.gz",
+    "metadata": {
+      "probe_sha256": "eb62949f8107fcf76c7f71fa395cb006c6d12ffb61d5f4add75f516ac2c3ed0b",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "2.5.5",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "module_nav_layout": null,
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null,
+      "module_nav_provenance": null
+    },
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
+  },
+  {
+    "label": "child-81",
+    "raw_sha256": "482a49340ddc390ec085a44d72da1302faabfc02872bc71bc241aa1ec6994b06",
+    "compressed_file": "child-81.json.gz",
+    "metadata": {
+      "probe_sha256": "8fb1f8c0ae04c58970637c9fc2eb258c0475fca49efa07cb1eb4a998afd07e03",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "module_nav_layout": "defaults",
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null,
+      "module_nav_provenance": {
+        "low_seg2cat.phar": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar",
+          "sha256": "b340d9b7922acf926a0ddb58e72be07953c5235519b3df90bb65fb170b81699d"
+        },
+        "addon.setup.php": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/addon.setup.php",
+          "sha256": "c6d4ec0f4035f3a2526695a50d5200909a6f7a8ebc5a42c48ecb18b736493819"
+        },
+        "addon.json": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/addon.json",
+          "sha256": "7aa535537aa560016de590377b57d9c3fed52dfdea1834a841aafaad9c398d36"
+        },
+        "autoload.php": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/autoload.php",
+          "sha256": "b3c701a92a9a1e7865b107b7c693be1d9e61ececacdb5037084d30c13ed3a7d9"
+        },
+        "module_fixture": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/fixtures/module-nav/defaults.php",
+          "sha256": "1bb851a8d861d18f0d1c3fcf342fac02af8fff729f67aeaaa2064a69a9246e55"
+        }
+      }
+    },
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
+  },
+  {
+    "label": "child-82",
+    "raw_sha256": "18d96684aa99d2db7723dc0b32218c1c861a9ffef9dd2faf457b6117da8875ab",
+    "compressed_file": "child-82.json.gz",
+    "metadata": {
+      "probe_sha256": "d4ddb8183ae2c67e1ed01542fa6a973fd30afaf408e5a611c2aa7a6592a5d0bd",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "module_nav_layout": "defaults",
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null,
+      "module_nav_provenance": {
+        "low_seg2cat.phar": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar",
+          "sha256": "b340d9b7922acf926a0ddb58e72be07953c5235519b3df90bb65fb170b81699d"
+        },
+        "addon.setup.php": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/addon.setup.php",
+          "sha256": "c6d4ec0f4035f3a2526695a50d5200909a6f7a8ebc5a42c48ecb18b736493819"
+        },
+        "addon.json": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/addon.json",
+          "sha256": "7aa535537aa560016de590377b57d9c3fed52dfdea1834a841aafaad9c398d36"
+        },
+        "autoload.php": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/autoload.php",
+          "sha256": "b3c701a92a9a1e7865b107b7c693be1d9e61ececacdb5037084d30c13ed3a7d9"
+        },
+        "module_fixture": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/fixtures/module-nav/defaults.php",
+          "sha256": "1bb851a8d861d18f0d1c3fcf342fac02af8fff729f67aeaaa2064a69a9246e55"
+        }
+      }
+    },
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
+  },
+  {
+    "label": "child-83",
+    "raw_sha256": "482a49340ddc390ec085a44d72da1302faabfc02872bc71bc241aa1ec6994b06",
+    "compressed_file": "child-83.json.gz",
+    "metadata": {
+      "probe_sha256": "f621157d1aebc46281673fd7dd00290721e8733eb61a20fd693d3a7ab34c2ae5",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "module_nav_layout": "defaults",
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null,
+      "module_nav_provenance": {
+        "low_seg2cat.phar": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar",
+          "sha256": "b340d9b7922acf926a0ddb58e72be07953c5235519b3df90bb65fb170b81699d"
+        },
+        "addon.setup.php": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/addon.setup.php",
+          "sha256": "c6d4ec0f4035f3a2526695a50d5200909a6f7a8ebc5a42c48ecb18b736493819"
+        },
+        "addon.json": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/addon.json",
+          "sha256": "7aa535537aa560016de590377b57d9c3fed52dfdea1834a841aafaad9c398d36"
+        },
+        "autoload.php": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/autoload.php",
+          "sha256": "b3c701a92a9a1e7865b107b7c693be1d9e61ececacdb5037084d30c13ed3a7d9"
+        },
+        "module_fixture": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/fixtures/module-nav/defaults.php",
+          "sha256": "1bb851a8d861d18f0d1c3fcf342fac02af8fff729f67aeaaa2064a69a9246e55"
+        }
+      }
+    },
+    "scope": "one fresh native source probe",
+    "function_paths": "omitted_by_collector",
+    "path_coverage_percent": null
   }
 ]

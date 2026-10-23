@@ -7,18 +7,18 @@
       "-c",
       "/Users/tomjaeger/Sites/add-ons/low_seg2cat/phpunit.xml",
       "--log-junit",
-      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-5lxeon1r/php74.xml"
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-9x2qac65/php74.xml"
     ],
     "risky": 0,
     "incomplete": 0,
     "name": "",
-    "tests": "272",
-    "assertions": "1463",
+    "tests": "294",
+    "assertions": "1553",
     "errors": "16",
     "warnings": "0",
-    "failures": "22",
+    "failures": "25",
     "skipped": "0",
-    "time": "11.849411"
+    "time": "16.032999"
   },
   {
     "version": "8.0.30",
@@ -28,18 +28,18 @@
       "-c",
       "/Users/tomjaeger/Sites/add-ons/low_seg2cat/phpunit.xml",
       "--log-junit",
-      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-5lxeon1r/php80.xml"
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-9x2qac65/php80.xml"
     ],
     "risky": 0,
     "incomplete": 0,
     "name": "",
-    "tests": "272",
-    "assertions": "1389",
+    "tests": "294",
+    "assertions": "1479",
     "errors": "16",
     "warnings": "0",
-    "failures": "24",
+    "failures": "27",
     "skipped": "0",
-    "time": "11.814885"
+    "time": "15.440162"
   },
   {
     "version": "8.1.33",
@@ -49,18 +49,18 @@
       "-c",
       "/Users/tomjaeger/Sites/add-ons/low_seg2cat/phpunit.xml",
       "--log-junit",
-      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-5lxeon1r/php81.xml"
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-9x2qac65/php81.xml"
     ],
     "risky": 0,
     "incomplete": 0,
     "name": "",
-    "tests": "272",
-    "assertions": "1386",
+    "tests": "294",
+    "assertions": "1476",
     "errors": "19",
     "warnings": "0",
-    "failures": "24",
+    "failures": "27",
     "skipped": "0",
-    "time": "12.144470"
+    "time": "18.684366"
   },
   {
     "version": "8.2.30",
@@ -70,18 +70,18 @@
       "-c",
       "/Users/tomjaeger/Sites/add-ons/low_seg2cat/phpunit.xml",
       "--log-junit",
-      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-5lxeon1r/php82.xml"
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-9x2qac65/php82.xml"
     ],
     "risky": 0,
     "incomplete": 0,
     "name": "",
-    "tests": "272",
-    "assertions": "1386",
+    "tests": "294",
+    "assertions": "1476",
     "errors": "19",
     "warnings": "0",
-    "failures": "24",
+    "failures": "27",
     "skipped": "0",
-    "time": "12.063240"
+    "time": "16.582258"
   },
   {
     "version": "8.3.28",
@@ -91,18 +91,18 @@
       "-c",
       "/Users/tomjaeger/Sites/add-ons/low_seg2cat/phpunit.xml",
       "--log-junit",
-      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-5lxeon1r/php83.xml"
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-9x2qac65/php83.xml"
     ],
     "risky": 0,
     "incomplete": 0,
     "name": "",
-    "tests": "272",
-    "assertions": "1386",
+    "tests": "294",
+    "assertions": "1476",
     "errors": "19",
     "warnings": "0",
-    "failures": "24",
+    "failures": "27",
     "skipped": "0",
-    "time": "11.983528"
+    "time": "16.043498"
   },
   {
     "version": "8.4.15",
@@ -112,18 +112,18 @@
       "-c",
       "/Users/tomjaeger/Sites/add-ons/low_seg2cat/phpunit.xml",
       "--log-junit",
-      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-5lxeon1r/php84.xml"
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-9x2qac65/php84.xml"
     ],
     "risky": 0,
     "incomplete": 0,
     "name": "",
-    "tests": "272",
-    "assertions": "1386",
+    "tests": "294",
+    "assertions": "1476",
     "errors": "19",
     "warnings": "0",
-    "failures": "24",
+    "failures": "27",
     "skipped": "0",
-    "time": "12.728591"
+    "time": "17.096937"
   },
   {
     "version": "8.5.0",
@@ -133,17 +133,17 @@
       "-c",
       "/Users/tomjaeger/Sites/add-ons/low_seg2cat/phpunit.xml",
       "--log-junit",
-      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-5lxeon1r/php85.xml"
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-9x2qac65/php85.xml"
     ],
     "risky": 0,
     "incomplete": 0,
     "name": "",
-    "tests": "272",
-    "assertions": "1386",
+    "tests": "294",
+    "assertions": "1476",
     "errors": "19",
     "warnings": "0",
-    "failures": "24",
+    "failures": "27",
     "skipped": "0",
-    "time": "12.350993"
+    "time": "17.426137"
   }
 ]
