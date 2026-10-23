@@ -9,11 +9,11 @@
       "xdebug": "3.5.3",
       "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
       "flags": "UNUSED|DEAD_CODE|BRANCH_CHECK",
-      "children": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/coverage.qD1yYC/raw.json.children"
+      "children": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/coverage.4QO9vT/raw.json.children"
     },
     "scope": "complete configured suite",
-    "selected_case_count": 255,
-    "junit_sha256": "a4581944aabf4472fc37dc0e4e72e580b10fa88cbe3e2aa5855ac8a16a0f6af9"
+    "selected_case_count": 272,
+    "junit_sha256": "b87c7a16df967e48ab2f4c8e136827ef2cb7b8f422c2e8b81f53bd2c95ac5bc0"
   },
   {
     "label": "child-1",
@@ -1716,5 +1716,437 @@
       }
     },
     "scope": "one fresh native source probe"
+  },
+  {
+    "label": "child-65",
+    "raw_sha256": "d5d06ec2a046bc5407387f217a034112c2b227be60fdb9c518ed709f5ff5e117",
+    "compressed_file": "child-65.json.gz",
+    "metadata": {
+      "probe_sha256": "2490accdbf2cd063eed1d467c0c81c06ecfd91c502f850a5d24b3f2f9f06fd6c",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "module_nav_layout": "defaults",
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null,
+      "module_nav_provenance": {
+        "low_seg2cat.phar": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar",
+          "sha256": "b340d9b7922acf926a0ddb58e72be07953c5235519b3df90bb65fb170b81699d"
+        },
+        "addon.setup.php": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/addon.setup.php",
+          "sha256": "c6d4ec0f4035f3a2526695a50d5200909a6f7a8ebc5a42c48ecb18b736493819"
+        },
+        "addon.json": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/addon.json",
+          "sha256": "7aa535537aa560016de590377b57d9c3fed52dfdea1834a841aafaad9c398d36"
+        },
+        "autoload.php": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/autoload.php",
+          "sha256": "b3c701a92a9a1e7865b107b7c693be1d9e61ececacdb5037084d30c13ed3a7d9"
+        },
+        "module_fixture": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/fixtures/module-nav/defaults.php",
+          "sha256": "1bb851a8d861d18f0d1c3fcf342fac02af8fff729f67aeaaa2064a69a9246e55"
+        }
+      }
+    },
+    "scope": "one fresh native source probe"
+  },
+  {
+    "label": "child-66",
+    "raw_sha256": "c40b590c7ffeb702e598d363006da6ce0a1c40e9b0d6187a776b74f4e4ee70e6",
+    "compressed_file": "child-66.json.gz",
+    "metadata": {
+      "probe_sha256": "25edb98212c56af4d7a884662f173079cc02cdb567a9da792afbe81f74d5c196",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "primary_view": "loose",
+      "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
+      "flags": "UNUSED|DEAD_CODE|BRANCH_CHECK",
+      "template_ee_version": 7,
+      "measurement_source": {
+        "inventory_name": "low_seg2cat/views/license.php",
+        "original_source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/views/license.php",
+        "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
+        "measured_source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/views/license.php",
+        "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
+      },
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "application_version": "7.5.0",
+      "request": "CP",
+      "raw_sha256": "c40b590c7ffeb702e598d363006da6ce0a1c40e9b0d6187a776b74f4e4ee70e6"
+    },
+    "scope": "one fresh primary-script source probe"
+  },
+  {
+    "label": "child-67",
+    "raw_sha256": "ea5ea80db8151c201cec4361942101736f472053acb0460a17ef83fb76d379d1",
+    "compressed_file": "child-67.json.gz",
+    "metadata": {
+      "probe_sha256": "3f1350d68e75ddb00aab8c9485547926131f71fb20ff3628a53fb8a8d6925fa4",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "2.5.5",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "module_nav_layout": "configured",
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null,
+      "module_nav_provenance": {
+        "low_seg2cat.phar": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar",
+          "sha256": "b340d9b7922acf926a0ddb58e72be07953c5235519b3df90bb65fb170b81699d"
+        },
+        "addon.setup.php": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/addon.setup.php",
+          "sha256": "c6d4ec0f4035f3a2526695a50d5200909a6f7a8ebc5a42c48ecb18b736493819"
+        },
+        "addon.json": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/addon.json",
+          "sha256": "7aa535537aa560016de590377b57d9c3fed52dfdea1834a841aafaad9c398d36"
+        },
+        "autoload.php": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/autoload.php",
+          "sha256": "b3c701a92a9a1e7865b107b7c693be1d9e61ececacdb5037084d30c13ed3a7d9"
+        },
+        "module_fixture": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/fixtures/module-nav/configured.php",
+          "sha256": "75fd38d4bceb5cad574ed77a10bf6c368ed3b86af20c1c065ff0bfdbfebb0ea3"
+        }
+      }
+    },
+    "scope": "one fresh native source probe"
+  },
+  {
+    "label": "child-68",
+    "raw_sha256": "c40b590c7ffeb702e598d363006da6ce0a1c40e9b0d6187a776b74f4e4ee70e6",
+    "compressed_file": "child-68.json.gz",
+    "metadata": {
+      "probe_sha256": "4a9439763875ed29a894665377d9345c8a66df0c0b50302e27424973030afb6c",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "primary_view": "loose",
+      "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
+      "flags": "UNUSED|DEAD_CODE|BRANCH_CHECK",
+      "template_ee_version": 7,
+      "measurement_source": {
+        "inventory_name": "low_seg2cat/views/license.php",
+        "original_source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/views/license.php",
+        "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
+        "measured_source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/views/license.php",
+        "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
+      },
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "application_version": "7.5.0",
+      "request": "CP",
+      "raw_sha256": "c40b590c7ffeb702e598d363006da6ce0a1c40e9b0d6187a776b74f4e4ee70e6"
+    },
+    "scope": "one fresh primary-script source probe"
+  },
+  {
+    "label": "child-69",
+    "raw_sha256": "b602d8f49858ef58911e1c69a1c0bc81ed933cf8d489b78179d5bd1c805e2535",
+    "compressed_file": "child-69.json.gz",
+    "metadata": {
+      "probe_sha256": "4d13a36fb75c20c50aaad0e5324f1a878ace2b01522b59baabd476165289cf7e",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "primary_view": "loose",
+      "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
+      "flags": "UNUSED|DEAD_CODE|BRANCH_CHECK",
+      "template_ee_version": 2,
+      "measurement_source": {
+        "inventory_name": "low_seg2cat/views/license.php",
+        "original_source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/views/license.php",
+        "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
+        "measured_source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/views/license.php",
+        "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
+      },
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "application_version": "7.5.0",
+      "request": "CP",
+      "raw_sha256": "b602d8f49858ef58911e1c69a1c0bc81ed933cf8d489b78179d5bd1c805e2535"
+    },
+    "scope": "one fresh primary-script source probe"
+  },
+  {
+    "label": "child-70",
+    "raw_sha256": "7c11cd7253a80bcc442a60c6410cd25dbbd113cc549177ab48547e3fe1b8020e",
+    "compressed_file": "child-70.json.gz",
+    "metadata": {
+      "probe_sha256": "4d394bccc826c55bb9ff3d3245d2d947b09cfaefd1a083e99c4d82c692a54f71",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "primary_view": "loose",
+      "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
+      "flags": "UNUSED|DEAD_CODE|BRANCH_CHECK",
+      "template_ee_version": 7,
+      "measurement_source": {
+        "inventory_name": "low_seg2cat/views/license.php",
+        "original_source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/views/license.php",
+        "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
+        "measured_source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/views/license.php",
+        "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
+      },
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "application_version": "7.5.0",
+      "request": "CP",
+      "raw_sha256": "7c11cd7253a80bcc442a60c6410cd25dbbd113cc549177ab48547e3fe1b8020e"
+    },
+    "scope": "one fresh primary-script source probe"
+  },
+  {
+    "label": "child-71",
+    "raw_sha256": "945d2027234f26076b103c194425b3d38f24334f2a9da3599aa83c52eeba7bf4",
+    "compressed_file": "child-71.json.gz",
+    "metadata": {
+      "probe_sha256": "538ef4fecafe155ed98414606537c18fabff70520f2ee4ef316299c65b220608",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "primary_view": "archive",
+      "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
+      "flags": "UNUSED|DEAD_CODE|BRANCH_CHECK",
+      "template_ee_version": 2,
+      "measurement_source": {
+        "inventory_name": "low_seg2cat/low_seg2cat.phar::Views/license.php",
+        "original_source": "phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/Views/license.php",
+        "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
+        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-c5b287e1d03d24ca/license.php",
+        "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
+      },
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "application_version": "7.5.0",
+      "request": "CP",
+      "raw_sha256": "945d2027234f26076b103c194425b3d38f24334f2a9da3599aa83c52eeba7bf4"
+    },
+    "scope": "one fresh primary-script source probe"
+  },
+  {
+    "label": "child-72",
+    "raw_sha256": "a8c2fd7fac29ac2e78befff75c9114efd038d473a139255857fb414e4c46f869",
+    "compressed_file": "child-72.json.gz",
+    "metadata": {
+      "probe_sha256": "7b61a5f5dbe4682e8e8de55779ce747374b57e498f53e64a5aa9012fc1ee6591",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "2.5.5",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "module_nav_layout": "configured",
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null,
+      "module_nav_provenance": {
+        "low_seg2cat.phar": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar",
+          "sha256": "b340d9b7922acf926a0ddb58e72be07953c5235519b3df90bb65fb170b81699d"
+        },
+        "addon.setup.php": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/addon.setup.php",
+          "sha256": "c6d4ec0f4035f3a2526695a50d5200909a6f7a8ebc5a42c48ecb18b736493819"
+        },
+        "addon.json": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/addon.json",
+          "sha256": "7aa535537aa560016de590377b57d9c3fed52dfdea1834a841aafaad9c398d36"
+        },
+        "autoload.php": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/autoload.php",
+          "sha256": "b3c701a92a9a1e7865b107b7c693be1d9e61ececacdb5037084d30c13ed3a7d9"
+        },
+        "module_fixture": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/fixtures/module-nav/configured.php",
+          "sha256": "75fd38d4bceb5cad574ed77a10bf6c368ed3b86af20c1c065ff0bfdbfebb0ea3"
+        }
+      }
+    },
+    "scope": "one fresh native source probe"
+  },
+  {
+    "label": "child-73",
+    "raw_sha256": "c40b590c7ffeb702e598d363006da6ce0a1c40e9b0d6187a776b74f4e4ee70e6",
+    "compressed_file": "child-73.json.gz",
+    "metadata": {
+      "probe_sha256": "947fda293789c36d6c4ddee92e00670dc4beeb9d04cc4faa8b741ba4b4dac1cc",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "primary_view": "loose",
+      "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
+      "flags": "UNUSED|DEAD_CODE|BRANCH_CHECK",
+      "template_ee_version": 7,
+      "measurement_source": {
+        "inventory_name": "low_seg2cat/views/license.php",
+        "original_source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/views/license.php",
+        "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
+        "measured_source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/views/license.php",
+        "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
+      },
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "application_version": "7.5.0",
+      "request": "CP",
+      "raw_sha256": "c40b590c7ffeb702e598d363006da6ce0a1c40e9b0d6187a776b74f4e4ee70e6"
+    },
+    "scope": "one fresh primary-script source probe"
+  },
+  {
+    "label": "child-74",
+    "raw_sha256": "0ff8200d818f4304c2cc1caee96ccdd1cbbcb98691785f3c2b35a5169b466063",
+    "compressed_file": "child-74.json.gz",
+    "metadata": {
+      "probe_sha256": "b9e823c0d9518d108c96a2ecdd106c93161b7a3273030db5e244a20fa0636602",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "primary_view": "archive",
+      "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
+      "flags": "UNUSED|DEAD_CODE|BRANCH_CHECK",
+      "template_ee_version": 7,
+      "measurement_source": {
+        "inventory_name": "low_seg2cat/low_seg2cat.phar::Views/license.php",
+        "original_source": "phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/Views/license.php",
+        "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
+        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-324e28bd3553cf27/license.php",
+        "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
+      },
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "application_version": "7.5.0",
+      "request": "CP",
+      "raw_sha256": "0ff8200d818f4304c2cc1caee96ccdd1cbbcb98691785f3c2b35a5169b466063"
+    },
+    "scope": "one fresh primary-script source probe"
+  },
+  {
+    "label": "child-75",
+    "raw_sha256": "23c666c53b6dddd5aaac3468f51129907ee9cf63f18d1b773a8acfcce1724c77",
+    "compressed_file": "child-75.json.gz",
+    "metadata": {
+      "probe_sha256": "be8da05afa43f0da1257d4b02d4780957c4023c76eabcb0f193a0e09e1bc6065",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "primary_view": "archive",
+      "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
+      "flags": "UNUSED|DEAD_CODE|BRANCH_CHECK",
+      "template_ee_version": 7,
+      "measurement_source": {
+        "inventory_name": "low_seg2cat/low_seg2cat.phar::Views/license.php",
+        "original_source": "phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/Views/license.php",
+        "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
+        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-3a995d5902f84ee0/license.php",
+        "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
+      },
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "application_version": "7.5.0",
+      "request": "CP",
+      "raw_sha256": "23c666c53b6dddd5aaac3468f51129907ee9cf63f18d1b773a8acfcce1724c77"
+    },
+    "scope": "one fresh primary-script source probe"
+  },
+  {
+    "label": "child-76",
+    "raw_sha256": "a028d1dadaedf00a23d95ed37bbe5e92eaccd553e9c245d6cab16e7dd56295d7",
+    "compressed_file": "child-76.json.gz",
+    "metadata": {
+      "probe_sha256": "bf861138bb415b36c09aaa37737ae3151cd6324165a1cfc1b5bd0b6911c08df9",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "primary_view": "archive",
+      "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
+      "flags": "UNUSED|DEAD_CODE|BRANCH_CHECK",
+      "template_ee_version": 7,
+      "measurement_source": {
+        "inventory_name": "low_seg2cat/low_seg2cat.phar::Views/license.php",
+        "original_source": "phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/Views/license.php",
+        "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
+        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-ff696b35c263c170/license.php",
+        "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
+      },
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "application_version": "7.5.0",
+      "request": "CP",
+      "raw_sha256": "a028d1dadaedf00a23d95ed37bbe5e92eaccd553e9c245d6cab16e7dd56295d7"
+    },
+    "scope": "one fresh primary-script source probe"
+  },
+  {
+    "label": "child-77",
+    "raw_sha256": "12a5d9ec5c94fe77d17d819d73e414ea5932e37d4fb8346ee608785d061915aa",
+    "compressed_file": "child-77.json.gz",
+    "metadata": {
+      "probe_sha256": "d4967454fee60b4f4265a5162501dbf1c07cc29aa1dfd96040476087aee55c54",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "2.5.5",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "module_nav_layout": "defaults",
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null,
+      "module_nav_provenance": {
+        "low_seg2cat.phar": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar",
+          "sha256": "b340d9b7922acf926a0ddb58e72be07953c5235519b3df90bb65fb170b81699d"
+        },
+        "addon.setup.php": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/addon.setup.php",
+          "sha256": "c6d4ec0f4035f3a2526695a50d5200909a6f7a8ebc5a42c48ecb18b736493819"
+        },
+        "addon.json": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/addon.json",
+          "sha256": "7aa535537aa560016de590377b57d9c3fed52dfdea1834a841aafaad9c398d36"
+        },
+        "autoload.php": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/autoload.php",
+          "sha256": "b3c701a92a9a1e7865b107b7c693be1d9e61ececacdb5037084d30c13ed3a7d9"
+        },
+        "module_fixture": {
+          "source": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/fixtures/module-nav/defaults.php",
+          "sha256": "1bb851a8d861d18f0d1c3fcf342fac02af8fff729f67aeaaa2064a69a9246e55"
+        }
+      }
+    },
+    "scope": "one fresh native source probe"
+  },
+  {
+    "label": "child-78",
+    "raw_sha256": "a18d745794f73cf34810c1ef4a24b9c0330982674493a95b29157729e1761a34",
+    "compressed_file": "child-78.json.gz",
+    "metadata": {
+      "probe_sha256": "dcba37f49bca8ecbe0fa2f3db11f15b9e794b90cf8f5869996d6b83e20b1527e",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "primary_view": "archive",
+      "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
+      "flags": "UNUSED|DEAD_CODE|BRANCH_CHECK",
+      "template_ee_version": 7,
+      "measurement_source": {
+        "inventory_name": "low_seg2cat/low_seg2cat.phar::Views/license.php",
+        "original_source": "phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/Views/license.php",
+        "original_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46",
+        "measured_source": "/private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-primary-9388514649faeae5/license.php",
+        "measurement_sha256": "6a8d67a96c4a3edac3cc1ff9b9607505ff58e5a3888896a324b8e2d824a7ea46"
+      },
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "application_version": "7.5.0",
+      "request": "CP",
+      "raw_sha256": "a18d745794f73cf34810c1ef4a24b9c0330982674493a95b29157729e1761a34"
+    },
+    "scope": "one fresh primary-script source probe"
   }
 ]

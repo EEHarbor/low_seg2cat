@@ -20,15 +20,15 @@ Command: `python3 tests/scripts/matrix.py`. The script runs the complete configu
 
 | Herd PHP | Cases | Assertions | Errors | Failures | Warnings | Risky | Skipped | Incomplete |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 7.4.33 | 255 | 1357 | 16 | 22 | 0 | 0 | 0 | 0 |
-| 8.0.30 | 255 | 1283 | 16 | 24 | 0 | 0 | 0 | 0 |
-| 8.1.33 | 255 | 1280 | 19 | 24 | 0 | 0 | 0 | 0 |
-| 8.2.30 | 255 | 1280 | 19 | 24 | 0 | 0 | 0 | 0 |
-| 8.3.28 | 255 | 1280 | 19 | 24 | 0 | 0 | 0 | 0 |
-| 8.4.15 | 255 | 1280 | 19 | 24 | 0 | 0 | 0 | 0 |
-| 8.5.0 | 255 | 1280 | 19 | 24 | 0 | 0 | 0 | 0 |
+| 7.4.33 | 272 | 1463 | 16 | 22 | 0 | 0 | 0 | 0 |
+| 8.0.30 | 272 | 1389 | 16 | 24 | 0 | 0 | 0 | 0 |
+| 8.1.33 | 272 | 1386 | 19 | 24 | 0 | 0 | 0 | 0 |
+| 8.2.30 | 272 | 1386 | 19 | 24 | 0 | 0 | 0 | 0 |
+| 8.3.28 | 272 | 1386 | 19 | 24 | 0 | 0 | 0 | 0 |
+| 8.4.15 | 272 | 1386 | 19 | 24 | 0 | 0 | 0 | 0 |
+| 8.5.0 | 272 | 1386 | 19 | 24 | 0 | 0 | 0 | 0 |
 
-All 29 compilation units passed under each version. Errors/failures below are unchanged-source regressions. No PHPUnit/harness deprecation was present in these logs. The shorter assertion count on PHP 8 reflects the two EE2 datasets aborting at a source ValueError. PHP 8.1+ additionally rejects null stored fieldtype values at the hidden base64_decode deprecation; those three datasets complete on PHP 7.4/8.0. See `evidence/matrix.json` for exact commands and runtime results, and `evidence/matrix-cases.json` for every error/failure identity and type. Complete local logs are in ignored `tests/reports/matrix-v5wr6fzn/`.
+All 29 compilation units passed under each version. Errors/failures below are unchanged-source regressions. No PHPUnit/harness deprecation was present in these logs. The shorter assertion count on PHP 8 reflects the two EE2 datasets aborting at a source ValueError. PHP 8.1+ additionally rejects null stored fieldtype values at the hidden base64_decode deprecation; those three datasets complete on PHP 7.4/8.0. See `evidence/matrix.json` for exact commands and runtime results, and `evidence/matrix-cases.json` for every error/failure identity and type. Complete local logs are in ignored `tests/reports/matrix-5lxeon1r/`.
 
 ## Behavior covered
 
@@ -80,7 +80,7 @@ LOW_SEG2CAT_XDEBUG_EXTENSION=/Applications/Herd.app/Contents/Resources/xdebug/xd
 tests/scripts/coverage.sh
 ```
 
-The latest raw branch run used PHP 8.2.30 with Xdebug, all 255 cases, and retained the expected 19 errors/24 failures. `evidence/coverage-graphs.json` maps all 65 independently compressed raw source graphs to their SHA-256 and runtime/context. `branch-report.py` retains basic blocks separately from `out`/`out_hit` exits; block hits alone never close a branch. Synthetic VM exit edges remain explicitly identified, with their known zero-hit limitation. Full path coverage is not a target; path enumeration is omitted from retained graphs. Source files absent from a graph remain **unmeasured**, not 100%. Different subprocess/context graphs are never merged.
+The latest raw branch run used PHP 8.2.30 with Xdebug, all 272 cases, and retained the expected 19 errors/24 failures. `evidence/coverage-graphs.json` maps all 79 independently compressed raw source graphs to their SHA-256 and runtime/context. `branch-report.py` retains basic blocks separately from `out`/`out_hit` exits; block hits alone never close a branch. Synthetic VM exit edges remain explicitly identified, with their known zero-hit limitation. Full path coverage is not a target; path enumeration is omitted from retained graphs. Source files absent from a graph remain **unmeasured**, not 100%. Different subprocess/context graphs are never merged.
 
 The skill method report was run with `--target low_seg2cat --include-magic` against a freshly generated Clover file. `evidence/skill-method-lines.json` retains its exact method rows. Its `branch_percent: null` means unknown; its `at_target` labels are line-only output and do not establish campaign completion. Main extension methods show 100% measured lines except `update_extension`, 14/18 (77.78%): the missing-argument regression prevents the legacy path completing. `js()` has zero Clover executable lines despite behavioral string assertions; do not call 0/0 branch proof.
 
@@ -158,7 +158,7 @@ Three additional original-stub cases verify go(true)'s clean unavailable-temp te
 
 The complete configured suite runs 255 cases under all seven explicit Herd binaries. Every prior source-red identity/type is preserved; only the toolbar-title regression is added. Fresh PHP 8.2 coverage comes from `tests/reports/coverage.qD1yYC/` and retains 65 separate graphs: the full parent and 64 native contexts. All 47 prior native graph bytes are unchanged; the 17 new contexts are 14 module navigation and three original-stub guards. The full parent selection count/JUnit hash and every context/provenance hash are retained in the index. The separate Clover/skill report in `tests/reports/module-nav-clover/` has the same 12 plain-source method rows, 11 line targets and one below target; all branch metrics remain unknown.
 
-Default navigation child-58 records 72/84 lines, 53/69 basic blocks and 39/78 non-synthetic outcomes. Configured child-51 records 65/84 lines, 56/69 blocks and 55/78 outcomes. These are separate contexts, never merged into a completion percentage. Default getter/hook methods execute in the default subclass; overridden APIs in configured contexts do not count as base-method execution. Legacy navigation and remaining URL/loop exits remain explicit gaps. The included procedural view graphs also retain positive lines with zero block/outcome hits; primary-script instrumentation remains a separate future investigation.
+Default navigation child-58 records 72/84 lines, 53/69 basic blocks and 39/78 non-synthetic outcomes. Configured child-51 records 65/84 lines, 56/69 blocks and 55/78 outcomes. These are separate contexts, never merged into a completion percentage. Default getter/hook methods execute in the default subclass; overridden APIs in configured contexts do not count as base-method execution. Legacy navigation and remaining URL/loop exits remain explicit gaps. At that checkpoint, included procedural view graphs retained positive lines with zero block/outcome hits; primary-script instrumentation was separate future work.
 
 The first 255-case generation exhausted shared disk space and is invalid harness evidence. Its partial logs/reports were segregated, owned temporary-write capability was rechecked after capacity recovered, and the complete seven-runtime, raw and Clover/skill generations were rerun into fresh paths above. No disk error is attributed to source. Both changed test files ran independently on PHP 7.4/8.5: navigation 14 cases/110 assertions/one expected failure and original-stub helpers 10/42/two existing failures. Full randomized endpoint runs with seed `20261030` reproduce all 255 cases and every source-red identity/type (`tests/reports/module-nav-order-37l6vft1/`). All 65 retained graphs regenerate against the 29-unit inventory with matching hashes, and the source inventory regenerates byte-identically. PR-style self review found no actionable test/harness/fixture issue. Independent exact-diff review and scoped publication are recorded below. Full real EE/database/browser integration and complete actual-outcome coverage remain unproven; independent healthy scope continues afterward.
 
@@ -168,3 +168,31 @@ The first 255-case generation exhausted shared disk space and is invalid harness
 Independent reviewer `tests_smart_switch` approved exact 255-case patch `377faa2fe212cdd02df7a4d17606a63a38f323aa9edb3ab06826e70ee78a7383` against `f6b46c08df29360d0f1549e8a60c65b718ea2666`, with 28-path manifest `20806711abed875e0f09d2bd32b632112687d9478ff3622fd0a89c2ac73385cc`. The private review reproduced all seven complete suites, every error/failure identity/type, both changed files on endpoint runtimes, seeded full randomized runs and all 65 normalized raw graphs. Inventory/source/dependency/fixture provenance and safe owned symlink cleanup verified; no actionable test/harness/security/isolation issue remained. Residual integration, source/platform and actual-outcome gaps remain incomplete.
 
 The approved contents were committed as `6d2e355` (module navigation), `aabb1c7` (unavailable extraction storage) and `512d77468df020a0752a0ff115253d96a4715228` (evidence/documentation). Their combined binary diff against `f6b46c08` exactly matched the approved patch SHA-256, and the final tree was `e8e6aa66618793f3d221169f5822cd1e19f2c0b4`. Fresh origin refs retained develop at the pinned source baseline. Push only to origin/unit-tests-2026 succeeded; independent `git ls-remote --heads origin unit-tests-2026` matched `512d77468df020a0752a0ff115253d96a4715228`, tracking parity was `0 0`, the checkout was clean and production remained unchanged. This factual documentation-only follow-up records that publication; further healthy legacy/procedural scope continues separately.
+
+
+## Legacy navigation and primary-script template follow-up
+
+This tests-only cycle starts from published `0a177c6a273683736ad352f11693ef1156f8340e` and adds 17 healthy/control cases. Three legacy module-navigation cases execute the original default/configured/deferred APIs under EE 2.5.5, which avoids the separately documented invalid EE2 >=2.6 comparison operator. They assert concrete right-navigation labels/URLs, external links, preserved null modern-sidebar state and automatic/manual hook order. A modern URL table covers slash normalization, relative routes and HTTP/HTTPS destinations in one native process. Its child-65 getUrl graph records 6/6 blocks and 7/7 ordinary outcomes; its synthetic exit remains separately retained, without a whole-class completion claim. Additional URL-name/scheme boundaries and other native contexts remain useful later work.
+
+Ten display cases run each independently shipped license template as the PHP primary script, comparing every output byte with the original include renderer under the same bounded helpers. They verify legacy/modern alert display, quoted markup characters, ignored keys, empty/zero keys and checkbox booleans. Loose source executes at its original path. PHP CLI cannot directly run a phar:// member as its primary script, so the archive member is copied into an owned 0700 temporary directory and checked byte-for-byte by SHA-256 before execution. Metadata records the original inventory unit/path/hash, identical measured path/hash, exact raw hash, runtime, application/request context and template-version input. The child uses application 7.5/CP; template ee_ver=2 is a display-branch input, not a claim of full EE2 integration.
+
+The primary-script helper uses the existing bounded direct-child runner and owned temporary output files. Auto-append completion gates publication: premature bootstrap exit(0) or a suppressed generated diagnostic produces no accepted raw/metadata. Exact generated/measurement paths enter strict E_ALL handling. A sentinel exposed macOS /var versus /private/var canonical paths during development; the helper now resolves its owned directory before registration and never substitutes a failed resolution into cleanup. Three PHP guard cases pass, including strict suppressed diagnostic detection and no-artifact/cleanup checks. Four Python instrumentation controls separately verify original-unit mapping, raw/source hash rejection, foreign/unknown/missing mapping rejection and explicit missing provenance rejection. Synthetic control graphs never enter production evidence.
+
+Fresh complete matrix `tests/reports/matrix-5lxeon1r/` executes 272 cases on all seven runtimes with exactly the published 255-case source-red identities/types. Fresh raw PHP 8.2 run `tests/reports/coverage.4QO9vT/` retains 79 separate source graphs: the full parent, all 64 unchanged prior native graphs, four new navigation contexts and ten primary-template contexts. Each primary graph has positive actual block/out/out_hit data. Per template, modern cases record 5/6 blocks and 4/7 ordinary outcomes, while the legacy case records 4/6 and 3/7; no subprocess, input context, source unit or compiled graph is merged into a percentage. Included procedural graphs and synthetic terminal counters retain their limitations. The settings wrapper requires an object-bound include scope and remains independently measured by its original include context.
+
+The branch reporter accepts an explicit or adjacent paired metadata file for verified identical-copy mappings. It checks the original inventory hash, measurement hash, raw hash, original recorded-root path and actual raw file key before attributing a copy to its original unit. Every report still lists all 29 units and retains unmeasured declarations. Reproduction from compressed evidence must preserve the paired mapping:
+
+```sh
+python3 - <<'PYTHON'
+import gzip, json, pathlib, subprocess, tempfile
+row = next(x for x in json.loads(pathlib.Path('tests/evidence/coverage-graphs.json').read_text()) if x['label'] == 'child-71')
+directory = pathlib.Path(tempfile.mkdtemp(prefix='low-seg2cat-primary-review-'))
+raw = directory / 'raw.json'
+raw.write_bytes(gzip.decompress(pathlib.Path('tests/evidence', row['compressed_file']).read_bytes()))
+pathlib.Path(str(raw) + '.metadata.json').write_text(json.dumps(row['metadata']))
+subprocess.run(['python3', 'tests/scripts/branch-report.py', str(raw), '--recorded-root', row['metadata']['source_root'], '--output', str(directory / 'methods.json')], check=True)
+print(directory)
+PYTHON
+```
+
+The separate Clover/skill report is `tests/reports/primary-272-clover-etzu3emb/`, with the same 12 plain-source method rows and unknown branch percentages. All 23 configured files ran independently on PHP 7.4/8.5, plus full randomized endpoint suites with seed `20261031`; every case/assertion/result/type identity matches the complete matrix (`tests/reports/primary-272-isolation-xujs2wfb/`, retained `evidence/primary-isolation.json`). All 79 paired reports regenerate against the 29-unit inventory. PR-style self review found no actionable test/harness/fixture issue. Independent exact-diff review remains required before this cycle's publication. No production file/archive, global runtime, service or dependency changed; remaining source faults and method/outcome/integration gaps keep the campaign incomplete.
