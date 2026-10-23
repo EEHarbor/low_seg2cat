@@ -1,0 +1,1306 @@
+{
+  "php74": [
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #0",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #1",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #2",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testCompoundZeroCacheKeyDoesNotOverwriteAnotherKey",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheDeletionReportsSuccess",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #0",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #1",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"integer zero\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"string zero\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"empty string\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"null\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"empty array\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testExtensionRegistrationReportsFailedInsert",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticPluginInfoDoesNotReferenceThis",
+      "kind": "error",
+      "type": "Error"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testLegacyRegistrationAliasForwardsHookAndOptions",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testLegacyUnregisterAliasForwardsHook",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMissingGlobalFieldSettingHasNoHiddenWarning",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testPersistentCacheArrayKeyCanBeRead",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBundledNavigationLoadsWithoutMissingIncludeWarning",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testSelfExtractionLoaderHasNoHiddenFilesystemWarnings",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testWrittenValueRemainsAvailableFromRequestMemory",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testFailedSettingsUpdateDoesNotShowSuccess",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-MSM flat settings\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-MSM nested settings\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-template hook\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testDocumentedFalseConstructorSettingsUseDefaults",
+      "kind": "error",
+      "type": "TypeError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testNullSiteSettingsFallBackToDefaults",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testUriLongerThanMaximumDoesNotReadMissingLastSegment",
+      "kind": "error",
+      "type": "ErrorException"
+    }
+  ],
+  "php80": [
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #0",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #1",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #2",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testCompoundZeroCacheKeyDoesNotOverwriteAnotherKey",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheDeletionReportsSuccess",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #0",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #1",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"integer zero\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"string zero\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"empty string\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"null\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"empty array\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testExtensionRegistrationReportsFailedInsert",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticPluginInfoDoesNotReferenceThis",
+      "kind": "error",
+      "type": "Error"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testLegacyRegistrationAliasForwardsHookAndOptions",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testLegacyUnregisterAliasForwardsHook",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMissingGlobalFieldSettingHasNoHiddenWarning",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testPersistentCacheArrayKeyCanBeRead",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBundledNavigationLoadsWithoutMissingIncludeWarning",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testSelfExtractionLoaderHasNoHiddenFilesystemWarnings",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\LegacyBridgeTest",
+      "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #1",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\LegacyBridgeTest",
+      "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testWrittenValueRemainsAvailableFromRequestMemory",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testFailedSettingsUpdateDoesNotShowSuccess",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-MSM flat settings\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-MSM nested settings\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-template hook\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testDocumentedFalseConstructorSettingsUseDefaults",
+      "kind": "error",
+      "type": "TypeError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testNullSiteSettingsFallBackToDefaults",
+      "kind": "error",
+      "type": "TypeError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testUriLongerThanMaximumDoesNotReadMissingLastSegment",
+      "kind": "error",
+      "type": "ErrorException"
+    }
+  ],
+  "php81": [
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #0",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #1",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #2",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testCompoundZeroCacheKeyDoesNotOverwriteAnotherKey",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheDeletionReportsSuccess",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #0",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #1",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"integer zero\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"string zero\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"empty string\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"null\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"empty array\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testExtensionRegistrationReportsFailedInsert",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticPluginInfoDoesNotReferenceThis",
+      "kind": "error",
+      "type": "Error"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testLegacyRegistrationAliasForwardsHookAndOptions",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testLegacyUnregisterAliasForwardsHook",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMissingGlobalFieldSettingHasNoHiddenWarning",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testPersistentCacheArrayKeyCanBeRead",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBundledNavigationLoadsWithoutMissingIncludeWarning",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testSelfExtractionLoaderHasNoHiddenFilesystemWarnings",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\LegacyBridgeTest",
+      "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #1",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\LegacyBridgeTest",
+      "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testWrittenValueRemainsAvailableFromRequestMemory",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testFailedSettingsUpdateDoesNotShowSuccess",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-MSM flat settings\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-MSM nested settings\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-template hook\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testDocumentedFalseConstructorSettingsUseDefaults",
+      "kind": "error",
+      "type": "TypeError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testNullSiteSettingsFallBackToDefaults",
+      "kind": "error",
+      "type": "TypeError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testUriLongerThanMaximumDoesNotReadMissingLastSegment",
+      "kind": "error",
+      "type": "ErrorException"
+    }
+  ],
+  "php82": [
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #0",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #1",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #2",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testCompoundZeroCacheKeyDoesNotOverwriteAnotherKey",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheDeletionReportsSuccess",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #0",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #1",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"integer zero\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"string zero\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"empty string\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"null\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"empty array\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testExtensionRegistrationReportsFailedInsert",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticPluginInfoDoesNotReferenceThis",
+      "kind": "error",
+      "type": "Error"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testLegacyRegistrationAliasForwardsHookAndOptions",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testLegacyUnregisterAliasForwardsHook",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMissingGlobalFieldSettingHasNoHiddenWarning",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testPersistentCacheArrayKeyCanBeRead",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBundledNavigationLoadsWithoutMissingIncludeWarning",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testSelfExtractionLoaderHasNoHiddenFilesystemWarnings",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\LegacyBridgeTest",
+      "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #1",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\LegacyBridgeTest",
+      "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testWrittenValueRemainsAvailableFromRequestMemory",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testFailedSettingsUpdateDoesNotShowSuccess",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-MSM flat settings\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-MSM nested settings\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-template hook\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testDocumentedFalseConstructorSettingsUseDefaults",
+      "kind": "error",
+      "type": "TypeError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testNullSiteSettingsFallBackToDefaults",
+      "kind": "error",
+      "type": "TypeError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testUriLongerThanMaximumDoesNotReadMissingLastSegment",
+      "kind": "error",
+      "type": "ErrorException"
+    }
+  ],
+  "php83": [
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #0",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #1",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #2",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testCompoundZeroCacheKeyDoesNotOverwriteAnotherKey",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheDeletionReportsSuccess",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #0",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #1",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"integer zero\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"string zero\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"empty string\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"null\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"empty array\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testExtensionRegistrationReportsFailedInsert",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticPluginInfoDoesNotReferenceThis",
+      "kind": "error",
+      "type": "Error"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testLegacyRegistrationAliasForwardsHookAndOptions",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testLegacyUnregisterAliasForwardsHook",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMissingGlobalFieldSettingHasNoHiddenWarning",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testPersistentCacheArrayKeyCanBeRead",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBundledNavigationLoadsWithoutMissingIncludeWarning",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testSelfExtractionLoaderHasNoHiddenFilesystemWarnings",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\LegacyBridgeTest",
+      "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #1",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\LegacyBridgeTest",
+      "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testWrittenValueRemainsAvailableFromRequestMemory",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testFailedSettingsUpdateDoesNotShowSuccess",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-MSM flat settings\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-MSM nested settings\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-template hook\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testDocumentedFalseConstructorSettingsUseDefaults",
+      "kind": "error",
+      "type": "TypeError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testNullSiteSettingsFallBackToDefaults",
+      "kind": "error",
+      "type": "TypeError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testUriLongerThanMaximumDoesNotReadMissingLastSegment",
+      "kind": "error",
+      "type": "ErrorException"
+    }
+  ],
+  "php84": [
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #0",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #1",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #2",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testCompoundZeroCacheKeyDoesNotOverwriteAnotherKey",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheDeletionReportsSuccess",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #0",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #1",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"integer zero\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"string zero\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"empty string\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"null\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"empty array\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testExtensionRegistrationReportsFailedInsert",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticPluginInfoDoesNotReferenceThis",
+      "kind": "error",
+      "type": "Error"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testLegacyRegistrationAliasForwardsHookAndOptions",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testLegacyUnregisterAliasForwardsHook",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMissingGlobalFieldSettingHasNoHiddenWarning",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testPersistentCacheArrayKeyCanBeRead",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBundledNavigationLoadsWithoutMissingIncludeWarning",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testSelfExtractionLoaderHasNoHiddenFilesystemWarnings",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\LegacyBridgeTest",
+      "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #1",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\LegacyBridgeTest",
+      "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testWrittenValueRemainsAvailableFromRequestMemory",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testFailedSettingsUpdateDoesNotShowSuccess",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-MSM flat settings\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-MSM nested settings\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-template hook\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testDocumentedFalseConstructorSettingsUseDefaults",
+      "kind": "error",
+      "type": "TypeError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testNullSiteSettingsFallBackToDefaults",
+      "kind": "error",
+      "type": "TypeError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testUriLongerThanMaximumDoesNotReadMissingLastSegment",
+      "kind": "error",
+      "type": "ErrorException"
+    }
+  ],
+  "php85": [
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #0",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #1",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #2",
+      "kind": "error",
+      "type": "RuntimeException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testCompoundZeroCacheKeyDoesNotOverwriteAnotherKey",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheDeletionReportsSuccess",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #0",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #1",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMappedNavigationKeepsAStringPageTitle with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"integer zero\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"string zero\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"empty string\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"null\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticCacheRoundTripsFalseyValues with data set \"empty array\"",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testExtensionRegistrationReportsFailedInsert",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testStaticPluginInfoDoesNotReferenceThis",
+      "kind": "error",
+      "type": "Error"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testLegacyRegistrationAliasForwardsHookAndOptions",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testLegacyUnregisterAliasForwardsHook",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testMissingGlobalFieldSettingHasNoHiddenWarning",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testPersistentCacheArrayKeyCanBeRead",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testBundledNavigationLoadsWithoutMissingIncludeWarning",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testSelfExtractionLoaderHasNoHiddenFilesystemWarnings",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\LegacyBridgeTest",
+      "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #1",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\LegacyBridgeTest",
+      "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testWrittenValueRemainsAvailableFromRequestMemory",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testFailedSettingsUpdateDoesNotShowSuccess",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-MSM flat settings\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-MSM nested settings\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testLegacyUpgradeCompletesWithoutMissingSettingsArgument with data set \"pre-template hook\"",
+      "kind": "error",
+      "type": "ArgumentCountError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testDocumentedFalseConstructorSettingsUseDefaults",
+      "kind": "error",
+      "type": "TypeError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testNullSiteSettingsFallBackToDefaults",
+      "kind": "error",
+      "type": "TypeError"
+    },
+    {
+      "class_name": "Tests\\SourceRegressionTest",
+      "case": "testUriLongerThanMaximumDoesNotReadMissingLastSegment",
+      "kind": "error",
+      "type": "ErrorException"
+    }
+  ]
+}

@@ -7,6 +7,8 @@ PHP_BINARY='/Users/tomjaeger/Library/Application Support/Herd/bin/php82' \
 tests/.phpunit/run-phpunit.sh -c phpunit.xml
 ```
 
+Four native fieldtype probes also require a read-only ExpressionEngine source tree. Set `EE_SYSTEM_PATH=/path/to/expressionengine/system/`; this checkout defaults to the neighboring `/Users/tomjaeger/Sites/ee_repo_2/system/`. The actual `EE_Fieldtype.php` and `ModifiableTrait.php` declarations are loaded directly (the installer-layout parent copy is byte-identical and disposable). Their runtime SHA-256 provenance is recorded in child coverage metadata. No application boot or database connection is performed. Private review snapshots must pass `EE_SYSTEM_PATH` explicitly.
+
 The complete suite intentionally retains failing regressions for unchanged shipped defects. Read `STATUS.md` before interpreting a red result. Focused selections are useful during development and are not full matrix proof. The launcher fails on empty selections and checks the pinned PHAR hash.
 
 `SOURCE_INVENTORY.json` records all shipped PHP, including archive members and the executable stub. Regenerate it with an explicit runtime (`php82 tests/scripts/inventory.php`) only when intentionally updating a pinned source baseline. Production source and archives are immutable during this campaign.
