@@ -43,6 +43,7 @@ class Process
                 'request' => isset($context['request']) ? $context['request'] : 'PAGE',
                 'direct_access' => !empty($context['direct_access']), 'missing_phar' => !empty($context['missing_phar']),
                 'opcache_permission' => !empty($context['opcache_permission']),
+                'module_nav_layout' => isset($context['module_nav_layout']) ? $context['module_nav_layout'] : null,
                 'fieldtype_layout' => isset($context['fieldtype_layout']) ? $context['fieldtype_layout'] : null), true);
             $prefix = 'xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE | XDEBUG_CC_BRANCH_CHECK); ' .
                 'register_shutdown_function(function () { $source = ' . $source . '; ' .
@@ -52,6 +53,7 @@ class Process
                 '$metadata = ' . $metadata . '; $metadata["php"] = PHP_VERSION; $metadata["xdebug"] = phpversion("xdebug"); ' .
                 '$metadata["fieldtype_parent_sha256"] = getenv("LOW_SEG2CAT_FT_PARENT_SHA256") ?: null; ' .
                 '$metadata["fieldtype_trait_sha256"] = getenv("LOW_SEG2CAT_FT_TRAIT_SHA256") ?: null; ' .
+                '$metadata["module_nav_provenance"] = json_decode(getenv("LOW_SEG2CAT_MODULE_NAV_PROVENANCE") ?: "null", true); ' .
                 'file_put_contents(' . $destination . ' . ".metadata.json", json_encode($metadata)); }); ' . $prefix;
         }
         $environment = getenv();
@@ -65,10 +67,14 @@ class Process
         $environment['LOW_SEG2CAT_REQUEST_TYPE'] = isset($context['request']) ? $context['request'] : 'PAGE';
         $environment['LOW_SEG2CAT_DIRECT_ACCESS'] = !empty($context['direct_access']) ? '1' : '0';
         $environment['LOW_SEG2CAT_MISSING_PHAR'] = !empty($context['missing_phar']) ? '1' : '0';
-        foreach (array('REAL_FIELDTYPE', 'FT_SYSTEM_PATH', 'FT_APP_PATH', 'FT_TRAIT_FILE', 'FT_PARENT_SHA256', 'FT_TRAIT_SHA256') as $key) {
+        foreach (array('REAL_FIELDTYPE', 'FT_SYSTEM_PATH', 'FT_APP_PATH', 'FT_TRAIT_FILE', 'FT_PARENT_SHA256', 'FT_TRAIT_SHA256',
+            'MODULE_NAV_THIRD_PATH', 'MODULE_NAV_PROVENANCE') as $key) {
             $environment['LOW_SEG2CAT_' . $key] = '';
         }
         try {
+            if (!empty($context['module_nav_layout'])) {
+                $environment = array_merge($environment, self::moduleNavEnvironment($context['module_nav_layout'], $temporary));
+            }
             if (!empty($context['fieldtype_layout'])) {
                 $environment = array_merge($environment, self::fieldtypeEnvironment($context['fieldtype_layout'], $temporary));
             }
@@ -77,6 +83,39 @@ class Process
         } finally {
             self::removeDirectory($temporary);
         }
+    }
+
+    /**
+     * Supply a real module-extension layout while executing the original archive.
+     *
+     * @param string $layout
+     * @param string $temporary
+     * @return array
+     * @throws \RuntimeException
+     */
+    private static function moduleNavEnvironment($layout, $temporary)
+    {
+        if (!in_array($layout, array('defaults', 'configured'), true)) {
+            throw new \RuntimeException('Unknown module navigation fixture layout.');
+        }
+        $third = $temporary . '/third/';
+        $addon = $third . 'low_seg2cat/';
+        mkdir($addon . 'Conduit', 0700, true);
+        $provenance = array();
+        foreach (array('low_seg2cat.phar', 'addon.setup.php', 'addon.json', 'autoload.php') as $name) {
+            $source = LOW_SEG2CAT_ROOT . '/low_seg2cat/' . $name;
+            if (!symlink($source, $addon . $name)) {
+                throw new \RuntimeException('Could not prepare an owned module navigation layout.');
+            }
+            $provenance[$name] = array('source' => $source, 'sha256' => hash_file('sha256', $source));
+        }
+        $fixture = LOW_SEG2CAT_ROOT . '/tests/fixtures/module-nav/' . $layout . '.php';
+        if (!symlink($fixture, $addon . 'Conduit/McpNav.php')) {
+            throw new \RuntimeException('Could not register the module navigation fixture.');
+        }
+        $provenance['module_fixture'] = array('source' => $fixture, 'sha256' => hash_file('sha256', $fixture));
+        return array('LOW_SEG2CAT_MODULE_NAV_THIRD_PATH' => $third,
+            'LOW_SEG2CAT_MODULE_NAV_PROVENANCE' => json_encode($provenance));
     }
 
     /**
