@@ -32,3 +32,10 @@ The pinned parser normalizes forwarded CLI options and preserves a real end-of-o
 
 
 NativeArchiveAutoloadTest isolates the original PHAR index callback by unregistering only the loose loader in its owned child. Foreign/missing and cold/warm bundled-class lookups run from both the repository and an owned empty working directory; class Reflection paths and inventory hashes prove original member loading. The retained callback outcomes are separate from the included procedural main graph, whose zero branch counters remain unknown. See evidence/archive-autoload-contract.json for the two code/context/raw mappings.
+
+
+NativeUpdaterCallbackTest executes skipped/current versions and matching/missing optional extension callbacks in one original compiled updater graph. The shared EE redirect fixture terminates through an owned sentinel, and the POST settings/index tests catch it only at their unit boundary; POST settings must not render a view or footer afterward. evidence/updater-cache-contract.json records actual EE caller/redirect hashes, unknown exception policy and the measured graph limits. Three modern cache cases cover unknown null/false/empty-array modes without service calls; their remaining switch edges stay open.
+
+Owned probe cleanup restores newly owned directory permissions before descending, including deadline-interrupted 0000 nested directories, while preserving symlink targets. Two direct normal/deadline controls verify this boundary. `evidence/source-scope-audit.json` records the byte-based loose/archive mixed-PHP audit; no omitted executable unit was found.
+
+Modern pagination forwarding uses a URL-factory protocol object and nullable rendered output. Seven guarded primary-definition controls establish the actual EE Url argument and zero-page return contract; they provide no add-on coverage or full EE rendering claim.
