@@ -1,0 +1,262 @@
+[
+  {
+    "label": "main",
+    "raw_sha256": "5dfad8e26a78ce10672a3c2b80dd2eab9380009f2ab07feda6943949092e59e2",
+    "compressed_file": "main.json.gz",
+    "metadata": {
+      "php": "8.2.30",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "xdebug": "3.5.3",
+      "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
+      "flags": "UNUSED|DEAD_CODE|BRANCH_CHECK",
+      "children": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/coverage.RzgR0N/raw.json.children"
+    }
+  },
+  {
+    "label": "child-1",
+    "raw_sha256": "c6cbc52cdd3d774714750e29303347b4fe93580f6a5e5645826ac70c2ba4837b",
+    "compressed_file": "child-1.json.gz",
+    "metadata": {
+      "probe_sha256": "c267bfae380c808f0d0a0f06456133383a9da6e185d77419fde8ba816af01fe1",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "3.5.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-2",
+    "raw_sha256": "a5a54e1c483aab59a857ff6da2a15d0405c496d1345d21c953f1d488873c77f2",
+    "compressed_file": "child-2.json.gz",
+    "metadata": {
+      "probe_sha256": "ad840ad6c512a3d7c9213f9b941d0ba1dadb79afd47578aa64d235e76742f06d",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-3",
+    "raw_sha256": "6621333cda9c16c4c95e6322842f09897a4730dc5e585948750f63647bf49b96",
+    "compressed_file": "child-3.json.gz",
+    "metadata": {
+      "probe_sha256": "c267bfae380c808f0d0a0f06456133383a9da6e185d77419fde8ba816af01fe1",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "6.4.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-4",
+    "raw_sha256": "27bf60f95db8f987375facf35e8237de4cb0dd5beda4325c446467038a394e60",
+    "compressed_file": "child-4.json.gz",
+    "metadata": {
+      "probe_sha256": "677d2efdc7eb0f99501fd89305af1b6f0b5a36677b02528cec5aca8d2818b8c5",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-5",
+    "raw_sha256": "52cfe35bf8857ecd74016f536770f32d083ceb470969e2b551c16d0109125e63",
+    "compressed_file": "child-5.json.gz",
+    "metadata": {
+      "probe_sha256": "5d70eb970e067868c37af79b52b70b021f636a0cb231fcd9e9bd9d03fb91cee3",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "2.5.5",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-6",
+    "raw_sha256": "4a5ab5436c57d5496240b131c9727e73d9fb91f5efd7fc84caebbf733a609b7b",
+    "compressed_file": "child-6.json.gz",
+    "metadata": {
+      "probe_sha256": "c0fc13e7076e7c9477a4bf27cd44edac50c3151f8a657fbcdb645f66c89240e1",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-7",
+    "raw_sha256": "c84a078f0b1c623c8ae74aff6e80e5d383b37a5035026cdd1fa007b9921ce487",
+    "compressed_file": "child-7.json.gz",
+    "metadata": {
+      "probe_sha256": "e87fabb06066b75539a4b085bce569287a925aeba2597dc045f858ab34ba9edb",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-8",
+    "raw_sha256": "103a9a35bbffaa28ea18182b9a6e75690bdda88eb31cea78e306d51830894348",
+    "compressed_file": "child-8.json.gz",
+    "metadata": {
+      "probe_sha256": "ec2cc9ac8af3126322b82b8dcd5104d97388a12fd6f410d94074e6a4c9883f40",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-9",
+    "raw_sha256": "60ff995ab24e0b06f7d9c99dac0d3c09422048fc438c1b4d8386a8ffdcb25ffe",
+    "compressed_file": "child-9.json.gz",
+    "metadata": {
+      "probe_sha256": "a85c6ccd9938c7f321faa416f9ce60ced27b705e0c4eceb872f0824699aa22ec",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-10",
+    "raw_sha256": "33ae5519ed9030d1584aa79f8eff74010487cccc7f523f41f3ea96386d2013b6",
+    "compressed_file": "child-10.json.gz",
+    "metadata": {
+      "probe_sha256": "c267bfae380c808f0d0a0f06456133383a9da6e185d77419fde8ba816af01fe1",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "5.4.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-11",
+    "raw_sha256": "294e38df54916a1e650587020dd730ae682920d2863a8b89f1d852aa4264a878",
+    "compressed_file": "child-11.json.gz",
+    "metadata": {
+      "probe_sha256": "52170da443d011076bb62466cc852910638eace1cd7bdeb32e3d1393b9a3dcf2",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-12",
+    "raw_sha256": "32bf155ea0659bf41a9f4415433acac28789df9d6fe35bd8f7630686d80fd38f",
+    "compressed_file": "child-12.json.gz",
+    "metadata": {
+      "probe_sha256": "f147db814d4319b896852a778ca122b8f67670b3b6152bf27b6c4b412201c3ec",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-13",
+    "raw_sha256": "41cd52992c3061c060c22a5c2bd0c01812366cc663b873bc9e1c217a88252625",
+    "compressed_file": "child-13.json.gz",
+    "metadata": {
+      "probe_sha256": "c267bfae380c808f0d0a0f06456133383a9da6e185d77419fde8ba816af01fe1",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-14",
+    "raw_sha256": "86b12e5682017c60d96d0fa416fc91f2dc64aae4d3c83a172f7c650fcb526fe6",
+    "compressed_file": "child-14.json.gz",
+    "metadata": {
+      "probe_sha256": "5bcf2455c46c3257de6d293816bdd34e2d540071e81d0a0851a71524967c3b9f",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-15",
+    "raw_sha256": "d20899585e7d10dd192f151e166f516e63399bb9557ab436b3f8966115787222",
+    "compressed_file": "child-15.json.gz",
+    "metadata": {
+      "probe_sha256": "5d70eb970e067868c37af79b52b70b021f636a0cb231fcd9e9bd9d03fb91cee3",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "2.11.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-16",
+    "raw_sha256": "d20899585e7d10dd192f151e166f516e63399bb9557ab436b3f8966115787222",
+    "compressed_file": "child-16.json.gz",
+    "metadata": {
+      "probe_sha256": "5d70eb970e067868c37af79b52b70b021f636a0cb231fcd9e9bd9d03fb91cee3",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "2.6.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-17",
+    "raw_sha256": "de5c001d622f7ceef0f9861002fc7e707620b08239025fdab09a942d7c1a37cd",
+    "compressed_file": "child-17.json.gz",
+    "metadata": {
+      "probe_sha256": "3c9f9a89a31c70f1af0ac0b8c0d3a6fd6083a6905c740139e6dbcd9af6d34ddb",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-18",
+    "raw_sha256": "d775a4f36776e0339bfa6c5d3775d7e64bb0ba5d2099501b1c13766330bf6573",
+    "compressed_file": "child-18.json.gz",
+    "metadata": {
+      "probe_sha256": "c267bfae380c808f0d0a0f06456133383a9da6e185d77419fde8ba816af01fe1",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "2.11.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  },
+  {
+    "label": "child-19",
+    "raw_sha256": "495fddda5491117a00dfc8a16095521864503e58c912146dee66d4b253e3ff79",
+    "compressed_file": "child-19.json.gz",
+    "metadata": {
+      "probe_sha256": "c267bfae380c808f0d0a0f06456133383a9da6e185d77419fde8ba816af01fe1",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "4.3.0",
+      "request": "PAGE",
+      "php": "8.2.30",
+      "xdebug": "3.5.3"
+    }
+  }
+]
