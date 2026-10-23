@@ -1,0 +1,45 @@
+{
+  "note": "Each row is one independent original-PHAR context; no counters merged. Only the loose test loader is unregistered. Missing/foreign classes and cold/warm StaticCache/PersistentCache lookups execute the original archive callback. Included procedural main branch counters remain unknown; paths are omitted/null. No fixture class or relative filesystem class file is supplied.",
+  "contexts": [
+    {
+      "label": "child-87",
+      "owned_empty_working_directory": true,
+      "probe_sha256": "9f2a68b003ade150a9c341dead9c1c062687c4a5ac78f6d950d86d7174e70b12",
+      "raw_sha256": "eaf8103274e1b43000e55b8d003408005e96006793c62127bb7dc3876a7d4078",
+      "inventory_name": "low_seg2cat/low_seg2cat.phar::index.php",
+      "source_sha256": "7380f60c4b71ea3a9521db9db5396cf1041a2f69d0dbad1974db51244795bb5c",
+      "file_lines": [
+        13,
+        13
+      ],
+      "callback_basic_blocks": [
+        5,
+        5
+      ],
+      "callback_ordinary_outcomes": [
+        5,
+        5
+      ]
+    },
+    {
+      "label": "child-88",
+      "owned_empty_working_directory": false,
+      "probe_sha256": "b41114e0ad0ed2b9659a952c2e6224d17f89529e000bea60c2acab37e6493c99",
+      "raw_sha256": "eaf8103274e1b43000e55b8d003408005e96006793c62127bb7dc3876a7d4078",
+      "inventory_name": "low_seg2cat/low_seg2cat.phar::index.php",
+      "source_sha256": "7380f60c4b71ea3a9521db9db5396cf1041a2f69d0dbad1974db51244795bb5c",
+      "file_lines": [
+        13,
+        13
+      ],
+      "callback_basic_blocks": [
+        5,
+        5
+      ],
+      "callback_ordinary_outcomes": [
+        5,
+        5
+      ]
+    }
+  ]
+}

@@ -20,15 +20,15 @@ Command: `python3 tests/scripts/matrix.py`. The script runs the complete configu
 
 | Herd PHP | Cases | Assertions | Errors | Failures | Warnings | Risky | Skipped | Incomplete |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 7.4.33 | 294 | 1553 | 16 | 25 | 0 | 0 | 0 | 0 |
-| 8.0.30 | 294 | 1479 | 16 | 27 | 0 | 0 | 0 | 0 |
-| 8.1.33 | 294 | 1476 | 19 | 27 | 0 | 0 | 0 | 0 |
-| 8.2.30 | 294 | 1476 | 19 | 27 | 0 | 0 | 0 | 0 |
-| 8.3.28 | 294 | 1476 | 19 | 27 | 0 | 0 | 0 | 0 |
-| 8.4.15 | 294 | 1476 | 19 | 27 | 0 | 0 | 0 | 0 |
-| 8.5.0 | 294 | 1476 | 19 | 27 | 0 | 0 | 0 | 0 |
+| 7.4.33 | 302 | 1666 | 16 | 25 | 0 | 0 | 0 | 0 |
+| 8.0.30 | 302 | 1592 | 16 | 27 | 0 | 0 | 0 | 0 |
+| 8.1.33 | 302 | 1589 | 19 | 27 | 0 | 0 | 0 | 0 |
+| 8.2.30 | 302 | 1589 | 19 | 27 | 0 | 0 | 0 | 0 |
+| 8.3.28 | 302 | 1589 | 19 | 27 | 0 | 0 | 0 | 0 |
+| 8.4.15 | 302 | 1589 | 19 | 27 | 0 | 0 | 0 | 0 |
+| 8.5.0 | 302 | 1589 | 19 | 27 | 0 | 0 | 0 | 0 |
 
-All 29 compilation units passed under each version. Errors/failures below are unchanged-source regressions. No PHPUnit/harness deprecation was present in these logs. The shorter assertion count on PHP 8 reflects the two EE2 datasets aborting at a source ValueError. PHP 8.1+ additionally rejects null stored fieldtype values at the hidden base64_decode deprecation; those three datasets complete on PHP 7.4/8.0. See `evidence/matrix.json` for exact commands and runtime results, and `evidence/matrix-cases.json` for every error/failure identity and type. Complete local logs are in ignored `tests/reports/matrix-9x2qac65/`.
+All 29 compilation units passed under each version. Errors/failures below are unchanged-source regressions. No PHPUnit/harness deprecation was present in these logs. The shorter assertion count on PHP 8 reflects the two EE2 datasets aborting at a source ValueError. PHP 8.1+ additionally rejects null stored fieldtype values at the hidden base64_decode deprecation; those three datasets complete on PHP 7.4/8.0. See `evidence/matrix.json` for exact commands and runtime results, and `evidence/matrix-cases.json` for every error/failure identity and type. Complete local logs are in ignored `tests/reports/matrix-py1u5y6h/`.
 
 ## Behavior covered
 
@@ -81,7 +81,7 @@ LOW_SEG2CAT_XDEBUG_EXTENSION=/Applications/Herd.app/Contents/Resources/xdebug/xd
 tests/scripts/coverage.sh
 ```
 
-The latest raw branch run used PHP 8.2.30 with Xdebug, all 294 cases, and retained the expected 19 errors/27 failures. `evidence/coverage-graphs.json` maps all 84 independently compressed raw source graphs to their SHA-256 and runtime/context. `branch-report.py` retains basic blocks separately from `out`/`out_hit` exits; block hits alone never close a branch. Synthetic VM exit edges remain explicitly identified, with their known zero-hit limitation. Full path coverage is not a target; function path enumeration is omitted from retained graphs. Each index row records function_paths=omitted_by_collector and path_coverage_percent=null. Graph/hash equality refers to retained line/function/block/out/out_hit records, not an original complete Xdebug path payload. Source files absent from a graph remain **unmeasured**, not 100%. Different subprocess/context graphs are never merged.
+The latest raw branch run used PHP 8.2.30 with Xdebug, all 302 cases, and retained the expected 19 errors/27 failures. `evidence/coverage-graphs.json` maps all 89 independently compressed raw source representations to their SHA-256 and runtime/context. `branch-report.py` retains basic blocks separately from `out`/`out_hit` exits; block hits alone never close a branch. Synthetic VM exit edges remain explicitly identified, with their known zero-hit limitation. Full path coverage is not a target; function path enumeration is omitted from retained graphs. Each index row records function_paths=omitted_by_collector and path_coverage_percent=null. Graph/hash equality refers to retained line/function/block/out/out_hit records, not an original complete Xdebug path payload. Source files absent from a graph remain **unmeasured**, not 100%. Different subprocess/context graphs are never merged.
 
 The skill method report was run with `--target low_seg2cat --include-magic` against a freshly generated Clover file. `evidence/skill-method-lines.json` retains its exact method rows. Its `branch_percent: null` means unknown; its `at_target` labels are line-only output and do not establish campaign completion. Main extension methods show 100% measured lines except `update_extension`, 14/18 (77.78%): the missing-argument regression prevents the legacy path completing. `js()` has zero Clover executable lines despite behavioral string assertions; do not call 0/0 branch proof.
 
@@ -105,7 +105,7 @@ Blocking/gap examples:
 - Native source includes compile into separate `{main}` graphs whose branch hit data can remain zero despite executed line data. Both raw facts are retained; no artificial 100% is assigned.
 - PHP <5.3.6 branches in bundled `Mcp::paginateModel`, Windows-only PHAR stub paths on macOS, and false branches guarded by the shipped constant `FluxCapacitor::L === true` cannot be exercised in this required runtime/platform matrix.
 - Private invariant collections and normalization can make zero-iteration outcomes unreachable without artificial production-state mutation. These are retained as uncovered outcomes, not removed from metrics.
-- Independent healthy paths still require work, including the global ee() fallback with a minimal legacy accessor bootstrap, additional navigation/context combinations and archive-loader error conditions. Persistent-cache write failure and directory-creation failure paths remain unexecuted beyond their current external-helper/strict-diagnostic boundaries. They are gaps to investigate, not a blanket source blocker. No full-coverage milestone is claimed.
+- The global ee() fallback and original archive autoload callback now have separate bounded contexts. Additional navigation/version combinations, archive-loader error conditions and persistent-cache write/directory-creation failures remain specific gaps to investigate beyond their current source, external-helper and strict-diagnostic boundaries. They are not a blanket source blocker. No full-coverage milestone is claimed.
 
 ## Review and publication
 
@@ -258,3 +258,14 @@ The separate Clover/skill run tests/reports/accessor-300-clover-z4f__tbm/ reprod
 Independent review approved exact patch d0f3dbcd01d57ca4c9115514f8cf7f41cb3febaaeb90459fed2f2aecc9b5da8b against 59e5d6a1c87b584d2bcb5d60a965bd8884f8b652, all 18 changed / 158 tracked snapshot hashes, pinned tools and original source baseline. The private replay reproduced every full seven-runtime case/assertion/result/type identity, all 25 standalone files on both endpoints and randomized suites with seed 20261106. A fresh PHP 8.2 capture reproduced the exact normalized multiset of 87 retained source representations; all compressed hashes, paired 300-case JUnit, 29 inventory rows, seven Python controls and eight PHP lint checks verified. The actual read-only boot accessor reference and EE parent/trait/helper hashes also matched. No actionable code, fixture, harness, security or isolation finding remained. Source-red and incomplete path/constructor/outcome/platform/integration limits remain unchanged.
 
 Three scoped commits (d375185, 4ccca43, 742aee6) published the exact reviewed union to origin/unit-tests-2026, ending at 742aee611955a8a2bd912366e68c8e9f114c458f, tree 54e3a12ce37ee1130d7c9439ef398ad84fbb54ee. The full-index binary diff from 59e5d6a has the exact approved SHA-256 above. A fresh live origin query matched that head, local/tracking parity was 0/0, the checkout was clean and production source still matched 38a3d826df9b2ef2fbf96eca08efce5211386e68. This factual note does not imply another executable run or a completed campaign.
+
+
+## Original archive autoloader continuation
+
+NativeArchiveAutoloadTest unregisters only the loose addon loader in a disposable child, then requires the unchanged original PHAR. Its actual index.php callback handles foreign and missing names, cold-loads StaticCache and PersistentCache, and preserves warm class lookups and callback registration. Reflection filenames and inventory hashes prove both classes came from their shipped archive members. The same inputs execute from the repository working directory and a newly owned empty working directory, without supplying any relative fixture class file. Native binary/version/E_ALL and owned cleanup assertions remain strict. An initial draft string-escaping syntax error was corrected before accepted full-run generation and supplies no source attribution.
+
+The accepted full matrix tests/reports/matrix-py1u5y6h/ runs 302 cases on all seven runtimes: PHP 7.4 1666 assertions / 16 errors / 25 failures, PHP 8.0 1592 / 16 / 27, PHP 8.1 through 8.5 1589 / 19 / 27; other categories remain zero. Every previous 300 case/assertion/result/type identity is preserved, and the two new cases add 50 healthy assertions. All 26 configured files independently on PHP 7.4/8.5 and complete randomized endpoint suites seed 20261107 exactly match the full matrix (tests/reports/archive-autoload-302-final-isolation-aqi4dxph/, evidence/archive-autoload-isolation.json).
+
+Fresh PHP 8.2 capture tests/reports/coverage.2CIxPt/ retains 89 independent representations with paired 302-case JUnit SHA-256 4eacf1502b9837677c6ce63834b49980600be7485d74bf2c372c9581be5d7706. Each of the two new original archive contexts measures 13/13 executable file lines and the anonymous callback at 5/5 basic blocks and 5/5 ordinary out/out_hit outcomes within one compiled graph. The context/code/source/raw hashes and actual counters are in evidence/archive-autoload-contract.json. Both raw payloads are identical but remain separate working-directory contexts; no counters are merged. The included procedural main graph retains zero branch counters despite positive lines, so it remains unknown. Function paths remain omitted/null and the six conditional bridge constructors remain unknown.
+
+All 87 prior retained representations match after verified primary-copy key normalization; the parent and 78 native raw byte hashes are unchanged, while eight primary copies have new verified owned paths. All 89 compressed hashes and 29-row reports validate. The separate Clover/skill report tests/reports/archive-autoload-302-clover-racglk95/ remains unchanged at 12 methods, 11 line targets and one below, with every branch metric null. Source defects, other ordinary/synthetic outcomes, platform limitations and full EE/database integration remain incomplete. Both changed-PHP endpoint lint checks, all seven Python reporter controls and byte-identical 29-unit inventory regeneration under PHP 7.4/8.5 pass. PR-style self review found no actionable test, harness, fixture, security or isolation issue after the initial syntax correction and explicit class-list assertion. Exact independent review is pending; no publication for this continuation is claimed.
