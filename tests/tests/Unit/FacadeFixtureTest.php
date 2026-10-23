@@ -8,6 +8,26 @@ use Tests\Support\LegacySession;
 class FacadeFixtureTest extends TestCase
 {
     /**
+     * Start each new DI query with an empty schema cache and preserve pending state.
+     *
+     * @return void
+     */
+    public function testFreshDiBuildersHaveEmptySchemaCaches()
+    {
+        $this->app->db->data_cache = array('table_names' => array('legacy'), 'other' => 'keep');
+        $this->app->db->where('entry_id', 12);
+        $calls = $this->app->db->calls;
+        $first = ee('db');
+        $this->assertSame(array(), $first->data_cache);
+        $first->data_cache['table_names'] = array('first-query');
+        $second = ee('db');
+        $this->assertNotSame($first, $second);
+        $this->assertSame(array(), $second->data_cache);
+        $this->assertSame(array('table_names' => array('legacy'), 'other' => 'keep'), $this->app->db->data_cache);
+        $this->assertSame($calls, $this->app->db->calls);
+    }
+
+    /**
      * Create independent DI queries after the loaded legacy database is removed.
      *
      * @return void

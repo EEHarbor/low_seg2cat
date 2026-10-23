@@ -29,7 +29,6 @@ namespace Tests\Support {
         public $table;
         public $services = array();
         public $builders = array();
-        public $builderCache = array();
         private $databasePrototype;
         private $legacyLoaded = array();
         public $assigned = array();
@@ -109,7 +108,7 @@ namespace Tests\Support {
         {
             set_error_handler(function ($severity, $message, $file, $line) {
                 $source = LOW_SEG2CAT_ROOT . '/low_seg2cat/';
-                if (strpos($file, $source) === 0 || strpos($file, 'phar://' . $source) === 0 ||
+                if ($file === 'Command line code' || strpos($file, $source) === 0 || strpos($file, 'phar://' . $source) === 0 ||
                     strpos($file, LOW_SEG2CAT_ROOT . '/tests/') === 0) {
                     throw new \ErrorException($message, 0, $severity, $file, $line);
                 }
@@ -145,7 +144,7 @@ namespace Tests\Support {
             if ($service === 'db') {
                 $builder = clone $this->databasePrototype;
                 $builder->calls = array();
-                $builder->data_cache = $this->builderCache;
+                $builder->data_cache = array();
                 $builder->resetQueryState();
                 $this->builders[] = $builder;
                 return $builder;

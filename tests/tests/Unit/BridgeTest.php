@@ -9,6 +9,36 @@ use Tests\Support\Recorder;
 class BridgeTest extends TestCase
 {
     /**
+     * Activate a direct navigation method while leaving unrelated pages untouched.
+     *
+     * @dataProvider modernBridges
+     * @param string $name
+     * @return void
+     */
+    public function testDirectNavigationActivationAndUnmatchedPages($name)
+    {
+        $class = 'Low\\Seg2Cat\\FluxCapacitor\\Bridge\\' . $name;
+        $bridge = new $class(array('module' => 'low_seg2cat', 'module_name' => 'Low Seg2Cat'));
+        $this->app->uri = new \EE_URI();
+        $this->app->uri->segments = array(1 => 'config');
+        $sidebar = new Recorder();
+        $this->app->services['CP/Sidebar'] = $sidebar;
+        $this->app->cp = new Recorder();
+        $bridge->getNav(array('config' => 'Settings'));
+        $this->assertSame('Settings', $this->app->view->cp_page_title);
+        $this->assertContains(array('isActive', array()), $sidebar->calls);
+        $this->assertSame('set_breadcrumb', $this->app->cp->calls[0][0]);
+        $this->app->view->cp_page_title = 'Unrelated page';
+        $this->app->uri->segments = array(1 => 'other');
+        $this->app->cp->calls = array();
+        $sidebar->calls = array();
+        $bridge->getNav(array('index' => 'Home', 'config' => 'Settings'));
+        $this->assertSame('Unrelated page', $this->app->view->cp_page_title);
+        $this->assertSame(array(), $this->app->cp->calls);
+        $this->assertNotContains(array('isActive', array()), $sidebar->calls);
+    }
+
+    /**
      * Supply every independently shipped modern bridge implementation.
      *
      * @return array
@@ -78,7 +108,6 @@ class BridgeTest extends TestCase
         $this->app->db->data_cache['table_names'] = array('stale');
         $this->app->db->from('legacy_query');
         $legacyCalls = $this->app->db->calls;
-        $this->app->builderCache['table_names'] = array('fresh-builder-stale');
         $this->assertSame('4.1.1', $bridge->getConfig('version'));
         $this->assertSame(array('stale'), $this->app->db->data_cache['table_names']);
         $this->assertNotSame($this->app->db, $this->app->builders[0]);

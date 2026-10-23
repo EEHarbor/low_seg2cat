@@ -8,4 +8,12 @@ if [[ "$actual" != "$expected" ]]; then
     echo 'Pinned PHPUnit 9.6.38 checksum mismatch.' >&2
     exit 2
 fi
-exec "$php_binary" -d error_reporting=-1 -d display_errors=1 "$script_dir/phpunit-9.phar" "$@"
+report_directory="$(mktemp -d "${TMPDIR:-/tmp}/low-seg2cat-junit.XXXXXXXX")"
+trap 'rm -rf "$report_directory"' EXIT
+"$php_binary" -d error_reporting=-1 -d display_errors=stderr "$script_dir/runner.php" prepare "$report_directory/arguments.json" "$@"
+set +e
+"$php_binary" -d error_reporting=-1 -d display_errors=1 "$script_dir/phpunit-9.phar" "$@" --log-junit "$report_directory/junit.xml"
+suite_status=$?
+set -e
+"$php_binary" -d error_reporting=-1 -d display_errors=stderr "$script_dir/runner.php" validate "$report_directory/arguments.json" "$report_directory/junit.xml"
+exit "$suite_status"
