@@ -11,6 +11,20 @@ use Tests\Support\Process;
 class RemainingBaseTest extends TestCase
 {
     /**
+     * Return no channel when an existing content identifier no longer has a model row.
+     *
+     * @return void
+     */
+    public function testMissingChannelEntryDoesNotReadPropertiesFromNull()
+    {
+        $fieldtype = new class extends Ft {};
+        $fieldtype->contentId = 12;
+        $this->app->channelEntries = array();
+        $this->app->input = new CallbackService(array('get_post' => function () { return false; }));
+        $this->assertFalse($fieldtype->getChannelId());
+    }
+
+    /**
      * Exercise fieldtype metadata, accepted contexts, and settings rows/aliases.
      *
      * @return void
