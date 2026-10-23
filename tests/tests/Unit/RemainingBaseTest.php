@@ -106,7 +106,12 @@ class RemainingBaseTest extends TestCase
     {
         $controlPanel = new Mcp();
         $this->assertSame('4.1.1', $controlPanel->version);
-        $controlPanel->index();
+        try {
+            $controlPanel->index();
+            $this->fail('The EE redirect returned to the module index.');
+        } catch (\Tests\Support\RedirectTermination $termination) {
+            $this->assertSame('cp://addons/settings/low_seg2cat/license', $termination->getMessage());
+        }
         $this->assertSame(array('cp://addons/settings/low_seg2cat/license'), $this->app->redirects);
         $view = $controlPanel->license();
         $this->assertSame('rendered:low_seg2cat:license', $view['body']);
@@ -130,15 +135,27 @@ class RemainingBaseTest extends TestCase
         $controlPanel = new class extends Mcp { public $data = array(); };
         $model = new \Tests\Support\ModelQuery(array((object) array('id' => 1), (object) array('id' => 2), (object) array('id' => 3)));
         $this->app->input = new CallbackService(array('get' => function () { return '2'; }));
-        $pagination = new \Tests\Support\Recorder();
-        $this->app->services['CP/Pagination'] = $pagination;
-        $this->assertSame($model, $controlPanel->paginateModel($model, '/list', 2));
-        $this->assertSame($pagination, $controlPanel->data['pagination']);
+        $pages = array();
+        $this->app->services['CP/Pagination'] = function ($total) use (&$pages) {
+            $pagination = new \Tests\Support\Pagination($total);
+            $pages[] = $pagination;
+            return $pagination;
+        };
+        $url = ee('CP/URL')->make('list');
+        $this->assertSame($model, $controlPanel->paginateModel($model, $url, 2));
+        $this->assertSame('<nav>pages</nav>', $controlPanel->data['pagination']);
         $this->assertSame(1, $model->all()->count());
-        $this->assertContains(array('currentPage', array(2)), $pagination->calls);
+        $this->assertSame(3, $pages[0]->totalRows);
+        $this->assertSame($url, $pages[0]->renderedUrl);
+        $this->assertContains(array('currentPage', array(2)), $pages[0]->calls);
         $this->app->input = new CallbackService(array('get' => function () { return null; }));
-        $controlPanel->paginateModel($model);
-        $this->assertContains(array('currentPage', array(1)), $pagination->calls);
+        $single = new \Tests\Support\ModelQuery(array((object) array('id' => 1)));
+        $this->assertSame($single, $controlPanel->paginateModel($single));
+        $this->assertNull($controlPanel->data['pagination']);
+        $this->assertSame(1, $pages[1]->totalRows);
+        $this->assertContains(array('currentPage', array(1)), $pages[1]->calls);
+        $this->assertInstanceOf(\Tests\Support\Url::class, $pages[1]->renderedUrl);
+        $this->assertSame('cp://addons/settings/low_seg2cat/' . __FUNCTION__, (string) $pages[1]->renderedUrl);
     }
 
     /**

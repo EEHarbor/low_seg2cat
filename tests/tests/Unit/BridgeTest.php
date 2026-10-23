@@ -49,7 +49,7 @@ class BridgeTest extends TestCase
     }
 
     /**
-     * Build control-panel routes and move path parameters out of query strings.
+     * Build routes and forward URL identity and nullable pagination results.
      *
      * @dataProvider modernBridges
      * @param string $name
@@ -75,13 +75,28 @@ class BridgeTest extends TestCase
         $this->assertSame(1, $bridge->getCurrentPage());
         $this->app->input = new CallbackService(array('get' => function () { return '5'; }));
         $this->assertSame('5', $bridge->getCurrentPage());
-        $pagination = new Recorder();
-        $this->app->services['CP/Pagination'] = $pagination;
-        $options = array('total_rows' => 42, 'per_page' => 10, 'current_page' => 2, 'base_url' => '/list');
-        $this->assertSame($pagination, $bridge->pagination($options));
-        $bridge->pagination($options + array('page_links' => 7, 'page_query_string' => 'p'));
-        $this->assertContains(array('displayPageLinks', array(7)), $pagination->calls);
-        $this->assertContains(array('queryStringVariable', array('p')), $pagination->calls);
+        $url = ee('CP/URL')->make('list');
+        foreach (array(42, 0) as $total) {
+            $optional = $total === 0;
+            $page = $optional ? 1 : 2;
+            $markup = $total === 0 ? null : '<nav>pages</nav>';
+            $pagination = $this->getMockBuilder(\stdClass::class)
+                ->addMethods(array('perPage', 'currentPage', 'displayPageLinks', 'queryStringVariable', 'render'))->getMock();
+            $pagination->expects($this->once())->method('perPage')->with(10)->willReturnSelf();
+            $pagination->expects($this->once())->method('currentPage')->with($page)->willReturnSelf();
+            $pagination->expects($optional ? $this->once() : $this->never())->method('displayPageLinks')->with(7)->willReturnSelf();
+            $pagination->expects($optional ? $this->once() : $this->never())->method('queryStringVariable')->with('p')->willReturnSelf();
+            $pagination->expects($this->once())->method('render')->with($this->identicalTo($url))->willReturn($markup);
+            $this->app->services['CP/Pagination'] = function ($count) use ($total, $pagination) {
+                $this->assertSame($total, $count);
+                return $pagination;
+            };
+            $options = array('total_rows' => $total, 'per_page' => 10, 'current_page' => $page, 'base_url' => $url);
+            if ($optional) {
+                $options += array('page_links' => 7, 'page_query_string' => 'p');
+            }
+            $this->assertSame($markup, $bridge->pagination($options));
+        }
     }
 
     /**
@@ -176,6 +191,28 @@ class BridgeTest extends TestCase
             ));
         }
         return $datasets;
+    }
+
+    /**
+     * Leave both cache services untouched for unknown non-string modes.
+     *
+     * @dataProvider modernBridges
+     * @param string $name
+     * @return void
+     */
+    public function testUnknownCacheModesLeaveServicesUntouched($name)
+    {
+        $class = 'Low\\Seg2Cat\\FluxCapacitor\\Bridge\\' . $name;
+        $bridge = new $class(array('module' => 'low_seg2cat', 'module_name' => 'Low Seg2Cat'));
+        $persistent = new Recorder();
+        $session = new Recorder();
+        $this->app->cache = $persistent;
+        $this->app->session = $session;
+        foreach (array(null, false, array()) as $mode) {
+            $this->assertFalse($bridge->cache($mode, 'owned'));
+            $this->assertSame(array(), $persistent->calls);
+            $this->assertSame(array(), $session->calls);
+        }
     }
 
     /**

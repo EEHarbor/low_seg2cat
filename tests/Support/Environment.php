@@ -1,6 +1,10 @@
 <?php
 
 namespace Tests\Support {
+    class RedirectTermination extends \RuntimeException
+    {
+    }
+
     class Environment
     {
         public $config;
@@ -66,6 +70,7 @@ namespace Tests\Support {
             }));
             $this->functions = new CallbackService(array('redirect' => function ($url) {
                 $this->redirects[] = (string) $url;
+                throw new RedirectTermination((string) $url);
             }, 'clear_caching' => function ($type) {
                 $this->loaded[] = 'clear:' . $type;
             }, 'assign_variables' => function ($input) {
@@ -380,6 +385,54 @@ namespace Tests\Support {
         public function cannotClose()
         {
             return $this->__call('cannotClose', array());
+        }
+    }
+
+    class Pagination extends Recorder
+    {
+        public $totalRows;
+        public $renderedUrl;
+        private $perPage = 25;
+
+        /**
+         * Retain the row count supplied to the bounded pagination service.
+         *
+         * @param int $totalRows
+         * @return void
+         */
+        public function __construct($totalRows)
+        {
+            $this->totalRows = $totalRows;
+        }
+
+        /**
+         * Record the page size while preserving the fluent service protocol.
+         *
+         * @param int $perPage
+         * @return self
+         */
+        public function perPage($perPage)
+        {
+            $this->perPage = $perPage;
+            return $this->__call('perPage', array($perPage));
+        }
+
+        /**
+         * Enforce the URL-object boundary and return a bounded render marker.
+         *
+         * @param Url $url
+         * @return string|null
+         * @throws \TypeError
+         * @throws \DivisionByZeroError
+         */
+        public function render(Url $url)
+        {
+            $this->renderedUrl = $url;
+            $this->calls[] = array('render', array($url));
+            if (ceil($this->totalRows / $this->perPage) < 2) {
+                return null;
+            }
+            return '<nav>pages</nav>';
         }
     }
 

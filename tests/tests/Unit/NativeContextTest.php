@@ -30,31 +30,6 @@ CODE;
     }
 
     /**
-     * Paginate from a top-level caller without inventing a backtrace-derived URL.
-     *
-     * @return void
-     */
-    public function testPaginationWithoutAnOuterFunctionUsesTheEmptyUrlFallback()
-    {
-        $code = <<<'CODE'
-$app = ee();
-$app->input = new \Tests\Support\CallbackService(array('get' => function () { return false; }));
-$pagination = new \Tests\Support\Recorder();
-$app->services['CP/Pagination'] = $pagination;
-$controlPanel = new class extends \Low\Seg2Cat\FluxCapacitor\Base\Mcp { public $data = array(); };
-$model = new \Tests\Support\ModelQuery(array((object) array('id' => 1)));
-$returned = $controlPanel->paginateModel($model);
-echo json_encode(array('same_model' => $returned === $model, 'count' => $model->all()->count(), 'calls' => $pagination->calls));
-CODE;
-        $result = Process::probe($code);
-        $this->assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
-        $data = json_decode($result['stdout'], true);
-        $this->assertTrue($data['same_model']);
-        $this->assertSame(1, $data['count']);
-        $this->assertContains(array('render', array('')), $data['calls']);
-    }
-
-    /**
      * Reject direct access before extension setup or archive loading occurs.
      *
      * @return void

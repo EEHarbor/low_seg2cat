@@ -70,7 +70,12 @@ class ExtensionTest extends TestCase
     {
         $_POST = array('all_sites' => 'y', 'category_groups' => array('', '0', '7', 9, false), 'uri_pattern' => '#news#');
         $extension = new \Low_seg2cat_ext();
-        $extension->settings_form(array(2 => array('all_sites' => 'n')));
+        try {
+            $extension->settings_form(array(2 => array('all_sites' => 'n')));
+            $this->fail('The EE redirect returned to settings rendering.');
+        } catch (\Tests\Support\RedirectTermination $termination) {
+            $this->assertSame('cp://addons/settings/low_seg2cat', $termination->getMessage());
+        }
         $updates = array_values(array_filter($this->app->db->calls, function ($call) {
             return $call[0] === 'update';
         }));
@@ -83,6 +88,8 @@ class ExtensionTest extends TestCase
         $this->assertSame(array('cp://addons/settings/low_seg2cat'), $this->app->redirects);
         $this->assertSame(array('makeInline', array('shared-form')), $this->app->alerts->calls[0]);
         $this->assertSame(array('addToBody', array('Low Seg2Cat settings saved.')), $this->app->alerts->calls[3]);
+        $this->assertSame(array(), $this->app->rendered);
+        $this->assertSame(array(), $this->app->foot);
     }
 
     /**
