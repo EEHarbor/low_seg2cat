@@ -104,6 +104,49 @@ CODE;
     }
 
     /**
+     * Clean restricted owned directories after normal exit or deadline termination.
+     *
+     * @dataProvider restrictedChildren
+     * @param bool $stall Wait for the owned child deadline.
+     * @return void
+     */
+    public function testRestrictedProbeCleanupPreservesExternalSymlinkTargets($stall)
+    {
+        $external = tempnam(sys_get_temp_dir(), 'low-seg2cat-cleanup-');
+        file_put_contents($external, 'external sentinel');
+        $code = '$nested = sys_get_temp_dir() . "/restricted/nested"; mkdir($nested, 0700, true); ' .
+            'file_put_contents($nested . "/owned", "owned sentinel"); symlink(' . var_export($external, true) . ', $nested . "/outside"); ' .
+            'chmod($nested, 0000); chmod(dirname($nested), 0000); chmod(sys_get_temp_dir(), 0500); ' .
+            'echo json_encode(array("pid" => getmypid(), "temporary" => sys_get_temp_dir())); fwrite(STDERR, "restricted-prefix");';
+        if ($stall) {
+            $code .= 'usleep(5000000);';
+        }
+        try {
+            $result = Process::probe($code, array('harness_only' => true, 'timeout_seconds' => 0.4));
+            $child = json_decode($result['stdout'], true);
+            $this->assertSame($stall ? 124 : 0, $result['status']);
+            $this->assertSame($stall, $result['timed_out']);
+            $this->assertSame('restricted-prefix', $result['stderr']);
+            $this->assertIsArray($child);
+            $this->assertDirectoryDoesNotExist($child['temporary']);
+            $this->assertFalse(posix_kill($child['pid'], 0));
+            $this->assertSame('external sentinel', file_get_contents($external));
+        } finally {
+            unlink($external);
+        }
+    }
+
+    /**
+     * Cover cleanup after ordinary completion and timeout interruption.
+     *
+     * @return array
+     */
+    public function restrictedChildren()
+    {
+        return array('normal exit' => array(false), 'deadline' => array(true));
+    }
+
+    /**
      * Capture large stderr output without blocking behind an unread stdout pipe.
      *
      * @return void

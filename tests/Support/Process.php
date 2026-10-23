@@ -257,20 +257,31 @@ class Process
     }
 
     /**
-     * Remove only the newly allocated directory, without following symlink targets.
+     * Restore owned directory permissions and remove entries without following links.
      *
      * @param string $directory
      * @return void
+     * @throws \ErrorException
      */
     private static function removeDirectory($directory)
     {
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ($iterator as $file) {
-            if ($file->isDir() && !$file->isLink()) {
-                rmdir($file->getPathname());
-            } else {
-                unlink($file->getPathname());
+        if (is_link($directory) || is_file($directory)) {
+            unlink($directory);
+            return;
+        }
+        if (!is_dir($directory)) {
+            return;
+        }
+        chmod($directory, 0700);
+        foreach (new \DirectoryIterator($directory) as $file) {
+            if ($file->isDot()) {
+                continue;
             }
+            if ($file->isLink() || !$file->isDir()) {
+                unlink($file->getPathname());
+                continue;
+            }
+            self::removeDirectory($file->getPathname());
         }
         rmdir($directory);
     }
