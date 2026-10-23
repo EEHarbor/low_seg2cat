@@ -12,6 +12,37 @@ use Tests\Support\Process;
 class BundledRegressionTest extends TestCase
 {
     /**
+     * Use add-on defaults when a stored fieldtype setting is null or malformed.
+     *
+     * @dataProvider invalidFieldtypeSettings
+     * @param string $name
+     * @param string|null $stored
+     * @return void
+     */
+    public function testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics($name, $stored)
+    {
+        $class = 'Low\\Seg2Cat\\FluxCapacitor\\Bridge\\' . $name;
+        $bridge = new $class(array('module' => 'low_seg2cat', 'module_name' => 'Low Seg2Cat'));
+        $this->app->db->rowsByTable['fieldtypes'] = array(array('settings' => $stored));
+        $this->assertSame('4.1.1', $bridge->getConfig('version'));
+    }
+
+    /**
+     * Supply SQL null and invalid serialized payloads to each shipped implementation.
+     *
+     * @return array
+     */
+    public static function invalidFieldtypeSettings()
+    {
+        $datasets = array();
+        foreach (array('EE3', 'EE4', 'EE5') as $name) {
+            $datasets[$name . ' null'] = array($name, null);
+            $datasets[$name . ' malformed'] = array($name, base64_encode('{"field":true}'));
+        }
+        return $datasets;
+    }
+
+    /**
      * Replace an already loaded EE service using the advertised bridge operation.
      *
      * @dataProvider modernBridges
