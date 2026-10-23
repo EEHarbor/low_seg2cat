@@ -1,7 +1,7 @@
 [
   {
     "label": "main",
-    "raw_sha256": "e7839cd4fad66d6a54a074e7b58cea8ba96234e1441032349db5f3f3e3ecdc09",
+    "raw_sha256": "1418c52aeedc3ce8d1a274dbd9a63f1a7e4eef9487c7e1fdbf0603390071710e",
     "compressed_file": "main.json.gz",
     "metadata": {
       "php": "8.2.30",
@@ -9,8 +9,11 @@
       "xdebug": "3.5.3",
       "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
       "flags": "UNUSED|DEAD_CODE|BRANCH_CHECK",
-      "children": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/coverage.X49LqR/raw.json.children"
-    }
+      "children": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/coverage.S1CplP/raw.json.children"
+    },
+    "scope": "complete configured suite",
+    "selected_case_count": 238,
+    "junit_sha256": "fc90aa67f62577489c4973a97869fdf5049bd48441161810776c0901854d9d64"
   },
   {
     "label": "child-1",
@@ -29,7 +32,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-2",
@@ -48,7 +52,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-3",
@@ -67,7 +72,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-4",
@@ -86,7 +92,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-5",
@@ -105,7 +112,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-6",
@@ -124,7 +132,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-7",
@@ -143,7 +152,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-8",
@@ -162,7 +172,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-9",
@@ -181,7 +192,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-10",
@@ -200,7 +212,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-11",
@@ -219,7 +232,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-12",
@@ -238,7 +252,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-13",
@@ -257,7 +272,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-14",
@@ -276,7 +292,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": "d231220422932ed1139d92ade580d6dee9621635c3b5b22a1ddc4f68534cdb49",
       "fieldtype_trait_sha256": "20431c4d7373c059f5531498c66c94354745d16bc9cfbe2aafd01cec7cde87f6"
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-15",
@@ -295,7 +312,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": "d231220422932ed1139d92ade580d6dee9621635c3b5b22a1ddc4f68534cdb49",
       "fieldtype_trait_sha256": "20431c4d7373c059f5531498c66c94354745d16bc9cfbe2aafd01cec7cde87f6"
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-16",
@@ -314,7 +332,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": "d231220422932ed1139d92ade580d6dee9621635c3b5b22a1ddc4f68534cdb49",
       "fieldtype_trait_sha256": "20431c4d7373c059f5531498c66c94354745d16bc9cfbe2aafd01cec7cde87f6"
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-17",
@@ -333,7 +352,8 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": "d231220422932ed1139d92ade580d6dee9621635c3b5b22a1ddc4f68534cdb49",
       "fieldtype_trait_sha256": "20431c4d7373c059f5531498c66c94354745d16bc9cfbe2aafd01cec7cde87f6"
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-18",
@@ -352,12 +372,33 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
     "label": "child-19",
-    "raw_sha256": "86b12e5682017c60d96d0fa416fc91f2dc64aae4d3c83a172f7c650fcb526fe6",
+    "raw_sha256": "539872da15684281fdeb426177d4c3d29b0b0b09da90ecfeee2965a85688b92a",
     "compressed_file": "child-19.json.gz",
+    "metadata": {
+      "probe_sha256": "0c57383176666197af7c7717f9f80d31f0dc8ad586b92ca04588afa7c1f845c3",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null
+    },
+    "scope": "one fresh native source probe"
+  },
+  {
+    "label": "child-20",
+    "raw_sha256": "86b12e5682017c60d96d0fa416fc91f2dc64aae4d3c83a172f7c650fcb526fe6",
+    "compressed_file": "child-20.json.gz",
     "metadata": {
       "probe_sha256": "1fcffc7c7f0cc101709e6fafd41cea47a6c5a571ec011ec5e662522b6ce28a91",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -371,12 +412,33 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-20",
+    "label": "child-21",
+    "raw_sha256": "c32a549b976927a0ec38ccf4699c004eb2496136ac2dd69de8fa8345e68e0fc7",
+    "compressed_file": "child-21.json.gz",
+    "metadata": {
+      "probe_sha256": "20b11c5d46f479106b4c3412d6d5ba199ec13d72bac506ca580cd0e211f4be7c",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null
+    },
+    "scope": "one fresh native source probe"
+  },
+  {
+    "label": "child-22",
     "raw_sha256": "54e3f0556907950e89f3ead1cc4217fb962c02c936ae75c98ed44ab3d158cc4a",
-    "compressed_file": "child-20.json.gz",
+    "compressed_file": "child-22.json.gz",
     "metadata": {
       "probe_sha256": "23f3f74f6c4f8af1fc941661fe897e4911137aa5851eeb1a2c1192a9e756ec2a",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -390,12 +452,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-21",
+    "label": "child-23",
     "raw_sha256": "60ff995ab24e0b06f7d9c99dac0d3c09422048fc438c1b4d8386a8ffdcb25ffe",
-    "compressed_file": "child-21.json.gz",
+    "compressed_file": "child-23.json.gz",
     "metadata": {
       "probe_sha256": "34eebdf5665cca7d7d039ba3d858272b3cf61d34d2650479c07d0b65b5d5a1fc",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -409,12 +472,33 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-22",
+    "label": "child-24",
+    "raw_sha256": "ae91012f88f618d164068ede605ea16571c143ed8fc8e61a807816ccfcff9c89",
+    "compressed_file": "child-24.json.gz",
+    "metadata": {
+      "probe_sha256": "386f85d5b62015f474ae92cfbd34cf7630dcb3b8970b475479683eed235063b0",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null
+    },
+    "scope": "one fresh native source probe"
+  },
+  {
+    "label": "child-25",
     "raw_sha256": "de5c001d622f7ceef0f9861002fc7e707620b08239025fdab09a942d7c1a37cd",
-    "compressed_file": "child-22.json.gz",
+    "compressed_file": "child-25.json.gz",
     "metadata": {
       "probe_sha256": "3c9f9a89a31c70f1af0ac0b8c0d3a6fd6083a6905c740139e6dbcd9af6d34ddb",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -428,12 +512,33 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-23",
+    "label": "child-26",
+    "raw_sha256": "c2e96b542f1fbd937c9e160bc2286202667f13329d15e150ce244ca13f34f49c",
+    "compressed_file": "child-26.json.gz",
+    "metadata": {
+      "probe_sha256": "3f27969a30f24708f5d3d156d6ac8d365de04798aea98ae86f9ab25ea27fc59e",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null
+    },
+    "scope": "one fresh native source probe"
+  },
+  {
+    "label": "child-27",
     "raw_sha256": "c6e09adfbaf0de3fef52762791f89ee55ac03b56a3d49eb5e101280b69e3daac",
-    "compressed_file": "child-23.json.gz",
+    "compressed_file": "child-27.json.gz",
     "metadata": {
       "probe_sha256": "4846bb6a1538cd72408800102af50e0edd1dfe0b9dcebae7b436fdbfda7e7ff6",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -447,12 +552,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-24",
+    "label": "child-28",
     "raw_sha256": "c84a078f0b1c623c8ae74aff6e80e5d383b37a5035026cdd1fa007b9921ce487",
-    "compressed_file": "child-24.json.gz",
+    "compressed_file": "child-28.json.gz",
     "metadata": {
       "probe_sha256": "7f6682bdfaf8955ba245092a3c7983248ef2e1c2cfcda8cf0e26781f08394898",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -466,12 +572,53 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-25",
+    "label": "child-29",
+    "raw_sha256": "35a2441fcf3f363511ff1044962c10d0d654d22c49301adf8b9e43af65849a89",
+    "compressed_file": "child-29.json.gz",
+    "metadata": {
+      "probe_sha256": "80be47de1b891a81f134417cdcb945e8091b2836030453caa214ab591b19fc39",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null
+    },
+    "scope": "one fresh native source probe"
+  },
+  {
+    "label": "child-30",
+    "raw_sha256": "97ffbbc459dad87b4ff86daf6fc40b1646fa8de6d37739e9e7f0de2f15be08b9",
+    "compressed_file": "child-30.json.gz",
+    "metadata": {
+      "probe_sha256": "80eb8428ecbdf91e4f1ce6b355fede738ff4ea586ccb5363d6cd8b499430bf32",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null
+    },
+    "scope": "one fresh native source probe"
+  },
+  {
+    "label": "child-31",
     "raw_sha256": "32a7985d35787da6f991d746b8c5f8c660e910900c2dd5fea7f71085d3419699",
-    "compressed_file": "child-25.json.gz",
+    "compressed_file": "child-31.json.gz",
     "metadata": {
       "probe_sha256": "94f32604c7540bad28daeda938a9d259d3ef9a31f4cd2c8e3ba8f79179a34c5d",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -485,12 +632,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-26",
+    "label": "child-32",
     "raw_sha256": "4a5ab5436c57d5496240b131c9727e73d9fb91f5efd7fc84caebbf733a609b7b",
-    "compressed_file": "child-26.json.gz",
+    "compressed_file": "child-32.json.gz",
     "metadata": {
       "probe_sha256": "a1d6c5070d0298bd521b05255d672a50552b299316b049c9fcb4832727af99ef",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -504,12 +652,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-27",
+    "label": "child-33",
     "raw_sha256": "4f024da3843c996fd12f807f5f64d9756ab46c119b11e897faddcd40a4a4edad",
-    "compressed_file": "child-27.json.gz",
+    "compressed_file": "child-33.json.gz",
     "metadata": {
       "probe_sha256": "b5d1489a4340a5a1ac7cd3c2a5f7ea49a9d70d641d23c05d3dbb1d2dfdd5346d",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -523,12 +672,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-28",
+    "label": "child-34",
     "raw_sha256": "5c063620ea9881a388a216f5832fa770c259e048244787f6c18e93e3733c38a7",
-    "compressed_file": "child-28.json.gz",
+    "compressed_file": "child-34.json.gz",
     "metadata": {
       "probe_sha256": "c4a9494937b0370911043b6b6b776327185bab81a3fd34e31eb068ddfa2f1169",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -542,12 +692,33 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-29",
+    "label": "child-35",
+    "raw_sha256": "5272dd7208b547e14cd3cf961f52dadfb42e93e3815b3518d3bcdd77e1ff1eb5",
+    "compressed_file": "child-35.json.gz",
+    "metadata": {
+      "probe_sha256": "c75986f731336a581088ba6448e110132d414740b6a784163963d75c7df35418",
+      "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
+      "ee_version": "7.5.0",
+      "request": "PAGE",
+      "direct_access": false,
+      "missing_phar": false,
+      "opcache_permission": false,
+      "fieldtype_layout": null,
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "fieldtype_parent_sha256": null,
+      "fieldtype_trait_sha256": null
+    },
+    "scope": "one fresh native source probe"
+  },
+  {
+    "label": "child-36",
     "raw_sha256": "c84a078f0b1c623c8ae74aff6e80e5d383b37a5035026cdd1fa007b9921ce487",
-    "compressed_file": "child-29.json.gz",
+    "compressed_file": "child-36.json.gz",
     "metadata": {
       "probe_sha256": "c89f28998e02c75451049c44efdcfafa8107f86758e9768cc82c2fe532d95306",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -561,12 +732,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-30",
+    "label": "child-37",
     "raw_sha256": "c84a078f0b1c623c8ae74aff6e80e5d383b37a5035026cdd1fa007b9921ce487",
-    "compressed_file": "child-30.json.gz",
+    "compressed_file": "child-37.json.gz",
     "metadata": {
       "probe_sha256": "c959f6c8db25d746830017954629f77ff0468b611b1fa5df647cf6fa1bf837e1",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -580,12 +752,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-31",
+    "label": "child-38",
     "raw_sha256": "294e38df54916a1e650587020dd730ae682920d2863a8b89f1d852aa4264a878",
-    "compressed_file": "child-31.json.gz",
+    "compressed_file": "child-38.json.gz",
     "metadata": {
       "probe_sha256": "cc423af6a20a28944db49093941bad7203eeff01f49c4c29d90635edd2dbe0df",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -599,12 +772,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-32",
+    "label": "child-39",
     "raw_sha256": "27bf60f95db8f987375facf35e8237de4cb0dd5beda4325c446467038a394e60",
-    "compressed_file": "child-32.json.gz",
+    "compressed_file": "child-39.json.gz",
     "metadata": {
       "probe_sha256": "d28abd3cbb50a0c1f9e18801d74f72ee4cbc0f36cf307b154a8577eaf0435726",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -618,12 +792,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-33",
+    "label": "child-40",
     "raw_sha256": "395b73fa7eb30edeeacd67cff6c4d41ea7e84af8be8e36aa5393b9dea45c2981",
-    "compressed_file": "child-33.json.gz",
+    "compressed_file": "child-40.json.gz",
     "metadata": {
       "probe_sha256": "d55b41f64e3f7ad0d8c20b536ed150ff09caff0aa58057e1696f20c26676756a",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -637,12 +812,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-34",
+    "label": "child-41",
     "raw_sha256": "0277b420fa639fda6b6d4fd031c611605fe92eb2868f22b4698134af2bea3652",
-    "compressed_file": "child-34.json.gz",
+    "compressed_file": "child-41.json.gz",
     "metadata": {
       "probe_sha256": "ded4b64d86bdfbed095ae50bba8a34d563d21a85eb6b2aaf7381cd4c5573c9e5",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -656,12 +832,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-35",
+    "label": "child-42",
     "raw_sha256": "103a9a35bbffaa28ea18182b9a6e75690bdda88eb31cea78e306d51830894348",
-    "compressed_file": "child-35.json.gz",
+    "compressed_file": "child-42.json.gz",
     "metadata": {
       "probe_sha256": "ec2cc9ac8af3126322b82b8dcd5104d97388a12fd6f410d94074e6a4c9883f40",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -675,12 +852,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-36",
+    "label": "child-43",
     "raw_sha256": "32bf155ea0659bf41a9f4415433acac28789df9d6fe35bd8f7630686d80fd38f",
-    "compressed_file": "child-36.json.gz",
+    "compressed_file": "child-43.json.gz",
     "metadata": {
       "probe_sha256": "f147db814d4319b896852a778ca122b8f67670b3b6152bf27b6c4b412201c3ec",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -694,12 +872,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-37",
+    "label": "child-44",
     "raw_sha256": "18fe607ba0960f64bfaaa1f2342d23482c22c0813d5e7fb905fce17dda04c4e7",
-    "compressed_file": "child-37.json.gz",
+    "compressed_file": "child-44.json.gz",
     "metadata": {
       "probe_sha256": "f3edafe0df8c2d13d7547d1c40181c97e93b41ecfb49267f3bc2ca36adf5ae67",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -713,12 +892,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-38",
+    "label": "child-45",
     "raw_sha256": "84c7963165f35a57454391ebaec028319b4e3e2f9c4061a19d5084e68ddeeae4",
-    "compressed_file": "child-38.json.gz",
+    "compressed_file": "child-45.json.gz",
     "metadata": {
       "probe_sha256": "5ea8237b55cceb78ff8dff630266681cffa3fd4d8e4324f72a666bb00b6c4ef8",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -732,12 +912,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-39",
+    "label": "child-46",
     "raw_sha256": "3ca3a630b79167f134d0ce2f45431f246747762bb991ddf61a84fb0a3e02eea7",
-    "compressed_file": "child-39.json.gz",
+    "compressed_file": "child-46.json.gz",
     "metadata": {
       "probe_sha256": "774276acac414966e15bf1f422c1259976769a8493c7385efb96f1a978c16768",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -751,12 +932,13 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   },
   {
-    "label": "child-40",
+    "label": "child-47",
     "raw_sha256": "1aa3c4f9cf92dba838c3897937bf32d403917c36dbcc17e46c9faa3f484fe711",
-    "compressed_file": "child-40.json.gz",
+    "compressed_file": "child-47.json.gz",
     "metadata": {
       "probe_sha256": "4a0ad54d191b04b6f19db6f1f003c356559015b759191b967f8223ac5fedf813",
       "source_root": "/Users/tomjaeger/Sites/add-ons/low_seg2cat",
@@ -770,6 +952,7 @@
       "xdebug": "3.5.3",
       "fieldtype_parent_sha256": null,
       "fieldtype_trait_sha256": null
-    }
+    },
+    "scope": "one fresh native source probe"
   }
 ]

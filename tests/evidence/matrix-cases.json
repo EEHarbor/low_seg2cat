@@ -2,6 +2,24 @@
   "php74": [
     {
       "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE3 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE4 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE5 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
       "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #0",
       "kind": "error",
       "type": "RuntimeException"
@@ -127,10 +145,40 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeStubHelperTest",
+      "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeStubHelperTest",
+      "case": "testSizeMismatchTerminatesWithoutAnUndefinedVariableDiagnostic",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\PersistentCacheTest",
       "case": "testWrittenValueRemainsAvailableFromRequestMemory",
       "kind": "failure",
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testMalformedStoredDataReturnsFalseWithoutDiagnostics",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testZeroKeyComponentDoesNotOverwriteAnotherFile",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\RemainingBaseTest",
+      "case": "testMissingChannelEntryDoesNotReadPropertiesFromNull",
+      "kind": "error",
+      "type": "ErrorException"
     },
     {
       "class_name": "Tests\\SourceRegressionTest",
@@ -178,6 +226,24 @@
   "php80": [
     {
       "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE3 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE4 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE5 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
       "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #0",
       "kind": "error",
       "type": "RuntimeException"
@@ -315,10 +381,40 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeStubHelperTest",
+      "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeStubHelperTest",
+      "case": "testSizeMismatchTerminatesWithoutAnUndefinedVariableDiagnostic",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\PersistentCacheTest",
       "case": "testWrittenValueRemainsAvailableFromRequestMemory",
       "kind": "failure",
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testMalformedStoredDataReturnsFalseWithoutDiagnostics",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testZeroKeyComponentDoesNotOverwriteAnotherFile",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\RemainingBaseTest",
+      "case": "testMissingChannelEntryDoesNotReadPropertiesFromNull",
+      "kind": "error",
+      "type": "ErrorException"
     },
     {
       "class_name": "Tests\\SourceRegressionTest",
@@ -366,6 +462,42 @@
   "php81": [
     {
       "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE3 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE3 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE4 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE4 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE5 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE5 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
       "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #0",
       "kind": "error",
       "type": "RuntimeException"
@@ -503,10 +635,40 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeStubHelperTest",
+      "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeStubHelperTest",
+      "case": "testSizeMismatchTerminatesWithoutAnUndefinedVariableDiagnostic",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\PersistentCacheTest",
       "case": "testWrittenValueRemainsAvailableFromRequestMemory",
       "kind": "failure",
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testMalformedStoredDataReturnsFalseWithoutDiagnostics",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testZeroKeyComponentDoesNotOverwriteAnotherFile",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\RemainingBaseTest",
+      "case": "testMissingChannelEntryDoesNotReadPropertiesFromNull",
+      "kind": "error",
+      "type": "ErrorException"
     },
     {
       "class_name": "Tests\\SourceRegressionTest",
@@ -554,6 +716,42 @@
   "php82": [
     {
       "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE3 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE3 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE4 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE4 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE5 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE5 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
       "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #0",
       "kind": "error",
       "type": "RuntimeException"
@@ -691,10 +889,40 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeStubHelperTest",
+      "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeStubHelperTest",
+      "case": "testSizeMismatchTerminatesWithoutAnUndefinedVariableDiagnostic",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\PersistentCacheTest",
       "case": "testWrittenValueRemainsAvailableFromRequestMemory",
       "kind": "failure",
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testMalformedStoredDataReturnsFalseWithoutDiagnostics",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testZeroKeyComponentDoesNotOverwriteAnotherFile",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\RemainingBaseTest",
+      "case": "testMissingChannelEntryDoesNotReadPropertiesFromNull",
+      "kind": "error",
+      "type": "ErrorException"
     },
     {
       "class_name": "Tests\\SourceRegressionTest",
@@ -742,6 +970,42 @@
   "php83": [
     {
       "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE3 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE3 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE4 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE4 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE5 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE5 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
       "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #0",
       "kind": "error",
       "type": "RuntimeException"
@@ -879,10 +1143,40 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeStubHelperTest",
+      "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeStubHelperTest",
+      "case": "testSizeMismatchTerminatesWithoutAnUndefinedVariableDiagnostic",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\PersistentCacheTest",
       "case": "testWrittenValueRemainsAvailableFromRequestMemory",
       "kind": "failure",
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testMalformedStoredDataReturnsFalseWithoutDiagnostics",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testZeroKeyComponentDoesNotOverwriteAnotherFile",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\RemainingBaseTest",
+      "case": "testMissingChannelEntryDoesNotReadPropertiesFromNull",
+      "kind": "error",
+      "type": "ErrorException"
     },
     {
       "class_name": "Tests\\SourceRegressionTest",
@@ -930,6 +1224,42 @@
   "php84": [
     {
       "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE3 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE3 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE4 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE4 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE5 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE5 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
       "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #0",
       "kind": "error",
       "type": "RuntimeException"
@@ -1067,10 +1397,40 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeStubHelperTest",
+      "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeStubHelperTest",
+      "case": "testSizeMismatchTerminatesWithoutAnUndefinedVariableDiagnostic",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\PersistentCacheTest",
       "case": "testWrittenValueRemainsAvailableFromRequestMemory",
       "kind": "failure",
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testMalformedStoredDataReturnsFalseWithoutDiagnostics",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testZeroKeyComponentDoesNotOverwriteAnotherFile",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\RemainingBaseTest",
+      "case": "testMissingChannelEntryDoesNotReadPropertiesFromNull",
+      "kind": "error",
+      "type": "ErrorException"
     },
     {
       "class_name": "Tests\\SourceRegressionTest",
@@ -1118,6 +1478,42 @@
   "php85": [
     {
       "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE3 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE3 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE4 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE4 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE5 null\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
+      "case": "testInvalidStoredFieldtypeSettingsUseDefaultsWithoutDiagnostics with data set \"EE5 malformed\"",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\BundledRegressionTest",
       "case": "testBridgeCanReplaceAnAlreadyLoadedService with data set #0",
       "kind": "error",
       "type": "RuntimeException"
@@ -1255,10 +1651,40 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeStubHelperTest",
+      "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeStubHelperTest",
+      "case": "testSizeMismatchTerminatesWithoutAnUndefinedVariableDiagnostic",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\PersistentCacheTest",
       "case": "testWrittenValueRemainsAvailableFromRequestMemory",
       "kind": "failure",
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testMalformedStoredDataReturnsFalseWithoutDiagnostics",
+      "kind": "error",
+      "type": "ErrorException"
+    },
+    {
+      "class_name": "Tests\\PersistentCacheTest",
+      "case": "testZeroKeyComponentDoesNotOverwriteAnotherFile",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\RemainingBaseTest",
+      "case": "testMissingChannelEntryDoesNotReadPropertiesFromNull",
+      "kind": "error",
+      "type": "ErrorException"
     },
     {
       "class_name": "Tests\\SourceRegressionTest",
