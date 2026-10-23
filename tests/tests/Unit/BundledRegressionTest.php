@@ -12,6 +12,34 @@ use Tests\Support\Process;
 class BundledRegressionTest extends TestCase
 {
     /**
+     * Replace an already loaded EE service using the advertised bridge operation.
+     *
+     * @dataProvider modernBridges
+     * @param string $name
+     * @return void
+     */
+    public function testBridgeCanReplaceAnAlreadyLoadedService($name)
+    {
+        $class = 'Low\\Seg2Cat\\FluxCapacitor\\Bridge\\' . $name;
+        $bridge = new $class(array('module' => 'low_seg2cat', 'module_name' => 'Low Seg2Cat'));
+        $replacement = new \stdClass();
+        $bridge->overwriteEEClass('typography', $replacement);
+        $this->assertSame($replacement, $this->app->get('typography'));
+    }
+
+    /**
+     * Preserve a zero-valued component in a compound cache identity.
+     *
+     * @return void
+     */
+    public function testCompoundZeroCacheKeyDoesNotOverwriteAnotherKey()
+    {
+        StaticCache::put(array('site', 0), array('zero-site'));
+        StaticCache::put(array('site'), array('other-site'));
+        $this->assertSame(array('zero-site'), StaticCache::get(array('site', 0)));
+    }
+
+    /**
      * Report successful removal when a present cache key was actually deleted.
      *
      * @return void
@@ -74,7 +102,7 @@ class BundledRegressionTest extends TestCase
     public static function falseyValues()
     {
         return array('integer zero' => array(0), 'string zero' => array('0'), 'empty string' => array(''),
-            'null' => array(null), 'false' => array(false));
+            'null' => array(null), 'false' => array(false), 'empty array' => array(array()));
     }
 
     /**

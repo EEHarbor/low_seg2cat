@@ -109,6 +109,47 @@ class BridgeTest extends TestCase
     }
 
     /**
+     * Read the historical key/value schema without losing fieldtype or setup settings.
+     *
+     * @dataProvider historicalSettingsRows
+     * @param string $name
+     * @param array $rows
+     * @return void
+     */
+    public function testModernBridgeReadsHistoricalSettingsRows($name, array $rows)
+    {
+        $class = 'Low\\Seg2Cat\\FluxCapacitor\\Bridge\\' . $name;
+        $bridge = new $class(array('module' => 'structure', 'module_name' => 'Structure'));
+        $this->app->db->tables = array('structure_settings');
+        $this->app->db->rowsByTable['structure_settings'] = $rows;
+        $this->app->db->rowsByTable['fieldtypes'] = array(array('settings' => base64_encode(serialize(array('custom' => 'fieldtype', 'nullable' => null)))));
+        $settings = $bridge->getSettings(true);
+        $this->assertSame($rows ? 'database' : 'fieldtype', $settings['custom']);
+        $this->assertNull($settings['nullable']);
+        $this->assertSame('Low Seg2Cat', $settings['name']);
+        $this->assertSame('4.1.1', $settings['version']);
+        $this->assertContains(array('get_where', array('structure_settings', array('structure_settings.site_id' => 1))), $this->app->builders[0]->calls);
+    }
+
+    /**
+     * Supply empty and populated historical schemas for every shipped bridge.
+     *
+     * @return array
+     */
+    public static function historicalSettingsRows()
+    {
+        $datasets = array();
+        foreach (array('EE3', 'EE4', 'EE5') as $name) {
+            $datasets[$name . ' empty'] = array($name, array());
+            $datasets[$name . ' populated'] = array($name, array(
+                array('var' => 'custom', 'var_value' => 'database'),
+                array('var' => 'name', 'var_value' => 'Historical name'),
+            ));
+        }
+        return $datasets;
+    }
+
+    /**
      * Dispatch persistent/session cache operations through their actual EE services.
      *
      * @dataProvider modernBridges
@@ -137,16 +178,20 @@ class BridgeTest extends TestCase
         $this->assertSame(array('save', array('/low_seg2cat/two', array('id' => 2))), $persistent->calls[1]);
         $this->assertSame(array('cache', array('low_seg2cat', 'five', false)), $session->calls[0]);
         $this->assertSame(array('set_cache', array('low_seg2cat', 'six', 'value')), $session->calls[1]);
-        $bridge->overwriteEEClass('typography', 'replacement');
-        $bridge->removeEEClass('typography');
-        $this->assertSame(array('typography' => 'replacement'), $this->app->assigned);
-        $this->assertSame(array('typography'), $this->app->removed);
+        $bridge->overwriteEEClass('fixture_service', 'replacement');
+        $this->assertSame('replacement', $this->app->get('fixture_service'));
+        $bridge->removeEEClass('fixture_service');
+        $this->assertSame(array('fixture_service' => 'replacement'), $this->app->assigned);
+        $this->assertSame(array('fixture_service'), $this->app->removed);
+        $this->assertFalse($this->app->has('fixture_service'));
         $bridge->javascript_to_page('console.log(1);');
         $this->assertStringContainsString('console.log(1);', $this->app->foot[0]);
         $this->assertSame($this->app->foot, $bridge->getFooter());
         $this->assertSame(PATH_CACHE, $bridge->getCachePath());
         $this->app->config->items['cache_path'] = '/custom/cache/';
         $this->assertSame('/custom/cache/', $bridge->getCachePath());
+        $bridge->removeEEClass('typography');
+        $this->assertFalse($this->app->has('typography'));
     }
 
     /**

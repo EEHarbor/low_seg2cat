@@ -137,9 +137,21 @@ class RemainingBaseTest extends TestCase
      */
     public function testBridgeSelectorSupportsEveryDeclaredMajor($version, $parent)
     {
-        $result = Process::probe('new \\Low\\Seg2Cat\\FluxCapacitor\\FluxCapacitor(); echo get_parent_class("Low\\\\Seg2Cat\\\\FluxCapacitor\\\\Bridge\\\\EE");', array('version' => $version));
+        $code = <<<'CODE'
+$flux = new \Low\Seg2Cat\FluxCapacitor\FluxCapacitor();
+echo json_encode(array('parent' => get_parent_class('Low\\Seg2Cat\\FluxCapacitor\\Bridge\\EE'),
+    'major' => $flux->getEEVersion(), 'full' => $flux->getEEVersion(false),
+    'is2' => $flux->is_ee2(), 'is3' => $flux->is_ee3(), 'is4' => $flux->is_ee4(), 'is5' => $flux->is_ee5()));
+CODE;
+        $result = Process::probe($code, array('version' => $version));
         $this->assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
-        $this->assertSame('Low\\Seg2Cat\\FluxCapacitor\\Bridge\\' . $parent, $result['stdout']);
+        $data = json_decode($result['stdout'], true);
+        $this->assertSame('Low\\Seg2Cat\\FluxCapacitor\\Bridge\\' . $parent, $data['parent']);
+        $this->assertSame(substr($version, 0, 1), $data['major']);
+        $this->assertSame($version, $data['full']);
+        foreach (array(2, 3, 4, 5) as $major) {
+            $this->assertSame(substr($version, 0, 1) === (string) $major, $data['is' . $major]);
+        }
     }
 
     /**
