@@ -134,13 +134,76 @@ class NativeModuleNavigationTest extends TestCase
     }
 
     /**
+     * Normalize module destinations and retain complete external URLs.
+     *
+     * @return void
+     */
+    public function testNavigationUrlsNormalizeRootsAndPreserveExternalDestinations()
+    {
+        $result = $this->navigationProbe('$nav = new \\Low\\Seg2Cat\\Conduit\\McpNav(); $urls = array(); ' .
+            'foreach (array("/", "settings", "http://example.test/a", "https://example.test/b") as $method) { ' .
+            '$urls[$method] = (string) $nav->getUrl($method); } echo json_encode($urls);', 'defaults');
+        $this->assertSame(array('/' => 'cp://addons/settings/low_seg2cat/index',
+            'settings' => 'cp://addons/settings/low_seg2cat/settings', 'http://example.test/a' => 'http://example.test/a',
+            'https://example.test/b' => 'https://example.test/b'), $result);
+    }
+
+    /**
+     * Preserve the original default license link in the legacy right navigation.
+     *
+     * @return void
+     */
+    public function testLegacyDefaultNavigationUsesTheOriginalLicenseEntry()
+    {
+        $result = $this->navigationProbe('$nav = new \\Low\\Seg2Cat\\Conduit\\McpNav(); ' .
+            'echo json_encode(array($app->cp->calls, $nav->sidebar, $nav->getActiveItem()));', 'defaults', '2.5.5');
+        $url = 'cp.php?S=0&amp;C=addons_modules&amp;M=show_module_cp&amp;module=low_seg2cat&amp;method=license&amp;D=cp';
+        $this->assertSame(array(array(array('set_right_nav', array(array('License' => $url)))), null, null), $result);
+    }
+
+    /**
+     * Forward normalized module entries and external links through the legacy API.
+     *
+     * @return void
+     */
+    public function testLegacyConfiguredNavigationPreservesEntryLabelsAndUrls()
+    {
+        $options = array('items' => array('/' => 'Home', 'settings' => 'Settings', 'https://example.test' => 'External'),
+            'buttons' => false, 'active_map' => array('edit' => '/'));
+        $result = $this->navigationProbe('$GLOBALS["low_seg2cat_nav_options"] = ' . var_export($options, true) . '; ' .
+            '$nav = new \\Low\\Seg2Cat\\Conduit\\McpNav(); echo json_encode(array($app->cp->calls, ' .
+            '$nav->sidebar, $nav->getActiveItem(), $GLOBALS["low_seg2cat_nav_hooks"]));', 'configured', '2.5.5');
+        $base = 'cp.php?S=0&amp;C=addons_modules&amp;M=show_module_cp&amp;module=low_seg2cat&amp;method=';
+        $this->assertSame(array(array(array('set_right_nav', array(array('Home' => $base . 'index&amp;D=cp',
+            'Settings' => $base . 'settings&amp;D=cp', 'External' => 'https://example.test',
+            'License' => $base . 'license&amp;D=cp')))), null, null, array('pre', 'post')), $result);
+    }
+
+    /**
+     * Defer legacy rendering until the module explicitly requests its right menu.
+     *
+     * @return void
+     */
+    public function testLegacyDeferredNavigationRendersOnlyWhenRequested()
+    {
+        $options = array('items' => false, 'buttons' => false, 'active_map' => false, 'defer' => true);
+        $result = $this->navigationProbe('$GLOBALS["low_seg2cat_nav_options"] = ' . var_export($options, true) . '; ' .
+            '$nav = new \\Low\\Seg2Cat\\Conduit\\McpNav(); $before = $app->cp->calls; ' .
+            '$returned = $nav->generateNav(); echo json_encode(array($before, $returned, $app->cp->calls, ' .
+            '$GLOBALS["low_seg2cat_nav_hooks"]));', 'configured', '2.5.5');
+        $url = 'cp.php?S=0&amp;C=addons_modules&amp;M=show_module_cp&amp;module=low_seg2cat&amp;method=license&amp;D=cp';
+        $this->assertSame(array(array(), null, array(array('set_right_nav', array(array('License' => $url)))), array('pre')), $result);
+    }
+
+    /**
      * Use independent header objects and original source in a real module layout.
      *
      * @param string $code
      * @param string $layout
+     * @param string $version
      * @return array
      */
-    private function navigationProbe($code, $layout = 'configured')
+    private function navigationProbe($code, $layout = 'configured', $version = '7.5.0')
     {
         $prefix = <<<'PHP'
 $app = $GLOBALS['low_seg2cat_app'];
@@ -199,7 +262,7 @@ function nav_summary($nav, array $headers)
 }
 
 PHP;
-        $result = Process::probe($prefix . $code, array('module_nav_layout' => $layout));
+        $result = Process::probe($prefix . $code, array('module_nav_layout' => $layout, 'version' => $version));
         $this->assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
         $this->assertSame('', $result['stderr']);
         return json_decode($result['stdout'], true);
