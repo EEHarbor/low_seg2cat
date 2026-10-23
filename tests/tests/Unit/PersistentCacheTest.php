@@ -21,6 +21,31 @@ class PersistentCacheTest extends TestCase
     }
 
     /**
+     * Return a clean cache miss when stored serialization is malformed.
+     *
+     * @return void
+     */
+    public function testMalformedStoredDataReturnsFalseWithoutDiagnostics()
+    {
+        $this->assertTrue(PersistentCache::set('record', array('id' => 9)));
+        file_put_contents(PATH_CACHE . 'low_seg2cat/' . sha1('record'), 'not serialized data');
+        StaticCache::clear();
+        $this->assertFalse(PersistentCache::get('record'));
+    }
+
+    /**
+     * Preserve zero-valued compound identity components in persistent file names.
+     *
+     * @return void
+     */
+    public function testZeroKeyComponentDoesNotOverwriteAnotherFile()
+    {
+        $this->assertTrue(PersistentCache::set(array('site', 0), array('zero-site')));
+        $this->assertTrue(PersistentCache::set(array('site'), array('other-site')));
+        $this->assertCount(2, glob(PATH_CACHE . 'low_seg2cat/*'));
+    }
+
+    /**
      * Clear an empty cache without disturbing unrelated in-memory entries.
      *
      * @return void
