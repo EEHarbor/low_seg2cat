@@ -7,6 +7,41 @@ use Tests\Support\Process;
 class NativeStubHelperTest extends TestCase
 {
     /**
+     * Reject unusable temporary/session storage before extraction writes begin.
+     *
+     * @dataProvider unavailableSessionPaths
+     * @param string $kind
+     * @return void
+     */
+    public function testOriginalLoaderReportsUnavailableTemporaryStorage($kind)
+    {
+        $code = 'require LOW_SEG2CAT_ROOT . "/low_seg2cat/low_seg2cat.phar"; ' .
+            '$root = sys_get_temp_dir(); putenv("TMPDIR=" . $root . "/missing-temp"); ';
+        if ($kind === 'file') {
+            $code .= 'file_put_contents($root . "/session-file", "owned"); $session = $root . "/session-file"; ';
+        } else {
+            $code .= '$session = $root . "/missing-session"; ';
+        }
+        if ($kind === 'prefixed') {
+            $code .= '$session = "1;" . $session; ';
+        }
+        $result = Process::probe($code . 'session_save_path($session); \Extract_low_seg2cat::go(true); echo "continued";');
+        $this->assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
+        $this->assertSame('', $result['stderr']);
+        $this->assertSame('Could not locate temporary directory to extract phar', $result['stdout']);
+    }
+
+    /**
+     * Include missing, non-directory and supported semicolon-prefixed session paths.
+     *
+     * @return array
+     */
+    public static function unavailableSessionPaths()
+    {
+        return array('missing' => array('missing'), 'file' => array('file'), 'prefixed' => array('prefixed'));
+    }
+
+    /**
      * Decode the original manifest and compare every file with PHP's native PHAR reader.
      *
      * @return void
