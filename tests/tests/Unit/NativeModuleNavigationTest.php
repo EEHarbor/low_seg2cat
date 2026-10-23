@@ -149,6 +149,35 @@ class NativeModuleNavigationTest extends TestCase
     }
 
     /**
+     * Supply valid action names and an external URL with an uppercase scheme.
+     *
+     * @return array
+     */
+    public static function actionNamesAndSchemes()
+    {
+        return array(
+            'http action prefix' => array('http_status', 'cp://addons/settings/low_seg2cat/http_status'),
+            'http within action' => array('about_http', 'cp://addons/settings/low_seg2cat/about_http'),
+            'uppercase external scheme' => array('HTTPS://example.test/docs', 'HTTPS://example.test/docs'),
+        );
+    }
+
+    /**
+     * Resolve ordinary actions locally and preserve case-insensitive external schemes.
+     *
+     * @dataProvider actionNamesAndSchemes
+     * @param string $method
+     * @param string $expected
+     * @return void
+     */
+    public function testModuleUrlActionNamesAndExternalSchemes($method, $expected)
+    {
+        $result = $this->navigationProbe('$nav = new \\Low\\Seg2Cat\\Conduit\\McpNav(); ' .
+            'echo json_encode(array("url" => (string) $nav->getUrl(' . var_export($method, true) . ')));', 'defaults');
+        $this->assertSame($expected, $result['url']);
+    }
+
+    /**
      * Preserve the original default license link in the legacy right navigation.
      *
      * @return void

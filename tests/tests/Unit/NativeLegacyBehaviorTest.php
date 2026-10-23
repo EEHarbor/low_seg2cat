@@ -7,6 +7,45 @@ use Tests\Support\Process;
 class NativeLegacyBehaviorTest extends TestCase
 {
     /**
+     * Delegate slash reduction on both sides of the EE2.6 helper boundary.
+     *
+     * @dataProvider legacyVersions
+     * @param string $version
+     * @return void
+     */
+    public function testLegacySlashReductionUsesItsVersionedHelper($version)
+    {
+        $code = <<<'CODE'
+$app = ee();
+$calls = array();
+$app->functions = new \Tests\Support\CallbackService(array('remove_double_slashes' => function ($value) use (&$calls) {
+    $calls[] = $value;
+    return 'legacy:' . $value;
+}));
+$bridge = new \Low\Seg2Cat\FluxCapacitor\Bridge\EE2(array('module' => 'low_seg2cat', 'module_name' => 'Low Seg2Cat'));
+$values = array();
+foreach (array('https://example.test//path', 'relative///path', '//cdn.example.test//path', '') as $input) {
+    $values[] = $bridge->reduce_double_slashes($input);
+}
+echo json_encode(array('values' => $values, 'calls' => $calls, 'loaded' => $app->loaded));
+CODE;
+        $result = Process::probe($code, array('version' => $version));
+        $this->assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
+        $this->assertSame('', $result['stderr']);
+        $data = json_decode($result['stdout'], true);
+        if ($version === '2.5.5') {
+            $this->assertSame(array('legacy:https://example.test//path', 'legacy:relative///path',
+                'legacy://cdn.example.test//path', 'legacy:'), $data['values']);
+            $this->assertSame(array('https://example.test//path', 'relative///path', '//cdn.example.test//path', ''), $data['calls']);
+            $this->assertSame(array(), $data['loaded']);
+            return;
+        }
+        $this->assertSame(array('https://example.test/path', 'relative/path', '//cdn.example.test/path', ''), $data['values']);
+        $this->assertSame(array(), $data['calls']);
+        $this->assertSame(array('string', 'string', 'string', 'string'), $data['loaded']);
+    }
+
+    /**
      * Exercise settings independently of the defective legacy URL constructor.
      *
      * @dataProvider legacyVersions

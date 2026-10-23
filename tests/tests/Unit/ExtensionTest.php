@@ -177,6 +177,30 @@ class ExtensionTest extends TestCase
     }
 
     /**
+     * Treat a persisted null group selection as unrestricted within the current site.
+     *
+     * @return void
+     */
+    public function testNullGroupSelectionKeepsTheCurrentSiteFilter()
+    {
+        $this->app->incomingUri = 'news';
+        $this->app->categories = array(
+            $this->category('news', 42, 1, 9),
+            $this->category('news', 99, 2, 9),
+        );
+        $extension = new \Low_seg2cat_ext(array(1 => array('category_groups' => null)));
+        $this->invoke($extension, 'add_vars');
+        $this->assertNull($extension->settings['category_groups']);
+        $this->assertSame(42, $this->app->config->_global_vars['segment_1_category_id']);
+        $this->assertSame(42, $this->app->config->_global_vars['last_segment_category_id']);
+        $this->assertSame('42', $this->app->config->_global_vars['segment_category_ids']);
+        $this->assertSame(array(
+            array('cat_url_title', 'IN', array(1 => 'news')),
+            array('site_id', 1),
+        ), $this->app->model->queries[0][1]->filters);
+    }
+
+    /**
      * Search other sites and preserve unformatted values when configured.
      *
      * @return void
@@ -277,6 +301,7 @@ class ExtensionTest extends TestCase
         $extension = new \Low_seg2cat_ext();
         $row = array('template_data' => 'original');
         $this->assertSame($row, $extension->template_fetch_template($row));
+        $this->assertArrayHasKey('segment_1_category_id', $this->app->config->_global_vars);
         $this->app->config->_global_vars['segment_1_category_id'] = 'keep on second call';
         $this->app->extensions->last_call = array('template_data' => 'previous extension');
         $this->assertSame($this->app->extensions->last_call, $extension->template_fetch_template($row));
