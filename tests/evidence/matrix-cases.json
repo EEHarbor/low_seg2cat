@@ -145,6 +145,12 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testToolbarPreservesZeroStringTitle",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\NativeStubHelperTest",
       "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
       "kind": "failure",
@@ -377,6 +383,12 @@
     {
       "class_name": "Tests\\LegacyBridgeTest",
       "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testToolbarPreservesZeroStringTitle",
       "kind": "failure",
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
@@ -635,6 +647,12 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testToolbarPreservesZeroStringTitle",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\NativeStubHelperTest",
       "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
       "kind": "failure",
@@ -885,6 +903,12 @@
     {
       "class_name": "Tests\\LegacyBridgeTest",
       "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testToolbarPreservesZeroStringTitle",
       "kind": "failure",
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
@@ -1143,6 +1167,12 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testToolbarPreservesZeroStringTitle",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\NativeStubHelperTest",
       "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
       "kind": "failure",
@@ -1397,6 +1427,12 @@
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },
     {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testToolbarPreservesZeroStringTitle",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
       "class_name": "Tests\\NativeStubHelperTest",
       "case": "testPopulatedTemporarySubtreesAreRemovedWithoutWarnings",
       "kind": "failure",
@@ -1647,6 +1683,12 @@
     {
       "class_name": "Tests\\LegacyBridgeTest",
       "case": "testLegacyBridgePreservesItsRuntimeContracts with data set #2",
+      "kind": "failure",
+      "type": "PHPUnit\\Framework\\ExpectationFailedException"
+    },
+    {
+      "class_name": "Tests\\NativeModuleNavigationTest",
+      "case": "testToolbarPreservesZeroStringTitle",
       "kind": "failure",
       "type": "PHPUnit\\Framework\\ExpectationFailedException"
     },

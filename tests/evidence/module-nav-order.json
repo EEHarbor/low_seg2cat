@@ -1,0 +1,134 @@
+[
+  {
+    "runtime": "74",
+    "selection": "NativeModuleNavigationTest",
+    "status": 1,
+    "command": [
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/.phpunit/run-phpunit.sh",
+      "-c",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/phpunit.xml",
+      "--log-junit",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/module-nav-order-37l6vft1/74-NativeModuleNavigationTest.xml",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/tests/Unit/NativeModuleNavigationTest.php"
+    ],
+    "name": "Tests\\NativeModuleNavigationTest",
+    "file": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/tests/Unit/NativeModuleNavigationTest.php",
+    "tests": "14",
+    "assertions": "110",
+    "errors": "0",
+    "warnings": "0",
+    "failures": "1",
+    "skipped": "0",
+    "time": "0.601192"
+  },
+  {
+    "runtime": "74",
+    "selection": "NativeStubHelperTest",
+    "status": 1,
+    "command": [
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/.phpunit/run-phpunit.sh",
+      "-c",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/phpunit.xml",
+      "--log-junit",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/module-nav-order-37l6vft1/74-NativeStubHelperTest.xml",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/tests/Unit/NativeStubHelperTest.php"
+    ],
+    "name": "Tests\\NativeStubHelperTest",
+    "file": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/tests/Unit/NativeStubHelperTest.php",
+    "tests": "10",
+    "assertions": "42",
+    "errors": "0",
+    "warnings": "0",
+    "failures": "2",
+    "skipped": "0",
+    "time": "0.434525"
+  },
+  {
+    "runtime": "74",
+    "selection": "random-full",
+    "status": 2,
+    "command": [
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/.phpunit/run-phpunit.sh",
+      "-c",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/phpunit.xml",
+      "--log-junit",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/module-nav-order-37l6vft1/74-random-full.xml",
+      "--order-by=random",
+      "--random-order-seed=20261030"
+    ],
+    "name": "",
+    "tests": "255",
+    "assertions": "1357",
+    "errors": "16",
+    "warnings": "0",
+    "failures": "22",
+    "skipped": "0",
+    "time": "11.296449"
+  },
+  {
+    "runtime": "85",
+    "selection": "NativeModuleNavigationTest",
+    "status": 1,
+    "command": [
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/.phpunit/run-phpunit.sh",
+      "-c",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/phpunit.xml",
+      "--log-junit",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/module-nav-order-37l6vft1/85-NativeModuleNavigationTest.xml",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/tests/Unit/NativeModuleNavigationTest.php"
+    ],
+    "name": "Tests\\NativeModuleNavigationTest",
+    "file": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/tests/Unit/NativeModuleNavigationTest.php",
+    "tests": "14",
+    "assertions": "110",
+    "errors": "0",
+    "warnings": "0",
+    "failures": "1",
+    "skipped": "0",
+    "time": "0.634476"
+  },
+  {
+    "runtime": "85",
+    "selection": "NativeStubHelperTest",
+    "status": 1,
+    "command": [
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/.phpunit/run-phpunit.sh",
+      "-c",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/phpunit.xml",
+      "--log-junit",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/module-nav-order-37l6vft1/85-NativeStubHelperTest.xml",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/tests/Unit/NativeStubHelperTest.php"
+    ],
+    "name": "Tests\\NativeStubHelperTest",
+    "file": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/tests/Unit/NativeStubHelperTest.php",
+    "tests": "10",
+    "assertions": "42",
+    "errors": "0",
+    "warnings": "0",
+    "failures": "2",
+    "skipped": "0",
+    "time": "0.416255"
+  },
+  {
+    "runtime": "85",
+    "selection": "random-full",
+    "status": 2,
+    "command": [
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/.phpunit/run-phpunit.sh",
+      "-c",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/phpunit.xml",
+      "--log-junit",
+      "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/module-nav-order-37l6vft1/85-random-full.xml",
+      "--order-by=random",
+      "--random-order-seed=20261030"
+    ],
+    "name": "",
+    "tests": "255",
+    "assertions": "1280",
+    "errors": "19",
+    "warnings": "0",
+    "failures": "24",
+    "skipped": "0",
+    "time": "12.989784"
+  }
+]
