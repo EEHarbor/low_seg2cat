@@ -102,13 +102,14 @@ namespace Tests\Support {
         /**
          * Convert source diagnostics, including @-hidden diagnostics, to errors.
          *
+         * @param array $additionalFiles Exact owned generated or measurement files.
          * @return void
          */
-        public static function installDiagnostics()
+        public static function installDiagnostics(array $additionalFiles = array())
         {
-            set_error_handler(function ($severity, $message, $file, $line) {
+            set_error_handler(function ($severity, $message, $file, $line) use ($additionalFiles) {
                 $source = LOW_SEG2CAT_ROOT . '/low_seg2cat/';
-                if ($file === 'Command line code' || strpos($file, $source) === 0 || strpos($file, 'phar://' . $source) === 0 ||
+                if (in_array($file, $additionalFiles, true) || $file === 'Command line code' || strpos($file, $source) === 0 || strpos($file, 'phar://' . $source) === 0 ||
                     strpos($file, LOW_SEG2CAT_ROOT . '/tests/') === 0) {
                     throw new \ErrorException($message, 0, $severity, $file, $line);
                 }

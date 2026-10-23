@@ -9,11 +9,28 @@ parser = argparse.ArgumentParser()
 parser.add_argument('raw', type=Path)
 parser.add_argument('--output', type=Path, required=True)
 parser.add_argument('--recorded-root', type=Path, help='Original checkout root encoded in the raw Xdebug file keys.')
+parser.add_argument('--metadata', type=Path, help='Paired source provenance for an identical primary-script measurement copy.')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[2]
 recorded_root = args.recorded_root.resolve() if args.recorded_root else root
 raw = json.loads(args.raw.read_text())
 inventory = json.loads((root / 'tests/SOURCE_INVENTORY.json').read_text())
+metadata_path = args.metadata or Path(str(args.raw) + '.metadata.json')
+if args.metadata and not metadata_path.is_file():
+    raise ValueError('The explicitly paired measurement metadata is missing.')
+metadata = json.loads(metadata_path.read_text()) if metadata_path.is_file() else {}
+measurement = metadata.get('measurement_source')
+if measurement:
+    name = measurement.get('inventory_name')
+    if name not in inventory:
+        raise ValueError('Unknown original source in primary measurement provenance.')
+    expected = inventory[name]['sha256']
+    if measurement.get('original_sha256') != expected or measurement.get('measurement_sha256') != expected:
+        raise ValueError('Primary measurement source hashes differ from the original inventory.')
+    if metadata.get('raw_sha256') != hashlib.sha256(args.raw.read_bytes()).hexdigest():
+        raise ValueError('Primary measurement graph does not match its paired provenance.')
+    if measurement.get('measured_source') not in raw:
+        raise ValueError('Primary measurement graph has no recorded measurement file.')
 records = []
 for name, entry in inventory.items():
     if '::' in name:
@@ -21,6 +38,10 @@ for name, entry in inventory.items():
         key = str(recorded_root / archive) if member == '{stub}' else 'phar://' + str(recorded_root / archive) + '/' + member
     else:
         key = str(recorded_root / name)
+    if measurement and measurement['inventory_name'] == name:
+        if measurement.get('original_source') != key:
+            raise ValueError('Primary measurement original path differs from the recorded source root.')
+        key = measurement['measured_source']
     source = raw.get(key)
     record = dict(file=name, sha256=entry['sha256'], measured=source is not None, functions=[])
     if source is None:
