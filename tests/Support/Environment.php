@@ -26,9 +26,12 @@ namespace Tests\Support {
         public $api;
         public $security;
         public $pagination;
+        public $table;
         public $services = array();
         public $builders = array();
         public $builderCache = array();
+        private $databasePrototype;
+        private $legacyLoaded = array();
         public $assigned = array();
         public $removed = array();
         public $rendered = array();
@@ -54,6 +57,7 @@ namespace Tests\Support {
             $this->extensions = (object) array('last_call' => false);
             $this->view = (object) array('cp_page_title' => 'Low Seg2Cat');
             $this->db = new Database();
+            $this->databasePrototype = $this->db;
             $this->model = new ModelService($this);
             $this->alerts = new Recorder();
             $this->logger = new Recorder();
@@ -91,6 +95,9 @@ namespace Tests\Support {
                 $this->pathCalls[] = $value;
                 return str_replace('{filedir_1}', '/images/', $value);
             }));
+            foreach (array('config', 'uri', 'db', 'extensions', 'functions', 'cp', 'load', 'typography', 'view', 'logger', 'dbforge') as $name) {
+                $this->legacyLoaded[$name] =& $this->$name;
+            }
         }
 
         /**
@@ -136,7 +143,7 @@ namespace Tests\Support {
                 }));
             }
             if ($service === 'db') {
-                $builder = clone $this->db;
+                $builder = clone $this->databasePrototype;
                 $builder->calls = array();
                 $builder->data_cache = $this->builderCache;
                 $builder->resetQueryState();
@@ -172,15 +179,28 @@ namespace Tests\Support {
         }
 
         /**
-         * Replace an EE container instance.
+         * Register an unloaded legacy instance using EE's facade contract.
          *
          * @param string $class
          * @param mixed $value
          * @return void
+         * @throws \RuntimeException
          */
         public function set($class, $value)
         {
+            if ($this->has($class)) {
+                throw new \RuntimeException('Cannot overwrite ' . $class . ' on the loader.');
+            }
+            if (property_exists($this, $class)) {
+                $this->$class = $value;
+                $this->legacyLoaded[$class] =& $this->$class;
+            } else {
+                $this->legacyLoaded[$class] = $value;
+            }
             $this->assigned[$class] = $value;
+            if ($class === 'session') {
+                $value->setSessionCookies();
+            }
         }
 
         /**
@@ -191,7 +211,59 @@ namespace Tests\Support {
          */
         public function remove($class)
         {
+            unset($this->legacyLoaded[$class]);
+            if (property_exists($this, $class)) {
+                unset($this->$class);
+            }
             $this->removed[] = $class;
+        }
+
+        /**
+         * Read a loaded legacy instance independently of named DI services.
+         *
+         * @param string $class
+         * @return mixed
+         * @throws \InvalidArgumentException
+         */
+        public function get($class)
+        {
+            if (!$this->has($class)) {
+                throw new \InvalidArgumentException("No such property: '" . $class . "' on " . get_called_class());
+            }
+            return $this->legacyLoaded[$class];
+        }
+
+        /**
+         * Detect loaded null values using the facade's array-key semantics.
+         *
+         * @param string $class
+         * @return bool
+         */
+        public function has($class)
+        {
+            return array_key_exists($class, $this->legacyLoaded);
+        }
+
+        /**
+         * Resolve newly registered properties through the legacy registry.
+         *
+         * @param string $class
+         * @return mixed
+         */
+        public function __get($class)
+        {
+            return $this->get($class);
+        }
+
+        /**
+         * Match facade isset semantics for loaded legacy entries.
+         *
+         * @param string $class
+         * @return bool
+         */
+        public function __isset($class)
+        {
+            return $this->has($class);
         }
     }
 
@@ -756,20 +828,25 @@ namespace {
         }
     }
 
-    class EE_Fieldtype
-    {
-        public $settings = array();
-        public $contentId = 0;
-
-        /**
-         * Return the entry identifier exposed by EE's fieldtype base contract.
-         *
-         * @return int
-         */
-        public function content_id()
+    if (getenv('LOW_SEG2CAT_REAL_FIELDTYPE') === '1') {
+        require_once getenv('LOW_SEG2CAT_FT_TRAIT_FILE');
+    } else {
+        class EE_Fieldtype
         {
-            return $this->contentId;
+            public $settings = array();
+            public $contentId = 0;
+
+            /**
+             * Return the entry identifier exposed by EE's fieldtype base contract.
+             *
+             * @return int
+             */
+            public function content_id()
+            {
+                return $this->contentId;
+            }
         }
+
     }
 
     /**
