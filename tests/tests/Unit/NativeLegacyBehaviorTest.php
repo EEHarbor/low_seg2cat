@@ -156,6 +156,64 @@ CODE;
     }
 
     /**
+     * Follow configured and fallback cache paths within one original EE2 instance.
+     *
+     * @return void
+     */
+    public function testLegacyCachePathTracksConfigurationChanges()
+    {
+        $code = <<<'CODE'
+$app = ee();
+$bridge = new \Low\Seg2Cat\FluxCapacitor\Bridge\EE2(array('module' => 'low_seg2cat', 'module_name' => 'Low Seg2Cat'));
+unset($app->config->items['cache_path']);
+$paths = array($bridge->getCachePath());
+$app->config->items['cache_path'] = '/custom/cache/';
+$paths[] = $bridge->getCachePath();
+$app->config->items['cache_path'] = '';
+$paths[] = $bridge->getCachePath();
+echo json_encode(array('paths' => $paths, 'fallback' => APPPATH . 'cache/',
+    'source' => (new ReflectionMethod($bridge, 'getCachePath'))->getFileName(),
+    'runtime' => array(PHP_VERSION, PHP_BINARY, error_reporting(), E_ALL)), JSON_THROW_ON_ERROR);
+CODE;
+        $result = Process::probe($code, array('version' => '2.5.5'));
+        $this->assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
+        $this->assertSame('', $result['stderr']);
+        $value = json_decode($result['stdout'], true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame(array($value['fallback'], '/custom/cache/', $value['fallback']), $value['paths']);
+        $this->assertSame('phar://' . LOW_SEG2CAT_ROOT . '/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE2.php', $value['source']);
+        $this->assertSame(array(PHP_VERSION, PHP_BINARY, E_ALL, E_ALL), $value['runtime']);
+    }
+
+    /**
+     * Replace a populated legacy menu with the supported default empty menu.
+     *
+     * @return void
+     */
+    public function testLegacyNavigationCanBeClearedAfterPopulation()
+    {
+        $code = <<<'CODE'
+$app = ee();
+$app->cp = new \Tests\Support\LegacyControlPanel();
+$bridge = new \Low\Seg2Cat\FluxCapacitor\Bridge\EE2(array('module' => 'low_seg2cat', 'module_name' => 'Low Seg2Cat'));
+$bridge->getNav(array('index' => 'Home', 'https://example.test/' => 'External'));
+$bridge->getNav();
+echo json_encode(array('calls' => $app->cp->calls,
+    'expected_internal' => $bridge->getBaseURL('index'),
+    'source' => (new ReflectionMethod($bridge, 'getNav'))->getFileName(),
+    'runtime' => array(PHP_VERSION, PHP_BINARY, error_reporting(), E_ALL)), JSON_THROW_ON_ERROR);
+CODE;
+        $result = Process::probe($code, array('version' => '2.5.5'));
+        $this->assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
+        $this->assertSame('', $result['stderr']);
+        $value = json_decode($result['stdout'], true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame(array(array('set_right_nav', array(array('Home' => $value['expected_internal'],
+            'External' => 'https://example.test/'))), array('set_right_nav', array(array()))), $value['calls']);
+        $this->assertStringContainsString('method=index', $value['expected_internal']);
+        $this->assertSame('phar://' . LOW_SEG2CAT_ROOT . '/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE2.php', $value['source']);
+        $this->assertSame(array(PHP_VERSION, PHP_BINARY, E_ALL, E_ALL), $value['runtime']);
+    }
+
+    /**
      * Supply both sides of the EE2 persistent-cache version boundary.
      *
      * @return array
