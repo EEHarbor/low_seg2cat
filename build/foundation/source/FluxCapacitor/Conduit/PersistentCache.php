@@ -161,6 +161,7 @@ class PersistentCache
                     return 'compound-' . sha1(serialize($parts));
                 }
             }
+            $key = $parts;
         }
 
         return sha1(implode(':', $key));
@@ -178,7 +179,7 @@ class PersistentCache
     }
 
     /**
-     * Decode cached values with a local malformed-storage fallback.
+     * Decode cached values with the selected malformed-storage miss contract.
      *
      * @param string $value Stored cache bytes.
      * @return mixed
@@ -189,37 +190,32 @@ class PersistentCache
     }
 
     /**
-     * Create cache directories while preserving supported configured aliases.
+     * Preserve native path resolution and report expected directory failures.
      *
      * @param string $path Original configured directory path.
      * @return bool Whether native creation succeeded.
+     * @throws \Throwable When an unexpected diagnostic handler throws.
      */
     private static function createDirectory($path)
     {
-        $directory = rtrim($path, DIRECTORY_SEPARATOR === '\\' ? '/\\' : '/');
-        $parent = realpath(dirname($directory));
-        if ($parent === false) {
-            return false;
-        }
-        $directory = $parent . DIRECTORY_SEPARATOR . basename($directory);
-        if (is_link($directory)) {
-            $target = readlink($directory);
-            if ($target === false) {
-                return false;
+        $mkdir_line = 0;
+        $previous = null;
+        $previous = set_error_handler(static function ($severity, $message, $file, $line) use (&$mkdir_line, &$previous) {
+            if ($severity === E_WARNING && $file === __FILE__ && $line === $mkdir_line &&
+                preg_match('/\Amkdir\(\): (?:Permission denied|File exists|Not a directory|No such file or directory|Too many levels of symbolic links|Read-only file system)\z/', $message)) {
+                return true;
             }
-            $absolute = $target !== '' && ($target[0] === '/' || (DIRECTORY_SEPARATOR === '\\' && ($target[0] === '\\' || preg_match('/^[A-Za-z]:[\\\\\/]/', $target))));
-            $directory = rtrim($absolute ? $target : $parent . DIRECTORY_SEPARATOR . $target, DIRECTORY_SEPARATOR === '\\' ? '/\\' : '/');
-            // Native mkdir supports one absent target, but cannot traverse a second absent alias.
-            if (is_link($directory)) {
-                return false;
+            if ($previous !== null) {
+                return $previous(...func_get_args());
             }
-        }
-        $parent = dirname($directory);
-        if (file_exists($directory) || !is_dir($parent) || !is_writable($parent) || (DIRECTORY_SEPARATOR === '/' && !is_executable($parent))) {
             return false;
+        }, E_ALL);
+        try {
+            $mkdir_line = __LINE__ + 1;
+            return mkdir($path, DIR_WRITE_MODE);
+        } finally {
+            restore_error_handler();
         }
-
-        return mkdir($path, DIR_WRITE_MODE);
     }
 
     /**

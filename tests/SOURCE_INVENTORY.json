@@ -983,8 +983,8 @@
         "functions": []
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/GlobalFieldSettings.php": {
-        "sha256": "fea70cda537cd4c3a5e84d8c667b14a0138ac1ea1f95d3f18f9adc19bccd86c4",
-        "bytes": 2442,
+        "sha256": "9c6a18eefcab3edfbca4a5df5d3c64906f2376ef63b443b34b338546872f1d0a",
+        "bytes": 3247,
         "functions": [
             {
                 "name": "__construct",
@@ -996,11 +996,11 @@
             },
             {
                 "name": "getSettings",
-                "line": 47
+                "line": 51
             },
             {
                 "name": "updateSetting",
-                "line": 65
+                "line": 77
             }
         ]
     },
@@ -1075,8 +1075,8 @@
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/PersistentCache.php": {
-        "sha256": "182615826b52f567cd1c246093a5d6936c048308f7f1d026a4a193b7596b174d",
-        "bytes": 9987,
+        "sha256": "caac86ccb7385292d883f701d459c9ea6084939fdab83f0d7eb1c057fb6ece72",
+        "bytes": 9718,
         "functions": [
             {
                 "name": "get",
@@ -1108,19 +1108,23 @@
             },
             {
                 "name": "prepCacheData",
-                "line": 175
+                "line": 176
             },
             {
                 "name": "serveCacheData",
-                "line": 186
+                "line": 187
             },
             {
                 "name": "createDirectory",
-                "line": 197
+                "line": 199
+            },
+            {
+                "name": "{closure}",
+                "line": 203
             },
             {
                 "name": "checkPath",
-                "line": 230
+                "line": 226
             }
         ]
     },
@@ -1143,8 +1147,8 @@
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/StaticCache.php": {
-        "sha256": "484a44c4362d48e696c6d190c9443238e5d956c642981219d4c4c5e3d1021e6f",
-        "bytes": 4201,
+        "sha256": "bb3a53e9ba7dfd038f8f9b940814667c81ac5e35bf25dae0d5e6ae1fadddb63e",
+        "bytes": 4228,
         "functions": [
             {
                 "name": "get",
@@ -1256,9 +1260,9 @@
         ]
     },
     "low_seg2cat/low_seg2cat.phar::{stub}": {
-        "sha256": "8c3ea7118887bf0eda8948d5d00fe68694d74c0f60af4784249cd597923f0506",
-        "bytes": 7901,
-        "archive_sha256": "5a1fbfadaeb6e3d3088705016f3ed4f048cd629d311b57513742a6b2279a5033",
+        "sha256": "2d62c624bb99ada816e0c39f5488a78c4f3a39ba75c4dc40ca1cedaae19d79be",
+        "bytes": 7918,
+        "archive_sha256": "a440ad5734913ddb41a0e2b701f0539941fbbcc50f84b9b42d0e20eb58157797",
         "functions": [
             {
                 "name": "go",

@@ -90,7 +90,8 @@ class Process
                 throw new \RuntimeException('Cannot prepare the owned native probe.');
             }
             $timeout = isset($context['timeout_seconds']) ? $context['timeout_seconds'] : 15.0;
-            return self::execute(array_merge($command, array($probe)), $environment, $timeout);
+            $expected = isset($context['expected_diagnostics']) ? $context['expected_diagnostics'] : array();
+            return self::execute(array_merge($command, array($probe)), $environment, $timeout, $expected);
         } finally {
             self::removeDirectory($temporary);
         }
@@ -175,15 +176,15 @@ class Process
      * @param array $command
      * @param array|null $environment
      * @param float $timeoutSeconds
+     * @param array $expectedDiagnostics Explicitly supervised negative-control receipts.
      * @return array
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public static function execute(array $command, ?array $environment = null, $timeoutSeconds = 15.0)
+    public static function execute(array $command, ?array $environment = null, $timeoutSeconds = 15.0, array $expectedDiagnostics = array())
     {
         if (isset($command[0]) && $command[0] === PHP_BINARY) {
-            array_splice($command, 1, 0, array('-d', 'error_reporting=-1', '-d', 'display_errors=stderr',
-                '-d', 'display_startup_errors=1', '-d', 'log_errors=0'));
+            $command = self::guardPhpCommand($command);
         }
         if (!is_numeric($timeoutSeconds) || !is_finite((float) $timeoutSeconds) || $timeoutSeconds <= 0) {
             throw new \InvalidArgumentException('Process deadline must be positive and finite.');
@@ -200,6 +201,11 @@ class Process
             throw new \RuntimeException('Could not allocate process output streams.');
         }
         $process = null;
+        $controlJournal = $expectedDiagnostics ? tempnam(sys_get_temp_dir(), 'low-seg2cat-control-') : null;
+        $environment = $environment === null ? getenv() : $environment;
+        $environment['LOW_SEG2CAT_DIAGNOSTIC_JOURNAL'] = $controlJournal ?: \LowSeg2CatDiagnostics::journal();
+        $journal = $environment['LOW_SEG2CAT_DIAGNOSTIC_JOURNAL'];
+        $journalBefore = strlen(file_get_contents($journal));
         try {
             $process = proc_open($command, array(0 => array('pipe', 'r'), 1 => $output, 2 => $errors), $pipes, null, $environment);
             if (!is_resource($process)) {
@@ -230,12 +236,22 @@ class Process
             }
             rewind($output);
             rewind($errors);
+            $stdout = stream_get_contents($output);
+            $stderr = stream_get_contents($errors);
+            \LowSeg2CatDiagnostics::observeNativeOutput($stderr, $journal, $journalBefore);
             return array('status' => $timedOut ? 124 : $status, 'timed_out' => $timedOut,
-                'stdout' => stream_get_contents($output), 'stderr' => stream_get_contents($errors));
+                'stdout' => $stdout, 'stderr' => $stderr);
         } finally {
             if (is_resource($process)) {
                 proc_terminate($process, 9);
                 proc_close($process);
+            }
+            if ($controlJournal !== null) {
+                try {
+                    \LowSeg2CatDiagnostics::joinControl($controlJournal, $expectedDiagnostics);
+                } finally {
+                    unlink($controlJournal);
+                }
             }
             fclose($output);
             fclose($errors);
@@ -289,4 +305,51 @@ class Process
         }
         rmdir($directory);
     }
+    /**
+     * Guard owned PHP file and inline entrypoints before compiling their source.
+     *
+     * @param array $command Selected PHP command and arguments.
+     * @return array Strict command with application arguments unchanged.
+     */
+    private static function guardPhpCommand(array $command): array
+    {
+        $guard = __DIR__ . '/diagnostics.php';
+        $hasPrepend = false;
+        for ($index = 1; isset($command[$index]); $index++) {
+            $argument = $command[$index];
+            if ($argument === '--' || $argument === '' || $argument[0] !== '-') {
+                break;
+            }
+            if (in_array($argument, array('-d', '--define', '-c', '--php-ini', '-z', '--zend-extension'), true)) {
+                if (($argument === '-d' || $argument === '--define') && isset($command[$index + 1])
+                    && strpos($command[$index + 1], 'auto_prepend_file=') === 0) {
+                    $hasPrepend = true;
+                }
+                $index++;
+                continue;
+            }
+            if (strpos($argument, '-dauto_prepend_file=') === 0 || strpos($argument, '--define=auto_prepend_file=') === 0) {
+                $hasPrepend = true;
+                continue;
+            }
+            if ($argument === '-r' && isset($command[$index + 1])) {
+                $code = $command[$index + 1];
+                $command[$index + 1] = 'require_once ' . var_export($guard, true) . '; eval(' . var_export($code, true) . ');';
+                break;
+            }
+            if (strpos($argument, '-r') === 0 && strlen($argument) > 2) {
+                $code = substr($argument, 2);
+                $command[$index] = '-rrequire_once ' . var_export($guard, true) . '; eval(' . var_export($code, true) . ');';
+                break;
+            }
+        }
+        $flags = array('-d', 'error_reporting=-1', '-d', 'display_errors=stderr', '-d', 'display_startup_errors=1', '-d', 'log_errors=0');
+        if (!$hasPrepend) {
+            $flags[] = '-d';
+            $flags[] = 'auto_prepend_file=' . $guard;
+        }
+        array_splice($command, 1, 0, $flags);
+        return $command;
+    }
+
 }

@@ -162,7 +162,8 @@ class SerializationTest extends TestCase
     {
         $prefix = '$probe = static function () {}; $before = set_error_handler($probe); restore_error_handler(); ';
         $suffix = '$after = set_error_handler($probe); restore_error_handler(); if ($before !== $after) { throw new RuntimeException("Handler changed"); } echo "restored";';
-        $result = \Tests\Support\Process::probe($prefix . $code . $suffix);
+        $expected = $message === 'owned parser callback diagnostic' ? array(array(E_USER_DEPRECATED, '/\Aowned parser callback diagnostic\z/')) : array(array(E_WARNING, "/\Aunserialize\(\): Function owned_missing_class_callback\(\) hasn't defined the class it was called for\z/"));
+        $result = \Tests\Support\Process::probe($prefix . $code . $suffix, array('expected_diagnostics' => $expected));
         self::assertNotSame(0, $result['status'], $result['stdout'] . $result['stderr']);
         self::assertSame('restored', $result['stdout']);
         self::assertStringContainsString('LOW_SEG2CAT_DIAGNOSTIC', $result['stderr']);

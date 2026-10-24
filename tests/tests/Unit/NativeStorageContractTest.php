@@ -203,7 +203,7 @@ class NativeStorageContractTest extends TestCase
             . '$probe = static function () {}; $before = set_error_handler($probe); restore_error_handler(); '
             . 'try { \Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::decode(serialize(new OwnedNestedRange())); } catch (ErrorException $error) {} '
             . '$after = set_error_handler($probe); restore_error_handler(); if ($before !== $after) { throw new RuntimeException("Handler changed"); } echo "restored";';
-        list($status, $stdout, $stderr) = $this->diagnosticProcess($code);
+        list($status, $stdout, $stderr) = $this->diagnosticProcess($code, array(array(E_WARNING, '/\Aunserialize\(\): Numerical result out of range\z/')));
         self::assertSame(2, $status);
         self::assertSame('restored', $stdout);
         self::assertStringContainsString('LOW_SEG2CAT_DIAGNOSTIC', $stderr);
@@ -274,9 +274,9 @@ class NativeStorageContractTest extends TestCase
      * @param string $code Native caller statements.
      * @return array Exit status and output streams.
      */
-    private function diagnosticProcess($code): array
+    private function diagnosticProcess($code, array $expectedDiagnostics = array()): array
     {
-        $result = \Tests\Support\Process::probe($code);
+        $result = \Tests\Support\Process::probe($code, array('expected_diagnostics' => $expectedDiagnostics));
         return array($result['status'], $result['stdout'], $result['stderr']);
     }
 
@@ -292,8 +292,33 @@ class NativeStorageContractTest extends TestCase
     private function runContract($caller, $tail, $mode, $hydration): array
     {
         $arguments = array('owned', $caller, $tail, $mode, $hydration);
-        return $this->diagnosticProcess('$argv = ' . var_export($arguments, true) . '; require ' . var_export(PATH_THIRD . 'tests/parser-contract.php', true) . ';');
+        $expected = $mode === 'diagnostic' ? array(array(E_USER_DEPRECATED, '/\Aowned malformed callback diagnostic\z/')) : array();
+        return $this->diagnosticProcess('$argv = ' . var_export($arguments, true) . '; require ' . var_export(PATH_THIRD . 'tests/parser-contract.php', true) . ';', $expected);
     }
+    /**
+     * Retain clean PHP7.4 byte writes and ordinary-array fractional key values.
+     *
+     * @return void
+     */
+    public function testAcceptedByteWritesAndFractionalArrayKeys(): void
+    {
+        $settings = (new \ReflectionClass(\Low\Seg2Cat\FluxCapacitor\Conduit\GlobalFieldSettings::class))->newInstanceWithoutConstructor();
+        $settings->fieldtype_name = 'low_seg2cat';
+        foreach (array(array('text', 1, 'long', 'e', 'tlxt'), array('text', 1, 123, 'e', 't1xt'),
+            array('text', 1, new NativeOffsetText(), 'e', 'tlxt'),
+            array(array('A', 'B'), 1.5, 'Z', 'B', array('A', 'Z')),
+            array(array('A', 'B'), 0.5, 'Z', 'A', array('Z', 'B')),
+            array(array('A', 'B'), -0.5, 'Z', 'A', array('Z', 'B'))) as $case) {
+            NativeOffsetText::$calls = 0;
+            $database = new NativeOffsetDatabase(base64_encode(serialize($case[0])));
+            ee()->db = $database;
+            self::assertSame($case[3], $settings->getSetting($case[1]));
+            self::assertTrue($settings->updateSetting($case[1], $case[2]));
+            self::assertSame(base64_encode(serialize($case[4])), $database->written['settings']);
+            self::assertSame($case[2] instanceof NativeOffsetText ? 1 : 0, NativeOffsetText::$calls);
+        }
+    }
+
 }
 
 class NativeComputedSettings extends \ArrayObject
@@ -324,5 +349,50 @@ class NativeComputedSettings extends \ArrayObject
     {
         $this->writes[] = array($key, $value);
         parent::offsetSet($key, $value);
+    }
+}
+
+
+class NativeOffsetDatabase
+{
+    public $encoded;
+    public $written;
+
+    /**
+     * Supply the native TEXT row used by the distributed settings reader.
+     *
+     * @param string $encoded Database carrier.
+     */
+    public function __construct($encoded) { $this->encoded = $encoded; }
+
+    /**
+     * Retain fluent query behavior and record exact serialized update bytes.
+     *
+     * @param string $method Query operation.
+     * @param array $arguments Query arguments.
+     * @return mixed
+     */
+    public function __call($method, array $arguments)
+    {
+        if ($method === 'row') { return $this->encoded; }
+        if ($method === 'num_rows') { return 1; }
+        if ($method === 'update') { $this->written = $arguments[1]; return true; }
+        return $this;
+    }
+}
+
+class NativeOffsetText
+{
+    public static $calls = 0;
+
+    /**
+     * Verify first-byte assignment converts the native value exactly once.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        self::$calls++;
+        return 'long';
     }
 }

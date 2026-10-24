@@ -17,7 +17,7 @@ class GlobalFieldSettings
     /**
      * Read array/string offsets or invoke the native ArrayAccess getter directly.
      *
-     * @param string $name Setting key.
+     * @param mixed $name Native setting offset.
      * @return mixed Setting value or null when an array key is absent.
      * @throws \Throwable When a stored callback or native getter fails.
      */
@@ -33,6 +33,10 @@ class GlobalFieldSettings
 
         if (!is_array($ftSettings) && !is_string($ftSettings)) {
             return null;
+        }
+
+        if (is_array($ftSettings) && is_float($name)) {
+            $name = (int) $name;
         }
 
         return isset($ftSettings[$name]) ? $ftSettings[$name] : null;
@@ -62,19 +66,35 @@ class GlobalFieldSettings
         return $ftSettings;
     }
 
+    /**
+     * Preserve accepted byte writes and ordinary-array numeric key semantics.
+     *
+     * @param mixed $key Native setting offset.
+     * @param mixed $value Setting value.
+     * @return bool Whether a settings row was available for updating.
+     * @throws \Throwable When an invalid carrier or a native callback fails.
+     */
     public function updateSetting($key, $value)
     {
         $ftSettings = $this->getSettings();
-
-        if (!is_null($ftSettings)) {
-            $ftSettings[$key] = $value;
-            $settingsForDb = array('settings' => base64_encode(serialize($ftSettings)));
-
-            ee()->db->where('name', $this->fieldtype_name)
-                ->update('fieldtypes', $settingsForDb);
-        } else {
+        if ($ftSettings === null) {
             return false;
         }
+        if (is_array($ftSettings) && is_float($key)) {
+            $key = (int) $key;
+        }
+        if (is_string($ftSettings) && (is_scalar($value) || is_resource($value)
+            || (is_object($value) && method_exists($value, '__toString')))) {
+            $value = (string) $value;
+            if (strlen($value) > 1) {
+                $value = $value[0];
+            }
+        }
+
+        $ftSettings[$key] = $value;
+        $settingsForDb = array('settings' => base64_encode(serialize($ftSettings)));
+        ee()->db->where('name', $this->fieldtype_name)
+            ->update('fieldtypes', $settingsForDb);
 
         return true;
     }

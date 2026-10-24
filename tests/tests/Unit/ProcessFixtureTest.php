@@ -14,7 +14,7 @@ class ProcessFixtureTest extends TestCase
     public function testNativeProbeDetectsSuppressedHarnessDeprecations()
     {
         $result = Process::probe('@trigger_error("native-harness sentinel", E_USER_DEPRECATED); echo "continued";',
-            array('harness_only' => true));
+            array('harness_only' => true, 'expected_diagnostics' => array(array(E_USER_DEPRECATED, '/\Anative-harness sentinel\z/'))));
         $this->assertSame(255, $result['status']);
         $this->assertStringNotContainsString('continued', $result['stdout']);
         $this->assertStringContainsString('native-harness sentinel', $result['stdout'] . $result['stderr']);
@@ -28,7 +28,7 @@ class ProcessFixtureTest extends TestCase
     public function testNativeProbeRejectsCompilationDiagnostics()
     {
         $result = Process::probe('switch (1) { case 1: continue; } echo "continued";',
-            array('harness_only' => true));
+            array('harness_only' => true, 'expected_diagnostics' => array(array(E_WARNING, '/\A"continue" targeting switch is equivalent to "break"(?:\. Did you mean to use "continue 2"\?)?\z/'))));
         $this->assertSame(255, $result['status']);
         $this->assertStringNotContainsString('continued', $result['stdout']);
         $this->assertStringContainsString('continue', $result['stdout'] . $result['stderr']);
@@ -47,7 +47,7 @@ $file = sys_get_temp_dir() . '/nested.php';
 file_put_contents($file, '<?php @trigger_error("nested-generated-sentinel", E_USER_DEPRECATED); echo "continued";');
 require $file;
 CODE;
-        $result = Process::probe($code, array('harness_only' => true));
+        $result = Process::probe($code, array('harness_only' => true, 'expected_diagnostics' => array(array(E_USER_DEPRECATED, '/\Anested-generated-sentinel\z/'))));
         $this->assertSame(255, $result['status']);
         $this->assertStringNotContainsString('continued', $result['stdout']);
         $this->assertStringContainsString('nested-generated-sentinel', $result['stdout'] . $result['stderr']);

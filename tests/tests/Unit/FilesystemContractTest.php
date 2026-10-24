@@ -16,7 +16,7 @@ class FilesystemContractTest extends TestCase
     {
         $cases = array();
         foreach (array(false, true) as $module) {
-            foreach (array('normal', 'missing-parent', 'readonly-parent', 'no-search-parent', 'absolute-alias', 'absolute-trailing-alias', 'relative-alias', 'two-hop-alias', 'two-hop-trailing-alias', 'cycle-alias', 'missing-target-parent', 'readonly-target-parent', 'no-search-target-parent', 'existing-no-search') as $shape) {
+            foreach (array('normal', 'missing-parent', 'readonly-parent', 'no-search-parent', 'absolute-alias', 'absolute-trailing-alias', 'relative-alias', 'two-hop-alias', 'two-hop-trailing-alias', 'two-hop-last-trailing-alias', 'two-hop-both-trailing-alias', 'three-hop-first-trailing-alias', 'three-hop-all-trailing-alias', 'three-hop-middle-trailing-alias', 'trailing-readonly-target-parent', 'trailing-no-search-target-parent', 'trailing-missing-target-parent', 'file-parent', 'trailing-file-target-parent', 'cycle-alias', 'missing-target-parent', 'readonly-target-parent', 'no-search-target-parent', 'existing-no-search') as $shape) {
                 $cases[] = array($module, $shape);
             }
         }
@@ -44,50 +44,81 @@ class FilesystemContractTest extends TestCase
         }
         $paths = array('cache_path' => $cache, 'module_cache_path' => $module ? $directory . '/' : $directory . '/low_seg2cat/');
         $original = array();
-        foreach ($paths as $name => $value) {
-            $property = new \ReflectionProperty(PersistentCache::class, $name);
-            if (PHP_VERSION_ID < 80100) {
-                $property->setAccessible(true);
-            }
-            $original[$name] = $property->getValue();
-            $property->setValue(null, $value);
-        }
-        if (strpos($shape, 'alias') !== false || strpos($shape, 'target-parent') !== false) {
-            $target = $base . '/target/cache';
-            if ($shape === 'absolute-trailing-alias') {
-                $target .= '/';
-            }
-            if ($shape === 'relative-alias') {
-                $target = '../target/cache';
-            }
-            if ($shape === 'two-hop-alias' || $shape === 'two-hop-trailing-alias') {
-                symlink('../target/cache', $base . '/parent/inner');
-                $target = $shape === 'two-hop-alias' ? 'inner' : 'inner/';
-            }
-            if ($shape === 'cycle-alias') {
-                $target = 'cache';
-            }
-            if ($shape === 'missing-target-parent') {
-                $target = $base . '/absent/cache';
-            }
-            symlink($target, $directory);
-        }
-        if ($shape === 'missing-parent') {
-            rmdir($base . '/parent');
-        }
-        if ($shape === 'readonly-parent' || $shape === 'no-search-parent') {
-            chmod($base . '/parent', $shape === 'readonly-parent' ? 0555 : 0600);
-        }
-        if ($shape === 'readonly-target-parent' || $shape === 'no-search-target-parent') {
-            chmod($base . '/target', $shape === 'readonly-target-parent' ? 0555 : 0600);
-        }
-        if ($shape === 'existing-no-search') {
-            mkdir($directory, 0200);
-        }
-        StaticCache::clear();
         try {
-            $accepted = in_array($shape, array('normal', 'absolute-alias', 'absolute-trailing-alias', 'relative-alias'), true);
+            foreach ($paths as $name => $value) {
+                $property = new \ReflectionProperty(PersistentCache::class, $name);
+                if (PHP_VERSION_ID < 80100) {
+                    $property->setAccessible(true);
+                }
+                $original[$name] = $property->getValue();
+                $property->setValue(null, $value);
+            }
+            if (strpos($shape, 'alias') !== false || strpos($shape, 'target-parent') !== false) {
+                $target = $base . '/target/cache';
+                if ($shape === 'absolute-trailing-alias') {
+                    $target .= '/';
+                }
+                if ($shape === 'relative-alias') {
+                    $target = '../target/cache';
+                }
+                if (strpos($shape, 'two-hop-') === 0 || strpos($shape, 'three-hop-') === 0 || strpos($shape, 'trailing-') === 0) {
+                    $last = strpos($shape, 'last-trailing') !== false || strpos($shape, 'both-trailing') !== false ? '../target/cache/' : '../target/cache';
+                    $first_trailing = $shape !== 'two-hop-alias' && $shape !== 'two-hop-last-trailing-alias' && $shape !== 'three-hop-middle-trailing-alias';
+                    if (strpos($shape, 'three-hop-') === 0) {
+                        symlink($first_trailing ? 'inner/' : 'inner', $directory);
+                        $last = $shape === 'three-hop-first-trailing-alias' ? 'last' : 'last/';
+                        symlink($last, $base . '/parent/inner');
+                        symlink('../target/cache/', $base . '/parent/last');
+                    }
+                    if ($shape === 'trailing-missing-target-parent') {
+                        $last = '../absent/cache';
+                    }
+                    if (strpos($shape, 'three-hop-') !== 0) {
+                        symlink($last, $base . '/parent/inner');
+                    }
+                    $target = $first_trailing ? 'inner/' : 'inner';
+                }
+                if ($shape === 'cycle-alias') {
+                    $target = 'cache';
+                }
+                if ($shape === 'missing-target-parent') {
+                    $target = $base . '/absent/cache';
+                }
+                if (!is_link($directory)) {
+                    symlink($target, $directory);
+                }
+            }
+            if ($shape === 'missing-parent' || $shape === 'file-parent') {
+                rmdir($base . '/parent');
+                if ($shape === 'file-parent') {
+                    file_put_contents($base . '/parent', 'file');
+                    chmod($base . '/parent', 0700);
+                }
+            }
+            if ($shape === 'trailing-file-target-parent') {
+                rmdir($base . '/target');
+                file_put_contents($base . '/target', 'file');
+                chmod($base . '/target', 0700);
+            }
+            if ($shape === 'readonly-parent' || $shape === 'no-search-parent') {
+                chmod($base . '/parent', $shape === 'readonly-parent' ? 0555 : 0600);
+            }
+            if (in_array($shape, array('readonly-target-parent', 'no-search-target-parent', 'trailing-readonly-target-parent', 'trailing-no-search-target-parent'), true)) {
+                chmod($base . '/target', strpos($shape, 'readonly') !== false ? 0555 : 0600);
+            }
+            if ($shape === 'existing-no-search') {
+                mkdir($directory, 0200);
+            }
+            clearstatcache(true);
+            StaticCache::clear();
+            $accepted = in_array($shape, array('normal', 'absolute-alias', 'absolute-trailing-alias', 'relative-alias', 'two-hop-trailing-alias', 'two-hop-both-trailing-alias', 'three-hop-all-trailing-alias'), true);
+            $probe = static function () {};
+            $before = set_error_handler($probe);
+            restore_error_handler();
             self::assertSame($accepted, PersistentCache::set('owned-path', array('value' => 0)));
+            $after = set_error_handler($probe);
+            restore_error_handler();
+            self::assertSame($before, $after);
             if ($accepted) {
                 StaticCache::clear();
                 self::assertSame(array('value' => 0), PersistentCache::get('owned-path'));
@@ -154,5 +185,57 @@ class FilesystemContractTest extends TestCase
             rmdir($base . '/outside');
             rmdir($base);
         }
+    }
+    /**
+     * Forward unrelated stream callbacks without losing the prior handler or arguments.
+     *
+     * @return void
+     */
+    public function testUnexpectedMkdirCallbackReachesPreviousHandler(): void
+    {
+        self::assertTrue(stream_wrapper_register('ownedcache', OwnedMkdirWarningWrapper::class));
+        $events = array();
+        $handler = static function ($severity, $message) use (&$events) {
+            $events[] = array($severity, $message, func_num_args());
+            return true;
+        };
+        set_error_handler($handler, E_ALL);
+        try {
+            $method = new \ReflectionMethod(PersistentCache::class, 'createDirectory');
+            if (PHP_VERSION_ID < 80100) {
+                $method->setAccessible(true);
+            }
+            self::assertFalse($method->invoke(null, 'ownedcache://directory'));
+            self::assertSame(array(array(E_USER_WARNING, 'mkdir(): Permission denied', PHP_VERSION_ID < 80000 ? 5 : 4)), $events);
+            $probe = static function () {};
+            $after = set_error_handler($probe);
+            restore_error_handler();
+            self::assertSame($handler, $after);
+            self::assertSame(-1, error_reporting());
+        } finally {
+            restore_error_handler();
+            stream_wrapper_unregister('ownedcache');
+        }
+    }
+
+}
+
+
+class OwnedMkdirWarningWrapper
+{
+    public $context;
+
+    /**
+     * Emit a diagnostic outside the actual native mkdir callsite and severity.
+     *
+     * @param string $path Owned stream path.
+     * @param int $mode Requested permissions.
+     * @param int $options Native mkdir options.
+     * @return bool
+     */
+    public function mkdir($path, $mode, $options)
+    {
+        trigger_error('mkdir(): Permission denied', E_USER_WARNING);
+        return false;
     }
 }

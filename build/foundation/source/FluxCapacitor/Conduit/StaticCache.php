@@ -114,6 +114,7 @@ class StaticCache
                     return 'compound-' . sha1(serialize($parts));
                 }
             }
+            $key = $parts;
         }
 
         return sha1(implode(':', $key));

@@ -10,10 +10,11 @@ class PrimaryLegacy
      * @param bool $existingAccessor Whether the legacy bootstrap already owns ee().
      * @param bool $definedVersion Whether APP_VER is defined before source loading.
      * @param string $prepare Owned startup diagnostic or lifetime control.
+     * @param array $expectedDiagnostics Exact supervised harness-control receipts.
      * @return array
      * @throws \RuntimeException
      */
-    public static function accessor($existingAccessor, $definedVersion, $prepare = '')
+    public static function accessor($existingAccessor, $definedVersion, $prepare = '', array $expectedDiagnostics = array())
     {
         $unit = 'low_seg2cat/low_seg2cat.phar::FluxCapacitor/Bridge/EE.php';
         $original = 'phar://' . LOW_SEG2CAT_ROOT . '/' . str_replace('::', '/', $unit);
@@ -96,7 +97,7 @@ class PrimaryLegacy
             if ($coverageDirectory) {
                 $environment['XDEBUG_MODE'] = 'coverage';
             }
-            $result = Process::execute(array_merge($command, array($measured)), $environment);
+            $result = Process::execute(array_merge($command, array($measured)), $environment, 15.0, $expectedDiagnostics);
             if ($result['status'] === 0 && (!is_file($completed) || file_get_contents($completed) !== 'complete')) {
                 $result['status'] = 2;
                 $result['stderr'] .= "Legacy accessor did not complete.\n";

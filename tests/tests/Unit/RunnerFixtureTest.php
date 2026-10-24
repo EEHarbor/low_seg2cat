@@ -25,7 +25,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
             $bootstrap = htmlspecialchars(LOW_SEG2CAT_ROOT . '/tests/bootstrap.php', ENT_QUOTES, 'UTF-8');
             file_put_contents($directory . '/phpunit.xml', '<phpunit bootstrap="' . $bootstrap . '" cacheResult="false"><testsuites><testsuite name="caught"><file>' . $directory . '/CaughtProbeTest.php</file></testsuite></testsuites></phpunit>');
             $result = Process::execute(array(PHP_BINARY, '-d', 'auto_prepend_file=' . LOW_SEG2CAT_ROOT . '/tests/Support/diagnostics.php',
-                LOW_SEG2CAT_ROOT . '/tests/.phpunit/phpunit-9.phar', '-c', $directory . '/phpunit.xml', '--do-not-cache-result'));
+                LOW_SEG2CAT_ROOT . '/tests/.phpunit/phpunit-9.phar', '-c', $directory . '/phpunit.xml', '--do-not-cache-result'), null, 15.0, array(array(E_USER_DEPRECATED, $provider ? '/\Acaught provider sentinel\z/' : '/\Acaught test sentinel\z/')));
             $this->assertNotSame(0, $result['status']);
             $this->assertStringContainsString('LOW_SEG2CAT_DIAGNOSTIC', $result['stderr']);
             $this->assertStringContainsString($provider ? 'caught provider sentinel' : 'caught test sentinel', $result['stderr']);
@@ -115,7 +115,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
         file_put_contents($report, 'stale-report');
         try {
             $result = $this->launch(array('--bootstrap', $bootstrap,
-                '--filter', 'testProcessCapturesFullStderrBeforeStdout', '--log-junit', $report));
+                '--filter', 'testProcessCapturesFullStderrBeforeStdout', '--log-junit', $report), $this->startupExpected($control));
             $this->assertSame(2, $result['status'], $result['stdout'] . $result['stderr']);
             $this->assertStringContainsString($control === 'startup-compile' ? 'continue' : 'startup-diagnostic-sentinel',
                 $result['stdout'] . $result['stderr']);
@@ -159,7 +159,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
         }
         try {
             $file = $directory . ($entry === 'bootstrap' ? '/entry.php' : '/Support/entry.php');
-            $result = Process::execute(array(PHP_BINARY, '-d', 'display_errors=stderr', $file));
+            $result = Process::execute(array(PHP_BINARY, '-d', 'display_errors=stderr', $file), null, 15.0, array(array(E_USER_DEPRECATED, '/\Aearly-support-diagnostic\z/')));
             $this->assertSame(255, $result['status']);
             $this->assertStringContainsString('early-support-diagnostic', $result['stdout'] . $result['stderr']);
             $this->assertStringContainsString('ErrorException', $result['stdout'] . $result['stderr']);
@@ -231,7 +231,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
                 LOW_SEG2CAT_ROOT . '/tests/scripts/coverage.php', '-c', LOW_SEG2CAT_ROOT . '/phpunit.xml',
                 '--no-coverage', '--log-junit', $report), $arguments);
             $result = Process::execute($command, array_merge(getenv(), array('XDEBUG_MODE' => 'coverage',
-                'LOW_SEG2CAT_COVERAGE' => $raw, 'LOW_SEG2CAT_XDEBUG_EXTENSION' => $extension)));
+                'LOW_SEG2CAT_COVERAGE' => $raw, 'LOW_SEG2CAT_XDEBUG_EXTENSION' => $extension)), 15.0, strpos($control, 'startup-') === 0 ? $this->startupExpected($control) : array());
             if ($status === null) {
                 $this->assertNotSame(0, $result['status'], $result['stdout'] . $result['stderr']);
                 $this->assertStringContainsString('ErrorException', $result['stdout'] . $result['stderr']);
@@ -468,15 +468,29 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Declare only the exact intentionally emitted startup-control receipt.
+     *
+     * @param string $control Owned startup vector.
+     * @return array
+     */
+    private function startupExpected($control): array
+    {
+        if ($control === 'startup-compile') {
+            return array(array(E_WARNING, '/\A"continue" targeting switch is equivalent to "break"(?:\. Did you mean to use "continue 2"\?)?\z/'));
+        }
+        return array(array(E_USER_DEPRECATED, '/\Astartup-diagnostic-sentinel\z/'));
+    }
+
+    /**
      * Invoke the checked launcher with the current explicit runtime.
      *
      * @param array $arguments
      * @return array
      */
-    private function launch(array $arguments)
+    private function launch(array $arguments, array $expectedDiagnostics = array())
     {
         require_once LOW_SEG2CAT_ROOT . '/tests/.phpunit/check-junit.php';
         return Process::execute(array_merge(array(LOW_SEG2CAT_ROOT . '/tests/.phpunit/run-phpunit.sh',
-            '-c', LOW_SEG2CAT_ROOT . '/phpunit.xml'), $arguments), array_merge(getenv(), array('PHP_BINARY' => PHP_BINARY)));
+            '-c', LOW_SEG2CAT_ROOT . '/phpunit.xml'), $arguments), array_merge(getenv(), array('PHP_BINARY' => PHP_BINARY)), 15.0, $expectedDiagnostics);
     }
 }

@@ -8,6 +8,34 @@ use Low\Seg2Cat\FluxCapacitor\Conduit\StaticCache;
 class PersistentCacheTest extends TestCase
 {
     /**
+     * Convert each compound object component once without changing its disk identity.
+     *
+     * @return void
+     */
+    public function testCompoundStringableKeyIsConvertedOnce(): void
+    {
+        $part = new class {
+            public $calls = 0;
+
+            public function __toString()
+            {
+                ++$this->calls;
+                return $this->calls === 1 ? 'site' : 'changed';
+            }
+        };
+        self::assertTrue(StaticCache::set(array($part, 'entry'), 'memory'));
+        self::assertSame(1, $part->calls);
+        self::assertSame('memory', StaticCache::get('site:entry'));
+        StaticCache::clear();
+        $part->calls = 0;
+        self::assertTrue(PersistentCache::set(array($part, 'entry'), 'disk'));
+        self::assertSame(1, $part->calls);
+        self::assertSame('disk', PersistentCache::get('site:entry'));
+        StaticCache::clear();
+        self::assertSame('disk', PersistentCache::get('site:entry'));
+    }
+
+    /**
      * Reuse a successfully written request value after its disk file disappears.
      *
      * @return void

@@ -109,7 +109,7 @@ const GZ = 0x1000;
 const BZ2 = 0x2000;
 const MASK = 0x3000;
 const START = 'index.php';
-const LEN = 7901;
+const LEN = 7918;
 
 /**
  * Extract the original archive or serve its native entry point.
@@ -314,6 +314,7 @@ $temp = rtrim($temp, DIRECTORY_SEPARATOR === '\\' ? '/\\' : '/');
 if (is_link($temp)) {
 unlink($temp);
 clearstatcache();
+chdir($origdir);
 return;
 }
 $temp = realpath($temp);

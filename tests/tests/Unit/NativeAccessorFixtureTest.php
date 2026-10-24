@@ -37,7 +37,15 @@ class NativeAccessorFixtureTest extends TestCase
             $architecture = php_uname('m') === 'arm64' ? 'arm64' : 'x86';
             putenv('LOW_SEG2CAT_XDEBUG_EXTENSION=/Applications/Herd.app/Contents/Resources/xdebug/xdebug-' .
                 PHP_MAJOR_VERSION . PHP_MINOR_VERSION . '-' . $architecture . '.so');
-            $result = PrimaryLegacy::accessor(false, true, $prepare);
+            $expected = array();
+            if ($message === 'accessor-startup-sentinel') {
+                $expected = array(array(E_USER_DEPRECATED, '/\Aaccessor-startup-sentinel\z/'));
+            }
+            if ($message === 'curly braces' || $message === 'unexpected token') {
+                $expected = array(array(E_DEPRECATED, '/\AArray and string offset access syntax with curly braces is deprecated\z/'),
+                    array(E_WARNING, '/\AUnhandled native diagnostic: (?:Fatal error: Array and string offset access syntax with curly braces is no longer supported|Parse error: syntax error, unexpected token "\{", expecting (?:"\]"|"," or ";")) in [^\r\n]+\/prepend\.php on line [0-9]+\z/'));
+            }
+            $result = PrimaryLegacy::accessor(false, true, $prepare, $expected);
             $this->assertNotSame(0, $result['status']);
             $this->assertStringContainsString($message, $result['stderr']);
             $this->assertSame(array(), glob($directory . '/*'));

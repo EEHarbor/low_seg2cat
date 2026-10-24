@@ -163,5 +163,17 @@
     ],
     "decoder_path": "build/foundation/source/FluxCapacitor/Conduit/SerializedData.php",
     "decoder_sha256": "b95aa98f1c2d9e76322644359be0722164fe4c5554cf23a78bafdfd22e265ad9"
+  },
+  "blocked_correction_v7": {
+    "author": "slot08",
+    "status": "Unpublished best checkpoint; native serialization handler state/mask remains blocked",
+    "source_changes": [
+      "Exact native mkdir warning boundary using original path",
+      "Ordinary array float offsets and native74 first-byte writes",
+      "Public Version zero-argument dispatch and cleanup cwd where affected",
+      "Reuse single Stringable compound key conversion where affected"
+    ],
+    "tool_changes": "Invocation-owned durable journals; exact separately supervised negative controls; native startup/compilation stream retention; bare inline/file guarding and late shutdown rejection",
+    "lineage": "Own edits; 07 key conversion observation and 02/09 review observations only. Existing 01/05 decoder and03 fixture ancestry retained. No02/09 implementation copied."
   }
 }
