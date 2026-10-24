@@ -35,7 +35,11 @@ try {
     $archive = $temporary . '/low_seg2cat.phar';
     $phar = new Phar($archive, FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::KEY_AS_FILENAME, 'low_seg2cat.phar');
     $phar->buildFromDirectory($temporary . '/contents');
-    $phar->setStub(file_get_contents(__DIR__ . '/stub.php'));
+    $stub = file_get_contents(__DIR__ . '/stub.php');
+    if (!preg_match('/\bconst LEN = ([0-9]+);/', $stub, $length) || (int) $length[1] !== strlen($stub)) {
+        throw new RuntimeException('Extraction stub manifest offset does not match its byte length.');
+    }
+    $phar->setStub($stub);
     $phar->setSignatureAlgorithm(Phar::SHA256);
     if (count($phar) !== count($members) || $phar->getAlias() !== $provenance['alias']) {
         throw new RuntimeException('Foundation archive layout changed unexpectedly.');

@@ -152,5 +152,16 @@
       "compression": false,
       "metadata": null
     }
+  },
+  "corrective_review_batch": {
+    "author": "slot08",
+    "source_basis": "Own actual original/candidate contract probes plus coordinator shared audit and independent slot02 six findings; no slot02 Low Search source copied. Earlier01/05 native decoder and03 consumer-fixture lineage retained.",
+    "changes": [
+      "Bound serialized decimal text before native integer casts; preserve native cleanup",
+      "Preserve supported configured cache aliases and quiet blocked POSIX path failures",
+      "Trim only native cleanup separators before root-link checks"
+    ],
+    "decoder_path": "build/foundation/source/FluxCapacitor/Conduit/SerializedData.php",
+    "decoder_sha256": "b95aa98f1c2d9e76322644359be0722164fe4c5554cf23a78bafdfd22e265ad9"
   }
 }

@@ -189,6 +189,40 @@ class PersistentCache
     }
 
     /**
+     * Create cache directories while preserving supported configured aliases.
+     *
+     * @param string $path Original configured directory path.
+     * @return bool Whether native creation succeeded.
+     */
+    private static function createDirectory($path)
+    {
+        $directory = rtrim($path, DIRECTORY_SEPARATOR === '\\' ? '/\\' : '/');
+        $parent = realpath(dirname($directory));
+        if ($parent === false) {
+            return false;
+        }
+        $directory = $parent . DIRECTORY_SEPARATOR . basename($directory);
+        if (is_link($directory)) {
+            $target = readlink($directory);
+            if ($target === false) {
+                return false;
+            }
+            $absolute = $target !== '' && ($target[0] === '/' || (DIRECTORY_SEPARATOR === '\\' && ($target[0] === '\\' || preg_match('/^[A-Za-z]:[\\\\\/]/', $target))));
+            $directory = rtrim($absolute ? $target : $parent . DIRECTORY_SEPARATOR . $target, DIRECTORY_SEPARATOR === '\\' ? '/\\' : '/');
+            // Native mkdir supports one absent target, but cannot traverse a second absent alias.
+            if (is_link($directory)) {
+                return false;
+            }
+        }
+        $parent = dirname($directory);
+        if (file_exists($directory) || !is_dir($parent) || !is_writable($parent) || (DIRECTORY_SEPARATOR === '/' && !is_executable($parent))) {
+            return false;
+        }
+
+        return mkdir($path, DIR_WRITE_MODE);
+    }
+
+    /**
      * Make sure the EE global cache folder and our module-specific folders
      * exist and are writable.
      * @return bool  Whether the folders exist and are writable
@@ -200,7 +234,7 @@ class PersistentCache
 
         // If the generic cache folder doesn't exist, try to create it.
         if (! @is_dir(self::$cache_path)) {
-            if (file_exists(rtrim(self::$cache_path, '/')) || !mkdir(self::$cache_path, DIR_WRITE_MODE)) {
+            if (!self::createDirectory(self::$cache_path)) {
                 ee()->load->library('logger');
                 ee()->logger->developer('Low Seg2Cat: Write Cache enabled but could not create cache folder: ' . self::$cache_path);
                 return false;
@@ -211,7 +245,7 @@ class PersistentCache
         }
 
         // Make sure the generic cache folder is writable.
-        if (!is_writable(self::$cache_path)) {
+        if (!is_writable(self::$cache_path) || (DIRECTORY_SEPARATOR === '/' && !is_executable(self::$cache_path))) {
             ee()->load->library('logger');
             ee()->logger->developer('Low Seg2Cat: Write Cache enabled but cache path not writable: ' . self::$cache_path);
             return false;
@@ -219,7 +253,7 @@ class PersistentCache
 
         // If the module-specific cache folder doesn't exist, try to create it.
         if (!@is_dir(self::$module_cache_path)) {
-            if (file_exists(rtrim(self::$module_cache_path, '/')) || !mkdir(self::$module_cache_path, DIR_WRITE_MODE)) {
+            if (!self::createDirectory(self::$module_cache_path)) {
                 ee()->load->library('logger');
                 ee()->logger->developer('Low Seg2Cat: Write Cache enabled but could not create module cache folder: ' . self::$module_cache_path);
                 return false;
@@ -230,7 +264,7 @@ class PersistentCache
         }
 
         // Make sure the module-specific cache folder is writable.
-        if (!is_writable(self::$module_cache_path)) {
+        if (!is_writable(self::$module_cache_path) || (DIRECTORY_SEPARATOR === '/' && !is_executable(self::$module_cache_path))) {
             // If the path is wrong we'll turn off caching
             ee()->load->library('logger');
             ee()->logger->developer('Low Seg2Cat: Write Cache enabled but module cache path not writable: ' . self::$module_cache_path);

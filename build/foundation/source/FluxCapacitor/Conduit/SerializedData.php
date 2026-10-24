@@ -101,8 +101,13 @@ class SerializedData
                 return $result . substr($value, $start);
             }
 
-            $size = (int) $match[2];
             $position += strlen($match[0]);
+            $digits = ltrim($match[2], '0');
+            $remaining = (string) ($length - $position);
+            if (strlen($digits) > strlen($remaining) || (strlen($digits) === strlen($remaining) && strcmp($digits, $remaining) > 0)) {
+                return $result . substr($value, $start);
+            }
+            $size = (int) ($digits === '' ? '0' : $digits);
             $contents = '';
 
             if ($type === 'S') {
@@ -134,8 +139,16 @@ class SerializedData
                 }
                 $position += strlen($tail[0]);
                 if ($type === 'C') {
-                    $payload_length = (int) $tail[1];
-                    if ($payload_length < 0 || $payload_length >= $length - $position || $value[$position + $payload_length] !== '}') {
+                    $digits = ltrim(ltrim($tail[1], '+-'), '0');
+                    if (($tail[1][0] === '-' && $digits !== '') || $position >= $length) {
+                        return $result . substr($value, $start);
+                    }
+                    $remaining = (string) ($length - $position - 1);
+                    if (strlen($digits) > strlen($remaining) || (strlen($digits) === strlen($remaining) && strcmp($digits, $remaining) > 0)) {
+                        return $result . substr($value, $start);
+                    }
+                    $payload_length = (int) ($digits === '' ? '0' : $digits);
+                    if ($value[$position + $payload_length] !== '}') {
                         return $result . substr($value, $start);
                     }
                     $position += $payload_length + 1;

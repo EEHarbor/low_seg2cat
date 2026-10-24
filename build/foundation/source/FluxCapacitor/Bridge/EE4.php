@@ -68,6 +68,7 @@ class EE4 extends AbstractBridge
         $last_segment = end($last_segment);
         $activeTitle = null;
         $titles = array();
+        $headers = array();
 
         foreach ($nav_items as $method => $title) {
             if ($method == '/') {
@@ -81,27 +82,30 @@ class EE4 extends AbstractBridge
             }
 
             $titles[$method] = $title;
-            $nav_items[$method] = $sidebar->addHeader($title)->withUrl($url);
+            $headers[$method] = $sidebar->addHeader($title)->withUrl($url);
 
             // This is to add buttons to a nav.
             if (!empty($buttons[$method])) {
                 foreach ($buttons[$method] as $url => $text) {
-                    $nav_items[$method]->withButton($text, $this->moduleURL($url));
+                    $headers[$method]->withButton($text, $this->moduleURL($url));
                 }
             }
 
             if ($last_segment == $method || ($method == 'index' && $last_segment == $this->module)) {
                 $activeTitle = $title;
-                $nav_items[$method]->isActive();
+                $headers[$method]->isActive();
             }
         }
 
-        if (!empty($active_map[$last_segment]) && !empty($nav_items[$active_map[$last_segment]])) {
-            $activeTitle = $titles[$active_map[$last_segment]];
-            $nav_items[$active_map[$last_segment]]->isActive();
+        if (array_key_exists($last_segment, $active_map)) {
+            $activeMethod = $active_map[$last_segment] === '/' ? 'index' : $active_map[$last_segment];
+            if (array_key_exists($activeMethod, $headers)) {
+                $activeTitle = $titles[$activeMethod];
+                $headers[$activeMethod]->isActive();
+            }
         }
 
-        if ($activeTitle) {
+        if ($activeTitle !== null) {
             ee()->view->cp_page_title = $activeTitle;
             ee()->cp->set_breadcrumb($this->moduleURL('index'), 'Low\Seg2Cat');
         }

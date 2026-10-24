@@ -28,7 +28,7 @@ class NativeStorageContractTest extends TestCase
     {
         $cases = array();
         foreach (array('legacy', 'modern') as $hydration) {
-            foreach (array('S:9:"bad";', 'S:1:"\xz";', 's:9:"bad";', '!', 'C:1:"X":-999:{S:}', 'C:1:"X":-14:{S:}') as $tail) {
+            foreach (array('S:9:"bad";', 'S:1:"\xz";', 's:9:"bad";', '!', 'C:1:"X":-999:{S:}', 'C:1:"X":-14:{S:}', 's:999999999999999999999999999999:"S:";', 'S:999999999999999999999999999999:"bad";', 'C:1:"X":+999999999999999999999999999999:{S:}', 'C:1:"X":-999999999999999999999999999999:{S:}') as $tail) {
                 $cases[] = array($tail, $hydration);
             }
         }
@@ -119,6 +119,17 @@ class NativeStorageContractTest extends TestCase
         self::assertEquals(new \stdClass(), \Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::decode('O:8:"stdClass":-0:{}'));
         self::assertFalse(\Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::decode('C:1:"X":-999:{S:}', $valid));
         self::assertFalse($valid);
+    }
+
+    /**
+     * Bound decimal text without rejecting native leading-zero lengths.
+     *
+     * @return void
+     */
+    public function testLeadingZeroStringLengthsRemainAccepted(): void
+    {
+        self::assertSame(array('x' => 'A'), \Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::decode('a:1:{S:0001:"\78";S:0001:"\41";}', $valid));
+        self::assertTrue($valid);
     }
 
     /**
@@ -214,6 +225,24 @@ class NativeStorageContractTest extends TestCase
         foreach ($cases as $case) {
             ee()->db->rowsByTable['fieldtypes'] = array(array('settings' => base64_encode(serialize($case[0]))));
             self::assertSame($case[2], $settings->getSetting($case[1]));
+        }
+    }
+
+    /**
+     * Preserve native stored-string byte writes and exact database serialization.
+     *
+     * @return void
+     */
+    public function testNativeStringSettingsWrites(): void
+    {
+        $settings = (new \ReflectionClass(\Low\Seg2Cat\FluxCapacitor\Conduit\GlobalFieldSettings::class))->newInstanceWithoutConstructor();
+        $settings->fieldtype_name = 'low_seg2cat';
+        foreach (array(array(0, 'X', 'Xext'), array(-1, 'Z', 'texZ')) as $case) {
+            $this->app->db->rowsByTable['fieldtypes'] = array(array('settings' => base64_encode(serialize('text'))));
+            self::assertTrue($settings->updateSetting($case[0], $case[1]));
+            $calls = array_values(array_filter(ee()->db->calls, static function ($call) { return $call[0] === 'update'; }));
+            $last = end($calls);
+            self::assertSame(base64_encode(serialize($case[2])), $last[1][1]['settings']);
         }
     }
 

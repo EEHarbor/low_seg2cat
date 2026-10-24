@@ -56,6 +56,31 @@ class BridgeTest extends TestCase
     }
 
     /**
+     * Preserve root aliases and zero labels in each actual modern bridge.
+     *
+     * @dataProvider modernBridges
+     * @param string $name Shipped bridge selector.
+     * @return void
+     */
+    public function testRootAliasesAndZeroTitles($name): void
+    {
+        $class = 'Low\\Seg2Cat\\FluxCapacitor\\Bridge\\' . $name;
+        $bridge = new $class(array('module' => 'low_seg2cat', 'module_name' => 'Low Seg2Cat'));
+        foreach (array(array('edit', '/', 'Home'), array('entries', 'entries', '0'), array('edit', 'entries', '0')) as $case) {
+            $this->app->uri = new \EE_URI();
+            $this->app->uri->segments = array(1 => $case[0]);
+            $sidebar = new Recorder();
+            $this->app->services['CP/Sidebar'] = $sidebar;
+            $this->app->cp = new Recorder();
+            $this->app->view->cp_page_title = 'before';
+            $bridge->getNav(array($case[1] => $case[2]), array(), array('edit' => $case[1]));
+            self::assertSame($case[2], $this->app->view->cp_page_title);
+            self::assertContains(array('isActive', array()), $sidebar->calls);
+            self::assertSame('set_breadcrumb', $this->app->cp->calls[0][0]);
+        }
+    }
+
+    /**
      * Supply every independently shipped modern bridge implementation.
      *
      * @return array
