@@ -200,6 +200,24 @@ class NativeStorageContractTest extends TestCase
     }
 
     /**
+     * Preserve native string byte offsets and quiet missing or nonindexable roots.
+     *
+     * @return void
+     */
+    public function testNativeSettingsOffsetsAndInvalidRoots(): void
+    {
+        $settings = (new \ReflectionClass(\Low\Seg2Cat\FluxCapacitor\Conduit\GlobalFieldSettings::class))->newInstanceWithoutConstructor();
+        $settings->fieldtype_name = 'low_seg2cat';
+        $cases = array(array('text', 0, 't'), array('text', '0', 't'), array('text', 1, 'e'), array('text', -1, 't'), array('text', -4, 't'),
+            array('text', 4, null), array('text', -5, null), array('text', 'missing', null), array((object) array('name' => 'value'), 'name', null),
+            array(5, 'name', null), array(1.5, 0, null), array(true, 0, null), array(array(), 0, null), array(array(0 => 'zero'), 0, 'zero'), array(array('x' => false), 'x', false));
+        foreach ($cases as $case) {
+            ee()->db->rowsByTable['fieldtypes'] = array(array('settings' => base64_encode(serialize($case[0]))));
+            self::assertSame($case[2], $settings->getSetting($case[1]));
+        }
+    }
+
+    /**
      * Preserve saved ArrayAccess root objects, computed defaults and native setters.
      *
      * @return void

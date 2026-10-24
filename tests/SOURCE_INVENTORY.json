@@ -983,8 +983,8 @@
         "functions": []
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/GlobalFieldSettings.php": {
-        "sha256": "43f6228bdb1ccea44b1495cd729e9d49a03a441af931a4b2225ba8743150cbb8",
-        "bytes": 2335,
+        "sha256": "fea70cda537cd4c3a5e84d8c667b14a0138ac1ea1f95d3f18f9adc19bccd86c4",
+        "bytes": 2442,
         "functions": [
             {
                 "name": "__construct",
@@ -996,11 +996,11 @@
             },
             {
                 "name": "getSettings",
-                "line": 43
+                "line": 47
             },
             {
                 "name": "updateSetting",
-                "line": 61
+                "line": 65
             }
         ]
     },
@@ -1254,7 +1254,7 @@
     "low_seg2cat/low_seg2cat.phar::{stub}": {
         "sha256": "3a0980f3b2b61080c34e020366c60f40fdd249bedf8a0f331eabc11e439b15bb",
         "bytes": 7835,
-        "archive_sha256": "e71c0e84687bae7e605bcd5e157ba211a82be3855254989a3efdf7012739bee4",
+        "archive_sha256": "669276e2db187e179cb0097630d66213ee03033b033ad8dda3dae0f6b2502e3c",
         "functions": [
             {
                 "name": "go",

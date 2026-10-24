@@ -15,7 +15,7 @@ class GlobalFieldSettings
     }
 
     /**
-     * Read array settings or invoke the native ArrayAccess getter directly.
+     * Read array/string offsets or invoke the native ArrayAccess getter directly.
      *
      * @param string $name Setting key.
      * @return mixed Setting value or null when an array key is absent.
@@ -29,6 +29,10 @@ class GlobalFieldSettings
         }
         if ($ftSettings instanceof \ArrayAccess) {
             return $ftSettings[$name];
+        }
+
+        if (!is_array($ftSettings) && !is_string($ftSettings)) {
+            return null;
         }
 
         return isset($ftSettings[$name]) ? $ftSettings[$name] : null;
