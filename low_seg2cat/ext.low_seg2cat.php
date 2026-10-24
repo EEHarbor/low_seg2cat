@@ -72,6 +72,13 @@ class Low_seg2cat_ext extends Ext
     private $site_id;
 
     /**
+     * Original site maps retained for extension migrations.
+     *
+     * @var array
+     */
+    private $stored_settings = array();
+
+    /**
      * Format category name?
      *
      * @access      private
@@ -124,11 +131,10 @@ class Low_seg2cat_ext extends Ext
     // --------------------------------------------------------------------
 
     /**
-     * Constructor
+     * Initialize the current site while retaining the persisted upgrade settings.
      *
-     * @access      public
-     * @param       mixed     Array with settings or FALSE
-     * @return      null
+     * @param array|false $settings Persisted site maps or legacy flat settings.
+     * @return void
      */
     public function __construct($settings = array())
     {
@@ -144,17 +150,17 @@ class Low_seg2cat_ext extends Ext
         $this->site_id = ee()->config->item('site_id');
 
         // Set settings
+        $this->stored_settings = is_array($settings) ? $settings : array();
         $this->settings = $this->get_site_settings($settings);
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Settings form
+     * Render or save the current extension settings supplied by ExpressionEngine.
      *
-     * @access      public
-     * @param       array     Current settings
-     * @return      string
+     * @param array|false $current Persisted settings for every site.
+     * @return string
      */
     public function settings_form($current)
     {
@@ -268,12 +274,14 @@ class Low_seg2cat_ext extends Ext
     // --------------------------------------------------------------------
 
     /**
-     * Save extension settings
+     * Save posted settings and announce success only after the database write.
      *
-     * @return      void
+     * @param array|false $settings Existing settings for every site.
+     * @return bool Whether the write succeeded.
      */
     private function save_settings($settings)
     {
+        $settings = is_array($settings) ? $settings : array();
         // --------------------------------------
         // Loop through default settings, check
         // for POST values, fallback to default
@@ -289,6 +297,11 @@ class Low_seg2cat_ext extends Ext
             $settings[$this->site_id][$key] = $val;
         }
 
+        ee()->db->where('class', __CLASS__);
+        if (ee()->db->update('extensions', array('settings' => serialize($settings))) === false) {
+            return false;
+        }
+
         // --------------------------------------
         // Add alert to page
         // --------------------------------------
@@ -299,12 +312,7 @@ class Low_seg2cat_ext extends Ext
             ->addToBody(sprintf(lang('settings_saved_desc'), $this->info->getName()))
             ->defer();
 
-        // --------------------------------------
-        // Save serialized settings
-        // --------------------------------------
-
-        ee()->db->where('class', __CLASS__);
-        ee()->db->update('extensions', array('settings' => serialize($settings)));
+        return true;
     }
 
     // --------------------------------------------------------------------
@@ -346,10 +354,9 @@ class Low_seg2cat_ext extends Ext
     }
 
     /**
-     * Search URI segments for categories and add those to global variables
+     * Register category globals and empty placeholders for unmatched URI segments.
      *
-     * @access      private
-     * @return      null
+     * @return void
      */
     private function add_vars()
     {
@@ -518,7 +525,7 @@ class Low_seg2cat_ext extends Ext
                 $last = $this->uri->total_segments();
 
                 foreach ($this->fields as $name => $field) {
-                    $data['last_segment_' . $field] = $data['segment_' . $last . '_' . $field];
+                    $data['last_segment_' . $field] = $data['segment_' . $last . '_' . $field] ?? '';
                 }
 
                 // --------------------------------------
@@ -557,11 +564,10 @@ class Low_seg2cat_ext extends Ext
     // --------------------------------------------------------------------
 
     /**
-     * Update extension
+     * Migrate legacy hook records without reading form input or losing other sites.
      *
-     * @access      public
-     * @param       string    Saved extension version
-     * @return      null
+     * @param string $current Saved extension version.
+     * @return false|void False when no update is needed or a required hook cannot be inserted.
      */
     public function update_extension($current = '')
     {
@@ -572,17 +578,21 @@ class Low_seg2cat_ext extends Ext
         // init data array
         $data = array();
 
+        $settings = $this->stored_settings ?: $this->settings;
+        if (array_intersect_key($settings, $this->default_settings)) {
+            $settings = array($this->site_id => $settings);
+        }
+
         // Update to MSM compatible extension settings
         if (version_compare($current, '2.6.0', '<')) {
-            if (! isset($this->settings[$this->site_id])) {
-                $data['settings'] = serialize(array($this->site_id => $this->settings));
-            }
+            $data['settings'] = serialize($settings);
         }
 
         // Add template_fetch_template hook
         if (version_compare($current, '2.7.0', '<')) {
-            $this->add_hook('template_fetch_template');
-            $this->save_settings();
+            if (!$this->add_hook('template_fetch_template', $settings)) {
+                return false;
+            }
         }
 
         // Remove obsolete sessions_end hook
@@ -621,41 +631,42 @@ class Low_seg2cat_ext extends Ext
     // --------------------------------------------------------------------
 
     /**
-     * Get settings for this site
+     * Merge the current site's values or legacy flat settings with defaults.
      *
-     * @access      private
-     * @return      mixed
+     * @param array|false $settings Stored site maps or legacy flat settings.
+     * @return array
      */
-    private function get_site_settings(array $settings)
+    private function get_site_settings($settings)
     {
-        // Are there settings for this site?
-        $settings = array_key_exists($this->site_id, $settings)
-            ? $settings[$this->site_id]
-            : array();
+        if (!is_array($settings)) {
+            return $this->default_settings;
+        }
+        if (array_key_exists($this->site_id, $settings)) {
+            $settings = $settings[$this->site_id];
+        } else {
+            $settings = array_intersect_key($settings, $this->default_settings) ? $settings : array();
+        }
 
-        // Always make sure all settings are set
-        $settings = array_merge($this->default_settings, $settings);
-
-        // And return it
-        return $settings;
+        return array_merge($this->default_settings, is_array($settings) ? $settings : array());
     }
 
     // --------------------------------------------------------------------
 
     /**
-     * Add hook to table
+     * Add a hook with its complete persisted settings map.
      *
-     * @access  private
-     * @param   string
-     * @return  void
+     * @param string $hook Extension hook name.
+     * @param array|null $settings Explicit migration settings, or the current site on activation.
+     * @return bool Whether the hook was inserted.
      */
-    private function add_hook($hook)
+    private function add_hook($hook, $settings = null)
     {
-        ee()->db->insert('extensions', array(
+        $settings = $settings === null ? array($this->site_id => $this->settings) : $settings;
+        return ee()->db->insert('extensions', array(
             'class'    => __CLASS__,
             'method'   => $hook,
             'hook'     => $hook,
-            'settings' => serialize(array($this->site_id => $this->settings)),
+            'settings' => serialize($settings),
             'priority' => 5,
             'version'  => $this->info->getVersion(),
             'enabled'  => 'y'

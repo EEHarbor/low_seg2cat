@@ -59,8 +59,14 @@ class NativeCompilationTest extends TestCase
      */
     public function testDiagnosticHarnessDetectsSuppressedDeprecation()
     {
-        $this->expectException(\ErrorException::class);
-        $this->expectExceptionMessage('diagnostic sentinel');
-        @trigger_error('diagnostic sentinel', E_USER_DEPRECATED);
+        $result = Process::probe('try { @trigger_error("diagnostic sentinel", E_USER_DEPRECATED); } catch (\\ErrorException $error) {}', array('harness_only' => true));
+        $this->assertSame(2, $result['status']);
+        $this->assertSame('', $result['stdout']);
+        $this->assertStringContainsString('LOW_SEG2CAT_DIAGNOSTIC', $result['stderr']);
+        $this->assertStringContainsString('diagnostic sentinel', $result['stderr']);
+        $runtime = Process::probe('echo json_encode(array(PHP_BINARY, error_reporting(), ini_get("display_errors"), ini_get("display_startup_errors")));', array('harness_only' => true));
+        $this->assertSame(0, $runtime['status']);
+        $this->assertSame('', $runtime['stderr']);
+        $this->assertSame(array(PHP_BINARY, -1, 'stderr', '1'), json_decode($runtime['stdout'], true));
     }
 }

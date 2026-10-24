@@ -11,6 +11,7 @@ abstract class TestCase extends BaseTestCase
     private $originalPost;
     private $originalIncludePath;
     private $originalDirectory;
+    private $diagnosticsBefore;
 
     /**
      * Install a fresh EE service graph and strict source diagnostics.
@@ -19,6 +20,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function setUp(): void
     {
+        $this->diagnosticsBefore = \LowSeg2CatDiagnostics::count();
         $this->originalPost = $_POST;
         $this->originalIncludePath = get_include_path();
         $this->originalDirectory = getcwd();
@@ -44,6 +46,7 @@ abstract class TestCase extends BaseTestCase
         chdir($this->originalDirectory);
         unset($GLOBALS['low_seg2cat_app']);
         restore_error_handler();
+        $this->assertSame($this->diagnosticsBefore, \LowSeg2CatDiagnostics::count(), 'Caught diagnostics must fail validation.');
     }
 
     /**

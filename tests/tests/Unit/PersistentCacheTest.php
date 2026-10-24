@@ -209,11 +209,11 @@ class PersistentCacheTest extends TestCase
      *
      * @return void
      */
-    public function testDirectProcessedRequestCacheEntryAvoidsFilesystemLookup()
+    public function testProcessedRequestCacheEntryUsesItsLogicalKey()
     {
         $processed = sha1('preloaded');
         StaticCache::put($processed, array('id' => 9), true);
-        $this->assertSame(array('id' => 9), PersistentCache::get($processed));
+        $this->assertSame(array('id' => 9), PersistentCache::get('preloaded'));
         $this->assertFalse(is_dir(PATH_CACHE));
     }
 

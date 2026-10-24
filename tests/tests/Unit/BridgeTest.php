@@ -9,6 +9,23 @@ use Tests\Support\Recorder;
 class BridgeTest extends TestCase
 {
     /**
+     * Preserve native missing-module nulls without suppressed offset diagnostics.
+     *
+     * @dataProvider modernBridges
+     * @param string $name Shipped bridge name.
+     * @return void
+     */
+    public function testEmptyUrlKeepsMissingModuleNull($name)
+    {
+        $class = 'Low\\Seg2Cat\\FluxCapacitor\\Bridge\\' . $name;
+        $bridge = new $class(array('module' => 'low_seg2cat', 'module_name' => 'Low Seg2Cat'));
+        $this->app->uri = new \EE_URI();
+        self::assertNull($bridge->getCurrentUrlInfo('module'));
+        self::assertFalse($bridge->getCurrentUrlInfo('cp'));
+        self::assertSame('index', $bridge->getCurrentUrlInfo('method'));
+    }
+
+    /**
      * Activate a direct navigation method while leaving unrelated pages untouched.
      *
      * @dataProvider modernBridges

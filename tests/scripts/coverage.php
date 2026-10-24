@@ -41,6 +41,9 @@ register_shutdown_function(function () use ($destination, $root, $source, $junit
         fwrite(STDERR, $exception->getMessage() . "\n");
         exit(2);
     }
+    if (LowSeg2CatDiagnostics::count() !== 0) {
+        exit(2);
+    }
     $coverage = xdebug_get_code_coverage();
     xdebug_stop_code_coverage(false);
     $coverage = array_filter($coverage, function ($path) use ($source) {

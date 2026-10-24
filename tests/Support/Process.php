@@ -181,6 +181,10 @@ class Process
      */
     public static function execute(array $command, ?array $environment = null, $timeoutSeconds = 15.0)
     {
+        if (isset($command[0]) && $command[0] === PHP_BINARY) {
+            array_splice($command, 1, 0, array('-d', 'error_reporting=-1', '-d', 'display_errors=stderr',
+                '-d', 'display_startup_errors=1', '-d', 'log_errors=0'));
+        }
         if (!is_numeric($timeoutSeconds) || !is_finite((float) $timeoutSeconds) || $timeoutSeconds <= 0) {
             throw new \InvalidArgumentException('Process deadline must be positive and finite.');
         }

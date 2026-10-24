@@ -1,8 +1,7 @@
 <?php
 
 require_once __DIR__ . '/diagnostics.php';
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+error_reporting(-1);
 define('LOW_SEG2CAT_ROOT', dirname(__DIR__, 2));
 if (getenv('LOW_SEG2CAT_DIRECT_ACCESS') !== '1') {
     define('BASEPATH', LOW_SEG2CAT_ROOT . '/tests/');

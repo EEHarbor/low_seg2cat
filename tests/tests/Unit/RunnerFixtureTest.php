@@ -7,6 +7,47 @@ use Tests\Support\Process;
 class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
 {
     /**
+     * Reject caught diagnostics through the checked test and provider bootstrap.
+     *
+     * @dataProvider caughtDiagnosticContexts
+     * @param bool $provider Emit during provider discovery rather than the test body.
+     * @return void
+     */
+    public function testCaughtDiagnosticsCannotPassCheckedPhpunit($provider)
+    {
+        $directory = sys_get_temp_dir() . '/low-caught-' . bin2hex(random_bytes(8));
+        mkdir($directory, 0700);
+        $code = $provider
+            ? 'public static function values(): array { try { @trigger_error("caught provider sentinel", E_USER_DEPRECATED); } catch (\\ErrorException $error) {} return array(array(true)); } /** @dataProvider values */ public function testProbe($value): void { self::assertTrue($value); }'
+            : 'public function testProbe(): void { try { @trigger_error("caught test sentinel", E_USER_DEPRECATED); } catch (\\ErrorException $error) {} self::assertTrue(true); }';
+        try {
+            file_put_contents($directory . '/CaughtProbeTest.php', '<?php namespace OwnedLowControl; final class CaughtProbeTest extends \\Tests\\TestCase { ' . $code . ' }');
+            $bootstrap = htmlspecialchars(LOW_SEG2CAT_ROOT . '/tests/bootstrap.php', ENT_QUOTES, 'UTF-8');
+            file_put_contents($directory . '/phpunit.xml', '<phpunit bootstrap="' . $bootstrap . '" cacheResult="false"><testsuites><testsuite name="caught"><file>' . $directory . '/CaughtProbeTest.php</file></testsuite></testsuites></phpunit>');
+            $result = Process::execute(array(PHP_BINARY, '-d', 'auto_prepend_file=' . LOW_SEG2CAT_ROOT . '/tests/Support/diagnostics.php',
+                LOW_SEG2CAT_ROOT . '/tests/.phpunit/phpunit-9.phar', '-c', $directory . '/phpunit.xml', '--do-not-cache-result'));
+            $this->assertNotSame(0, $result['status']);
+            $this->assertStringContainsString('LOW_SEG2CAT_DIAGNOSTIC', $result['stderr']);
+            $this->assertStringContainsString($provider ? 'caught provider sentinel' : 'caught test sentinel', $result['stderr']);
+            $this->assertMatchesRegularExpression('/(?:OK \(1 test|Tests: 1,)/', $result['stdout']);
+        } finally {
+            unlink($directory . '/CaughtProbeTest.php');
+            unlink($directory . '/phpunit.xml');
+            rmdir($directory);
+        }
+    }
+
+    /**
+     * Exercise test execution and provider discovery before per-test setup.
+     *
+     * @return array
+     */
+    public static function caughtDiagnosticContexts(): array
+    {
+        return array(array(false), array(true));
+    }
+
+    /**
      * Reject an empty selection even when an earlier caller report exists.
      *
      * @return void
@@ -296,7 +337,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Preserve source failure and error statuses after validating nonempty cases.
+     * Preserve owned failure and error statuses after validating nonempty cases.
      *
      * @dataProvider sourceRedSelections
      * @param string $filter
@@ -306,14 +347,24 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
      */
     public function testLauncherPreservesSourceRedStatus($filter, $status, $element)
     {
-        $report = tempnam(sys_get_temp_dir(), 'low-junit-');
+        $directory = sys_get_temp_dir() . '/low-owned-status-' . bin2hex(random_bytes(8));
+        mkdir($directory, 0700);
+        $report = $directory . '/junit.xml';
         try {
-            $result = $this->launch(array('--filter', $filter, '--log-junit', $report));
+            file_put_contents($directory . '/OwnedStatusTest.php', '<?php final class OwnedStatusTest extends \\PHPUnit\\Framework\\TestCase { public function testOwnedFailure(): void { self::fail("owned assertion control"); } public function testOwnedError(): void { throw new \\RuntimeException("owned exception control"); } }');
+            require_once LOW_SEG2CAT_ROOT . '/tests/.phpunit/check-junit.php';
+            $result = Process::execute(array(LOW_SEG2CAT_ROOT . '/tests/.phpunit/run-phpunit.sh', '--do-not-cache-result', '--no-configuration',
+                $directory . '/OwnedStatusTest.php', '--filter', $filter, '--log-junit', $report),
+                array_merge(getenv(), array('PHP_BINARY' => PHP_BINARY)));
             $this->assertSame($status, $result['status'], $result['stdout'] . $result['stderr']);
             $this->assertSame(1, low_seg2cat_junit_case_count($report));
             $this->assertStringContainsString('<' . $element, file_get_contents($report));
         } finally {
-            unlink($report);
+            if (is_file($report)) {
+                unlink($report);
+            }
+            unlink($directory . '/OwnedStatusTest.php');
+            rmdir($directory);
         }
     }
 
@@ -383,14 +434,14 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Distinguish PHPUnit's assertion-failure and native source-error statuses.
+     * Distinguish PHPUnit assertion-failure and ordinary exception statuses.
      *
      * @return array
      */
     public function sourceRedSelections()
     {
-        return array('failure' => array('testStaticCacheDeletionReportsSuccess', 1, 'failure'),
-            'error' => array('testStaticPluginInfoDoesNotReferenceThis', 2, 'error'));
+        return array('failure' => array('testOwnedFailure', 1, 'failure'),
+            'error' => array('testOwnedError', 2, 'error'));
     }
 
     /**

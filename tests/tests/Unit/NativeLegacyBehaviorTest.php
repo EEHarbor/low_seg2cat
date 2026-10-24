@@ -181,7 +181,7 @@ CODE;
         $value = json_decode($result['stdout'], true, 512, JSON_THROW_ON_ERROR);
         $this->assertSame(array($value['fallback'], '/custom/cache/', $value['fallback']), $value['paths']);
         $this->assertSame('phar://' . LOW_SEG2CAT_ROOT . '/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE2.php', $value['source']);
-        $this->assertSame(array(PHP_VERSION, PHP_BINARY, E_ALL, E_ALL), $value['runtime']);
+        $this->assertSame(array(PHP_VERSION, PHP_BINARY, -1, E_ALL), $value['runtime']);
     }
 
     /**
@@ -210,7 +210,7 @@ CODE;
             'External' => 'https://example.test/'))), array('set_right_nav', array(array()))), $value['calls']);
         $this->assertStringContainsString('method=index', $value['expected_internal']);
         $this->assertSame('phar://' . LOW_SEG2CAT_ROOT . '/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE2.php', $value['source']);
-        $this->assertSame(array(PHP_VERSION, PHP_BINARY, E_ALL, E_ALL), $value['runtime']);
+        $this->assertSame(array(PHP_VERSION, PHP_BINARY, -1, E_ALL), $value['runtime']);
     }
 
     /**
