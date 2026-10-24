@@ -188,32 +188,32 @@
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Base/Mcp.php": {
-        "sha256": "ea62ad7492b83f6d794c619ea541e526620ec773e736fa52048827df46cb900f",
-        "bytes": 7345,
+        "sha256": "7ff765d352d1ed0abca6a38e68b65c3ba833ce7b9e1b72b5bfb40562dc60dbb7",
+        "bytes": 7459,
         "functions": [
             {
                 "name": "__construct",
-                "line": 27
+                "line": 29
             },
             {
                 "name": "index",
-                "line": 38
+                "line": 40
             },
             {
                 "name": "license",
-                "line": 43
+                "line": 45
             },
             {
                 "name": "save_license",
-                "line": 68
+                "line": 70
             },
             {
                 "name": "paginateModel",
-                "line": 140
+                "line": 142
             },
             {
                 "name": "canIncludeNav",
-                "line": 183
+                "line": 185
             }
         ]
     },
@@ -478,8 +478,8 @@
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Bridge/EE2.php": {
-        "sha256": "0b641a966443d863b175d5e48ee799c2c6e7aeca457c3faa63b78b628a8bd871",
-        "bytes": 16482,
+        "sha256": "7c8584c37b35c56cfff636b5fd13485d88619ec873f4e225e0097d05577da9fd",
+        "bytes": 16430,
         "functions": [
             {
                 "name": "__construct",
@@ -600,8 +600,8 @@
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Bridge/EE3.php": {
-        "sha256": "a7118a5fea6a89c9ab535c9d156cb5ec80a374d4e36e78af738b155ea56683df",
-        "bytes": 17076,
+        "sha256": "45ef1344da49a0cd82b2d24c3821821e261d3c4b2ea9fb90a61385ee3b91c15d",
+        "bytes": 17024,
         "functions": [
             {
                 "name": "__construct",
@@ -726,8 +726,8 @@
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Bridge/EE4.php": {
-        "sha256": "911c2439b66f4032b2706d71a96e1b6a7f85896099a5e8abaaf913671ad1d18c",
-        "bytes": 17160,
+        "sha256": "42a17deb131f6e1bcd2656adc47909e0ab8baf8ebe7461b17d45acf407f41758",
+        "bytes": 17108,
         "functions": [
             {
                 "name": "__construct",
@@ -852,8 +852,8 @@
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Bridge/EE5.php": {
-        "sha256": "564cd68f78d4def2480d08d75ae8ac1e944cda1372f9948d053a0b13adf775a5",
-        "bytes": 17504,
+        "sha256": "fd6e65376dc7ec45da39e12d801df4e8b974e258448ffe39d67473f0c2b0e7a5",
+        "bytes": 17452,
         "functions": [
             {
                 "name": "__construct",
@@ -983,8 +983,8 @@
         "functions": []
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/GlobalFieldSettings.php": {
-        "sha256": "3078943faecf65b7a563015a9ad70fe4e06798755f53acbbb8098c75f7f7de38",
-        "bytes": 1983,
+        "sha256": "43f6228bdb1ccea44b1495cd729e9d49a03a441af931a4b2225ba8743150cbb8",
+        "bytes": 2335,
         "functions": [
             {
                 "name": "__construct",
@@ -992,15 +992,15 @@
             },
             {
                 "name": "getSetting",
-                "line": 23
+                "line": 24
             },
             {
                 "name": "getSettings",
-                "line": 37
+                "line": 43
             },
             {
                 "name": "updateSetting",
-                "line": 55
+                "line": 61
             }
         ]
     },
@@ -1121,8 +1121,8 @@
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/SerializedData.php": {
-        "sha256": "03a920dedfd32f7d788f596e22122d11f075461bcf62a390414d8a59199f870d",
-        "bytes": 5590,
+        "sha256": "7cc3f6a9f6c6dc4801500c6c6f5de1aeef0fbd43295b5d0e56c535f2f68ad656",
+        "bytes": 6439,
         "functions": [
             {
                 "name": "decode",
@@ -1130,11 +1130,11 @@
             },
             {
                 "name": "{closure}",
-                "line": 31
+                "line": 28
             },
             {
                 "name": "normalizeEscapedStrings",
-                "line": 61
+                "line": 67
             }
         ]
     },
@@ -1254,7 +1254,7 @@
     "low_seg2cat/low_seg2cat.phar::{stub}": {
         "sha256": "3a0980f3b2b61080c34e020366c60f40fdd249bedf8a0f331eabc11e439b15bb",
         "bytes": 7835,
-        "archive_sha256": "bd816117f76c3bbeb2afa63c4dcbc7cd067c27e1e25f2752bab541f3737ba183",
+        "archive_sha256": "e71c0e84687bae7e605bcd5e157ba211a82be3855254989a3efdf7012739bee4",
         "functions": [
             {
                 "name": "go",

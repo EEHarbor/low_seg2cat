@@ -501,7 +501,7 @@ class EE4 extends AbstractBridge
         if ((bool) $ftSettingsQuery->num_rows()) {
             $payload = $ftSettingsQuery->row('settings');
             $decoded = is_string($payload) ? base64_decode($payload) : false;
-            $ftSettings = is_string($decoded) && preg_match('/^(?:a:\d+:\{|b:[01];$)/', $decoded) ? \Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::decode($decoded) : array();
+            $ftSettings = is_string($decoded) ? \Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::decode($decoded) : array();
 
             // It is possible there is actually nothing in the FT settings. So if not, just return an empty array
             if (!$ftSettings) {

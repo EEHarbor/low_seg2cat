@@ -18,6 +18,8 @@ use Low\Seg2Cat\FluxCapacitor\FluxCapacitor;
  * @copyright       Copyright (c) 2018, Tom Jaeger/EEHarbor
  */
 
+// Legacy controllers may provide protected/private fields or inherited magic storage.
+#[\AllowDynamicProperties]
 class Mcp
 {
     public $flux;

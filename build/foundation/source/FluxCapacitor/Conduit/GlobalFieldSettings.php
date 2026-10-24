@@ -15,24 +15,30 @@ class GlobalFieldSettings
     }
 
     /**
-     * Return an individual stored field setting or null when absent.
+     * Read array settings or invoke the native ArrayAccess getter directly.
      *
      * @param string $name Setting key.
-     * @return mixed
+     * @return mixed Setting value or null when an array key is absent.
+     * @throws \Throwable When a stored callback or native getter fails.
      */
     public function getSetting($name)
     {
         $ftSettings = $this->getSettings();
-        if ($ftSettings) {
-            return $ftSettings[$name] ?? null;
+        if (!$ftSettings) {
+            return null;
         }
-        return null;
+        if ($ftSettings instanceof \ArrayAccess) {
+            return $ftSettings[$name];
+        }
+
+        return isset($ftSettings[$name]) ? $ftSettings[$name] : null;
     }
 
     /**
      * Read legacy field settings with empty and absent storage fallbacks.
      *
-     * @return array|null
+     * @return mixed Native saved settings, an empty array, or null when no row exists.
+     * @throws \Throwable When hydration or a preceding diagnostic handler fails.
      */
     public function getSettings()
     {
@@ -43,7 +49,7 @@ class GlobalFieldSettings
         if ((bool) $ftSettingsQuery->num_rows()) {
             $payload = $ftSettingsQuery->row('settings');
             $decoded = is_string($payload) ? base64_decode($payload) : false;
-            $ftSettings = is_string($decoded) && preg_match('/^(?:a:\d+:\{|b:[01];$)/', $decoded) ? \Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::decode($decoded) : array();
+            $ftSettings = is_string($decoded) ? \Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::decode($decoded) : array();
             $ftSettings = $ftSettings ?: array();
         } else {
             return null;
