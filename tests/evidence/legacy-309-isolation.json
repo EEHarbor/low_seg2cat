@@ -1,0 +1,24 @@
+{
+  "report_directory": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/legacy-309-isolation-zw1fpre8",
+  "files": 27,
+  "seed": 20261109,
+  "summaries": [
+    {
+      "runtime": "74",
+      "files": 27,
+      "random_seed": 20261109,
+      "all_case_assertion_result_type_identities_exact": true,
+      "expected_junit_sha256": "24328269df093fc729d2bd35c4485fc7476bbdc69e326b87cb389b8db467dee3"
+    },
+    {
+      "runtime": "85",
+      "files": 27,
+      "random_seed": 20261109,
+      "all_case_assertion_result_type_identities_exact": true,
+      "expected_junit_sha256": "eb7fa299bdcc4fbaf571699b7c6264088717a45cd8381037a5347971096888e9"
+    }
+  ],
+  "driver_sha256": "1ac1eafb74f6127d8080b1cf0c18e8396a0f8c3c9e963fc174eceec241b459bc",
+  "reproduction_driver": "from pathlib import Path\nimport subprocess,collections,xml.etree.ElementTree as E,json,os,tempfile,hashlib\nroot=Path('/Users/tomjaeger/Sites/add-ons/low_seg2cat');expected=Path('/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-099pf8m_');run=Path(tempfile.mkdtemp(prefix='legacy-309-isolation-',dir=root/'tests/reports'))\ndef ids(path):\n out=[]\n for c in E.parse(path).getroot().iter('testcase'):\n  child=next(iter(c),None);out.append((c.attrib['class'],c.attrib['name'],c.attrib.get('assertions'),'passed' if child is None else child.tag,'' if child is None else child.attrib.get('type','')))\n return collections.Counter(out)\nsummary=[]\nfor v in ('74','85'):\n original=expected/('php'+v+'.xml');baseline=run/('expected-'+v+'.xml');baseline.write_bytes(original.read_bytes());wanted=ids(baseline);found=collections.Counter()\n env=dict(os.environ,EE_SYSTEM_PATH='/Users/tomjaeger/Sites/ee_repo_2/system/',PHP_BINARY=str(Path.home()/('Library/Application Support/Herd/bin/php'+v)))\n for file in sorted((root/'tests/tests/Unit').glob('*Test.php')):\n  out=run/(v+'-'+file.stem+'.xml');command=[str(root/'tests/.phpunit/run-phpunit.sh'),'-c',str(root/'phpunit.xml'),'--log-junit',str(out),str(file)];p=subprocess.run(command,cwd=root,env=env,capture_output=True,text=True,timeout=90);out.with_suffix('.log').write_text(p.stdout+p.stderr);actual=ids(out);assert actual, file;found.update(actual)\n assert found==wanted,(v,found-wanted,wanted-found)\n out=run/(v+'-random.xml');p=subprocess.run([str(root/'tests/.phpunit/run-phpunit.sh'),'-c',str(root/'phpunit.xml'),'--order-by=random','--random-order-seed=20261109','--log-junit',str(out)],cwd=root,env=env,capture_output=True,text=True,timeout=90);out.with_suffix('.log').write_text(p.stdout+p.stderr);assert ids(out)==wanted,v\n summary.append(dict(runtime=v,files=27,random_seed=20261109,all_case_assertion_result_type_identities_exact=True,expected_junit_sha256=hashlib.sha256(baseline.read_bytes()).hexdigest()))\n print(v,'all27 files and random identities/assertions/results/types EXACT',flush=True)\n(run/'review-summary.json').write_text(json.dumps(summary,indent=2)+'\\n');print(run,flush=True)\n",
+  "comparison": "Every case/assertion/result/type equals complete normal endpoint suite; standalone process exit codes were not separately retained."
+}
