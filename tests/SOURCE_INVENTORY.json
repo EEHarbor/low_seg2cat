@@ -1075,8 +1075,8 @@
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/PersistentCache.php": {
-        "sha256": "4a8f1776956f92bf42343450134efd9fc994b34eb4103009457061938804ac77",
-        "bytes": 11634,
+        "sha256": "d1c42cc01a0224466e1838463429cd313a1146c72581185967a8fffa93e19cb1",
+        "bytes": 11755,
         "functions": [
             {
                 "name": "get",
@@ -1270,7 +1270,7 @@
     "low_seg2cat/low_seg2cat.phar::{stub}": {
         "sha256": "2d62c624bb99ada816e0c39f5488a78c4f3a39ba75c4dc40ca1cedaae19d79be",
         "bytes": 7918,
-        "archive_sha256": "e2da15914d9040dd14b6f24a52b3c3648d9f8293f52299b19c481cc83eed8d53",
+        "archive_sha256": "eb0f10408d6d98dc6d86fc81572655e076fd280dc4a05167865db0aa84e5f5b7",
         "functions": [
             {
                 "name": "go",

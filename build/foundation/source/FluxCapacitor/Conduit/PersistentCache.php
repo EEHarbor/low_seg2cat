@@ -262,7 +262,7 @@ class PersistentCache
         }
 
         // Make sure the generic cache folder is writable.
-        if (!is_writable(self::$cache_path) || (\is_string(self::$cache_path) && \DIRECTORY_SEPARATOR === '/' && \realpath(self::$cache_path) !== false && !\is_executable(self::$cache_path))) {
+        if (!is_writable(self::$cache_path) || (\is_string(self::$cache_path) && \DIRECTORY_SEPARATOR === '/' && (\realpath(self::$cache_path) !== false || \strncasecmp(self::$cache_path, 'file://', 7) === 0) && !\is_executable(self::$cache_path))) {
             ee()->load->library('logger');
             ee()->logger->developer('Low Seg2Cat: Write Cache enabled but cache path not writable: ' . self::$cache_path);
             return false;
@@ -294,7 +294,7 @@ class PersistentCache
         }
 
         // Make sure the module-specific cache folder is writable.
-        if (!is_writable(self::$module_cache_path) || (\is_string(self::$module_cache_path) && \DIRECTORY_SEPARATOR === '/' && \realpath(self::$module_cache_path) !== false && !\is_executable(self::$module_cache_path))) {
+        if (!is_writable(self::$module_cache_path) || (\is_string(self::$module_cache_path) && \DIRECTORY_SEPARATOR === '/' && (\realpath(self::$module_cache_path) !== false || \strncasecmp(self::$module_cache_path, 'file://', 7) === 0) && !\is_executable(self::$module_cache_path))) {
             // If the path is wrong we'll turn off caching
             ee()->load->library('logger');
             ee()->logger->developer('Low Seg2Cat: Write Cache enabled but module cache path not writable: ' . self::$module_cache_path);

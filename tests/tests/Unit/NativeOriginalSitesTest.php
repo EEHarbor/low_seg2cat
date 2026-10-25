@@ -154,4 +154,49 @@ CODE;
         self::assertSame(array(7, true), json_decode($result['stdout'], true));
     }
 
+    /**
+     * Supply both original directory search guards with native file-URI operands.
+     *
+     * @return array
+     */
+    public static function fileDirectoryGuards(): array
+    {
+        return array('generic' => array('generic'), 'module' => array('module'));
+    }
+
+    /**
+     * Retain quiet search-permission fallback for native file stream directory paths.
+     *
+     * @dataProvider fileDirectoryGuards
+     * @param string $blocked Which existing directory lacks search permission.
+     * @return void
+     */
+    public function testNativeFileDirectoriesRetainSearchGuard($blocked): void
+    {
+        $code = <<<'CODE'
+$directory = sys_get_temp_dir() . '/file-guard';
+mkdir($directory, 0700);
+mkdir($directory . '/low_seg2cat', 0700);
+$reflection = new ReflectionClass(\Low\Seg2Cat\FluxCapacitor\Conduit\PersistentCache::class);
+foreach (array('cache_path' => 'file://' . $directory . '/', 'module_cache_path' => 'file://' . $directory . '/low_seg2cat/') as $name => $path) {
+    $property = $reflection->getProperty($name);
+    if (PHP_VERSION_ID < 80100) { $property->setAccessible(true); }
+    $property->setValue(null, $path);
+}
+$blocked = BLOCKED_DIRECTORY === 'generic' ? $directory : $directory . '/low_seg2cat';
+chmod($blocked, 0200);
+try {
+    $value = \Low\Seg2Cat\FluxCapacitor\Conduit\PersistentCache::set('file-guard', 'stored');
+    echo json_encode(array($value, count(ee()->logger->calls)));
+} finally {
+    chmod($blocked, 0700);
+}
+CODE;
+        $code = str_replace('BLOCKED_DIRECTORY', var_export($blocked, true), $code);
+        $result = \Tests\Support\Process::probe($code);
+        self::assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
+        self::assertSame('', $result['stderr']);
+        self::assertSame(array(false, 1), json_decode($result['stdout'], true));
+    }
+
 }
