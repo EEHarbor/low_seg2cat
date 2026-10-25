@@ -25,7 +25,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
             $bootstrap = htmlspecialchars(LOW_SEG2CAT_ROOT . '/tests/bootstrap.php', ENT_QUOTES, 'UTF-8');
             file_put_contents($directory . '/phpunit.xml', '<phpunit bootstrap="' . $bootstrap . '" cacheResult="false"><testsuites><testsuite name="caught"><file>' . $directory . '/CaughtProbeTest.php</file></testsuite></testsuites></phpunit>');
             $result = Process::execute(array(PHP_BINARY, '-d', 'auto_prepend_file=' . LOW_SEG2CAT_ROOT . '/tests/Support/diagnostics.php',
-                LOW_SEG2CAT_ROOT . '/tests/.phpunit/phpunit-9.phar', '-c', $directory . '/phpunit.xml', '--do-not-cache-result'), null, 15.0, array(array(E_USER_DEPRECATED, $provider ? '/\Acaught provider sentinel\z/' : '/\Acaught test sentinel\z/')));
+                LOW_SEG2CAT_ROOT . '/tests/.phpunit/phpunit-9.phar', '-c', $directory . '/phpunit.xml', '--do-not-cache-result'), null, 15.0, array('work' => $directory));
             $this->assertNotSame(0, $result['status']);
             $this->assertStringContainsString('LOW_SEG2CAT_DIAGNOSTIC', $result['stderr']);
             $this->assertStringContainsString($provider ? 'caught provider sentinel' : 'caught test sentinel', $result['stderr']);
@@ -57,7 +57,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
         $report = tempnam(sys_get_temp_dir(), 'low-junit-');
         file_put_contents($report, 'stale-report');
         try {
-            $result = $this->launch(array('--filter', 'definitely_no_case_matches', '--log-junit=' . $report));
+            $result = $this->launch(array('--filter', 'definitely_no_case_matches', '--log-junit=' . $report), array('report' => $report));
             $this->assertSame(2, $result['status']);
             $this->assertStringContainsString('empty', $result['stderr']);
             $this->assertSame('stale-report', file_get_contents($report));
@@ -90,7 +90,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
         file_put_contents($bootstrap, '<?php exit(0);');
         file_put_contents($report, 'stale-report');
         try {
-            $result = $this->launch(array('--bootstrap', $bootstrap, '--log-junit', $report));
+            $result = $this->launch(array('--bootstrap', $bootstrap, '--log-junit', $report), array('fixture' => $bootstrap, 'report' => $report));
             $this->assertSame(2, $result['status']);
             $this->assertStringContainsString('No fresh JUnit', $result['stderr']);
             $this->assertSame('stale-report', file_get_contents($report));
@@ -115,7 +115,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
         file_put_contents($report, 'stale-report');
         try {
             $result = $this->launch(array('--bootstrap', $bootstrap,
-                '--filter', 'testProcessCapturesFullStderrBeforeStdout', '--log-junit', $report), $this->startupExpected($control));
+                '--filter', 'testProcessCapturesFullStderrBeforeStdout', '--log-junit', $report), array('fixture' => $bootstrap, 'report' => $report));
             $this->assertSame(2, $result['status'], $result['stdout'] . $result['stderr']);
             $this->assertStringContainsString($control === 'startup-compile' ? 'continue' : 'startup-diagnostic-sentinel',
                 $result['stdout'] . $result['stderr']);
@@ -149,6 +149,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
         $directory = sys_get_temp_dir() . '/low-entry-guard-' . bin2hex(random_bytes(8));
         mkdir($directory . '/Support', 0700, true);
         copy(LOW_SEG2CAT_ROOT . '/tests/Support/diagnostics.php', $directory . '/Support/diagnostics.php');
+        copy(LOW_SEG2CAT_ROOT . '/tests/Support/NativeInvocation.php', $directory . '/Support/NativeInvocation.php');
         $marker = '<?php @trigger_error("early-support-diagnostic", E_USER_DEPRECATED);';
         if ($entry === 'bootstrap') {
             copy(LOW_SEG2CAT_ROOT . '/tests/bootstrap.php', $directory . '/entry.php');
@@ -159,7 +160,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
         }
         try {
             $file = $directory . ($entry === 'bootstrap' ? '/entry.php' : '/Support/entry.php');
-            $result = Process::execute(array(PHP_BINARY, '-d', 'display_errors=stderr', $file), null, 15.0, array(array(E_USER_DEPRECATED, '/\Aearly-support-diagnostic\z/')));
+            $result = Process::execute(array(PHP_BINARY, '-d', 'display_errors=stderr', $file), null, 15.0, array('work' => $directory));
             $this->assertSame(255, $result['status']);
             $this->assertStringContainsString('early-support-diagnostic', $result['stdout'] . $result['stderr']);
             $this->assertStringContainsString('ErrorException', $result['stdout'] . $result['stderr']);
@@ -231,7 +232,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
                 LOW_SEG2CAT_ROOT . '/tests/scripts/coverage.php', '-c', LOW_SEG2CAT_ROOT . '/phpunit.xml',
                 '--no-coverage', '--log-junit', $report), $arguments);
             $result = Process::execute($command, array_merge(getenv(), array('XDEBUG_MODE' => 'coverage',
-                'LOW_SEG2CAT_COVERAGE' => $raw, 'LOW_SEG2CAT_XDEBUG_EXTENSION' => $extension)), 15.0, strpos($control, 'startup-') === 0 ? $this->startupExpected($control) : array());
+                'LOW_SEG2CAT_COVERAGE' => $raw, 'LOW_SEG2CAT_XDEBUG_EXTENSION' => $extension)), 15.0, array('work' => $directory));
             if ($status === null) {
                 $this->assertNotSame(0, $result['status'], $result['stdout'] . $result['stderr']);
                 $this->assertStringContainsString('ErrorException', $result['stdout'] . $result['stderr']);
@@ -288,7 +289,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
         try {
             $arguments = array('--filter', 'testProcessCapturesFullStderrBeforeStdout');
             $arguments = array_merge($arguments, $equals ? array('--log-junit=' . $report) : array('--log-junit', $report));
-            $result = $this->launch($arguments);
+            $result = $this->launch($arguments, array('report' => $report));
             $this->assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
             $this->assertSame('', $result['stderr']);
             $this->assertSame(1, low_seg2cat_junit_case_count($report));
@@ -307,7 +308,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
         $report = tempnam(sys_get_temp_dir(), 'low-junit-');
         try {
             $result = $this->launch(array('--log-junit', $report, '--',
-                LOW_SEG2CAT_ROOT . '/tests/tests/Unit/FacadeFixtureTest.php'));
+                LOW_SEG2CAT_ROOT . '/tests/tests/Unit/FacadeFixtureTest.php'), array('report' => $report));
             $this->assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
             $this->assertSame('', $result['stderr']);
             $this->assertGreaterThan(0, low_seg2cat_junit_case_count($report));
@@ -327,7 +328,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
         $report = tempnam(sys_get_temp_dir(), 'low-junit-');
         file_put_contents($report, 'stale-report');
         try {
-            $result = $this->launch(array('--atleast-version=0', '--log-junit', $report));
+            $result = $this->launch(array('--atleast-version=0', '--log-junit', $report), array('report' => $report));
             $this->assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
             $this->assertSame('', $result['stderr']);
             $this->assertSame('stale-report', file_get_contents($report));
@@ -355,7 +356,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
             require_once LOW_SEG2CAT_ROOT . '/tests/.phpunit/check-junit.php';
             $result = Process::execute(array(LOW_SEG2CAT_ROOT . '/tests/.phpunit/run-phpunit.sh', '--do-not-cache-result', '--no-configuration',
                 $directory . '/OwnedStatusTest.php', '--filter', $filter, '--log-junit', $report),
-                array_merge(getenv(), array('PHP_BINARY' => PHP_BINARY)));
+                array_merge(getenv(), array('PHP_BINARY' => PHP_BINARY)), 15.0, array('work' => $directory));
             $this->assertSame($status, $result['status'], $result['stdout'] . $result['stderr']);
             $this->assertSame(1, low_seg2cat_junit_case_count($report));
             $this->assertStringContainsString('<' . $element, file_get_contents($report));
@@ -399,7 +400,7 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
             } else {
                 file_put_contents($report, $xml);
             }
-            $result = Process::execute(array(PHP_BINARY, LOW_SEG2CAT_ROOT . '/tests/.phpunit/check-junit.php', $report));
+            $result = Process::execute(array(PHP_BINARY, LOW_SEG2CAT_ROOT . '/tests/.phpunit/check-junit.php', $report), null, 15.0, array('report' => $report));
             $this->assertSame(2, $result['status']);
             $this->assertNotSame('', $result['stderr']);
         } finally {
@@ -468,29 +469,15 @@ class RunnerFixtureTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Declare only the exact intentionally emitted startup-control receipt.
-     *
-     * @param string $control Owned startup vector.
-     * @return array
-     */
-    private function startupExpected($control): array
-    {
-        if ($control === 'startup-compile') {
-            return array(array(E_WARNING, '/\A"continue" targeting switch is equivalent to "break"(?:\. Did you mean to use "continue 2"\?)?\z/'));
-        }
-        return array(array(E_USER_DEPRECATED, '/\Astartup-diagnostic-sentinel\z/'));
-    }
-
-    /**
      * Invoke the checked launcher with the current explicit runtime.
      *
      * @param array $arguments
      * @return array
      */
-    private function launch(array $arguments, array $expectedDiagnostics = array())
+    private function launch(array $arguments, array $bindings = array())
     {
         require_once LOW_SEG2CAT_ROOT . '/tests/.phpunit/check-junit.php';
         return Process::execute(array_merge(array(LOW_SEG2CAT_ROOT . '/tests/.phpunit/run-phpunit.sh',
-            '-c', LOW_SEG2CAT_ROOT . '/phpunit.xml'), $arguments), array_merge(getenv(), array('PHP_BINARY' => PHP_BINARY)), 15.0, $expectedDiagnostics);
+            '-c', LOW_SEG2CAT_ROOT . '/phpunit.xml'), $arguments), array_merge(getenv(), array('PHP_BINARY' => PHP_BINARY)), 15.0, $bindings);
     }
 }

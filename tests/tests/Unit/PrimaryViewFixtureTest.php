@@ -51,14 +51,7 @@ class PrimaryViewFixtureTest extends TestCase
             $version = PHP_MAJOR_VERSION . PHP_MINOR_VERSION;
             $architecture = php_uname('m') === 'arm64' ? 'arm64' : 'x86';
             putenv('LOW_SEG2CAT_XDEBUG_EXTENSION=/Applications/Herd.app/Contents/Resources/xdebug/xdebug-' . $version . '-' . $architecture . '.so');
-            $expected = array();
-            if ($message === 'primary-generated-sentinel' || $message === 'primary-nested-sentinel') {
-                $expected = array(array(E_USER_DEPRECATED, '/\A' . preg_quote($message, '/') . '\z/'));
-            }
-            if ($message === 'continue') {
-                $expected = array(array(E_WARNING, '/\A"continue" targeting switch is equivalent to "break"(?:\. Did you mean to use "continue 2"\?)?\z/'));
-            }
-            $result = PrimaryView::render('archive', array(), $prepare, $expected);
+            $result = PrimaryView::render('archive', array(), $prepare);
             $this->assertNotSame(0, $result['status']);
             $this->assertStringContainsString($message, $result['stderr']);
             $this->assertSame(array(), glob($directory . '/*'));

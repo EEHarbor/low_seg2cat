@@ -8,6 +8,44 @@ use Low\Seg2Cat\FluxCapacitor\Conduit\StaticCache;
 class PersistentCacheTest extends TestCase
 {
     /**
+     * Supply optional pieces omitted by the original public cache producers.
+     *
+     * @return array
+     */
+    public static function optionalKeyParts(): array
+    {
+        return array('empty array' => array(array()), 'positive float zero' => array(0.0),
+            'negative float zero' => array(-0.0), 'null' => array(null),
+            'false' => array(false), 'empty text' => array(''));
+    }
+
+    /**
+     * Retain omitted key aliases through real memory and cold disk producers.
+     *
+     * @dataProvider optionalKeyParts
+     * @param mixed $part Optional component whose native boolean value is false.
+     * @return void
+     */
+    public function testOptionalKeyPartsKeepTheirOriginalIdentity($part): void
+    {
+        $key = array('entry', $part);
+        self::assertTrue(StaticCache::set($key, array('keep' => 7)));
+        self::assertSame(array('keep' => 7), StaticCache::get('entry'));
+        self::assertSame(array('keep' => 7), StaticCache::get(sha1('entry'), true));
+        self::assertCount(1, StaticCache::all());
+        self::assertTrue(StaticCache::delete('entry'));
+        self::assertFalse(StaticCache::has($key));
+        self::assertTrue(PersistentCache::set($key, array('keep' => 9)));
+        self::assertFileExists(PATH_CACHE . 'low_seg2cat/' . sha1('entry'));
+        self::assertSame(array('keep' => 9), PersistentCache::get('entry'));
+        StaticCache::clear();
+        self::assertSame(array('keep' => 9), PersistentCache::get($key));
+        self::assertTrue(PersistentCache::delete('entry'));
+        StaticCache::clear();
+        self::assertFalse(PersistentCache::get($key));
+    }
+
+    /**
      * Convert each compound object component once without changing its disk identity.
      *
      * @return void

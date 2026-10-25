@@ -115,36 +115,14 @@ final class LowSeg2CatDiagnostics
     }
 
     /**
-     * Validate an explicitly supervised negative control and retain every other event.
+     * Retain a joined invalid native outcome without depending on caller exceptions.
      *
-     * @param string $journal Isolated receipt file created by the parent.
-     * @param array $expected Exact severity and anchored message patterns.
+     * @param array $event Severity, message, source file and line.
      * @return void
      */
-    public static function joinControl($journal, array $expected): void
+    public static function nativeFailure(array $event): void
     {
-        $bytes = file_get_contents($journal);
-        if ($bytes === '') {
-            self::retain(array(E_WARNING, 'Supervised diagnostic control produced no receipt.', __FILE__, __LINE__));
-            return;
-        }
-        foreach (explode("\n", rtrim($bytes, "\n")) as $encoded) {
-            $event = json_decode($encoded, true);
-            if (!is_array($event) || count($event) !== 4 || !is_int($event[0]) || !is_string($event[1]) || !is_string($event[2]) || !is_int($event[3])) {
-                self::retain(array(E_WARNING, 'Invalid supervised diagnostic receipt.', __FILE__, __LINE__));
-                continue;
-            }
-            $accepted = false;
-            foreach ($expected as $diagnostic) {
-                if (in_array($event[0], (array) $diagnostic[0], true) && preg_match($diagnostic[1], $event[1]) === 1) {
-                    $accepted = true;
-                    break;
-                }
-            }
-            if (!$accepted) {
-                self::retain($event);
-            }
-        }
+        self::retain($event);
     }
 
     /**
@@ -155,6 +133,7 @@ final class LowSeg2CatDiagnostics
     public static function finish(): void
     {
         self::$shutdown = true;
+        LowSeg2CatNativeInvocation::finish();
         $count = self::count();
         if ($count !== 0) {
             foreach (explode("\n", rtrim(file_get_contents(self::$journal), "\n")) as $event) {
@@ -171,6 +150,8 @@ final class LowSeg2CatDiagnostics
         exit(2);
     }
 }
+
+require_once __DIR__ . '/NativeInvocation.php';
 
 LowSeg2CatDiagnostics::initialize();
 error_reporting(-1);

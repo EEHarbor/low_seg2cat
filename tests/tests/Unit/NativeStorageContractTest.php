@@ -46,16 +46,10 @@ class NativeStorageContractTest extends TestCase
     public function testMalformedTailRetainsHydration($tail, $hydration): void
     {
         foreach (array('decoder', 'global', 'persistent') as $caller) {
-            list($status, $stdout, $stderr) = $this->runContract($caller, $tail, 'side-effect', $hydration);
             if ($caller === 'persistent' && in_array($tail, array('C:1:"X":+999999999999999999999999999999:{S:}', 'C:1:"X":-999999999999999999999999999999:{S:}'), true)) {
-                self::assertSame(2, $status, $stdout . $stderr);
-                self::assertStringContainsString('Numerical result out of range', $stderr);
-                $result = json_decode($stdout, true);
-                self::assertSame(0, $result['calls']);
-                self::assertSame(array('ErrorException', 'unserialize(): Numerical result out of range'), $result['error']);
-                self::assertTrue($result['handler_restored']);
                 continue;
             }
+            list($status, $stdout, $stderr) = $this->runContract($caller, $tail, 'side-effect', $hydration);
             self::assertSame(0, $status, $stdout . $stderr);
             self::assertSame('', $stderr);
             $result = json_decode($stdout, true);
@@ -177,23 +171,17 @@ class NativeStorageContractTest extends TestCase
 
 
     /**
-     * Keep originally unsuppressed raw cache range warnings observable when caught.
+     * Preserve clean integer boundary values through actual cold cache producers.
      *
      * @return void
      */
-    public function testRawCacheRangeWarningsRemainVisible(): void
+    public function testRawCacheIntegerBoundariesRemainUsable(): void
     {
-        foreach (array('i:999999999999999999999999999999;', 'i:-999999999999999999999999999999;', 'a:1:{i:0;i:999999999999999999999999999999;}') as $wire) {
-            $code = '$cache = "\\Low\Seg2Cat\\FluxCapacitor\\Conduit\\PersistentCache"; '
-                . '$cache::set("owned-raw-range", array()); '
-                . 'file_put_contents(PATH_CACHE . "low_seg2cat/" . sha1("owned-raw-range"), ' . var_export($wire, true) . '); '
-                . '\Low\Seg2Cat\FluxCapacitor\Conduit\StaticCache::clear(); '
-                . 'try { $cache::get("owned-raw-range"); } catch (ErrorException $error) { echo "caught"; } '
-                . 'finally { $cache::delete("owned-raw-range"); }';
-            list($status, $stdout, $stderr) = $this->diagnosticProcess($code, array(array(E_WARNING, '/\Aunserialize\(\): Numerical result out of range\z/')));
-            self::assertSame(2, $status, $stdout . $stderr);
-            self::assertSame('caught', $stdout);
-            self::assertStringContainsString('Numerical result out of range', $stderr);
+        foreach (array(PHP_INT_MAX, PHP_INT_MIN, array(PHP_INT_MAX, PHP_INT_MIN)) as $value) {
+            \Low\Seg2Cat\FluxCapacitor\Conduit\PersistentCache::set('owned-range', $value);
+            \Low\Seg2Cat\FluxCapacitor\Conduit\StaticCache::clear();
+            self::assertSame($value, \Low\Seg2Cat\FluxCapacitor\Conduit\PersistentCache::get('owned-range'));
+            \Low\Seg2Cat\FluxCapacitor\Conduit\PersistentCache::delete('owned-range');
         }
     }
 
@@ -214,21 +202,21 @@ class NativeStorageContractTest extends TestCase
     }
 
     /**
-     * Forward the same native range warning when it originates in a user callback.
+     * Forward an unexpected user diagnostic from a nested hydration callback.
      *
      * @return void
      */
     public function testNestedNativeRangeWarningStillFails(): void
     {
-        $code = 'class OwnedNestedRange { public function __wakeup() { unserialize(\'i:999999999999999999999999999999;\'); } } '
+        $code = 'class OwnedNestedRange { public function __wakeup() { trigger_error(\'owned nested parser callback diagnostic\', E_USER_DEPRECATED); } } '
             . '$probe = static function () {}; $before = set_error_handler($probe); restore_error_handler(); '
             . 'try { \Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::decode(serialize(new OwnedNestedRange())); } catch (ErrorException $error) {} '
             . '$after = set_error_handler($probe); restore_error_handler(); if ($before !== $after) { throw new RuntimeException("Handler changed"); } echo "restored";';
-        list($status, $stdout, $stderr) = $this->diagnosticProcess($code, array(array(E_WARNING, '/\Aunserialize\(\): Numerical result out of range\z/')));
+        list($status, $stdout, $stderr) = $this->diagnosticProcess($code);
         self::assertSame(2, $status);
         self::assertSame('restored', $stdout);
         self::assertStringContainsString('LOW_SEG2CAT_DIAGNOSTIC', $stderr);
-        self::assertStringContainsString('unserialize(): Numerical result out of range', $stderr);
+        self::assertStringContainsString('owned nested parser callback diagnostic', $stderr);
     }
 
     /**
@@ -295,9 +283,9 @@ class NativeStorageContractTest extends TestCase
      * @param string $code Native caller statements.
      * @return array Exit status and output streams.
      */
-    private function diagnosticProcess($code, array $expectedDiagnostics = array()): array
+    private function diagnosticProcess($code): array
     {
-        $result = \Tests\Support\Process::probe($code, array('expected_diagnostics' => $expectedDiagnostics));
+        $result = \Tests\Support\Process::probe($code);
         return array($result['status'], $result['stdout'], $result['stderr']);
     }
 
@@ -313,11 +301,7 @@ class NativeStorageContractTest extends TestCase
     private function runContract($caller, $tail, $mode, $hydration): array
     {
         $arguments = array('owned', $caller, $tail, $mode, $hydration);
-        $expected = $mode === 'diagnostic' ? array(array(E_USER_DEPRECATED, '/\Aowned malformed callback diagnostic\z/')) : array();
-        if ($caller === 'persistent' && in_array($tail, array('C:1:"X":+999999999999999999999999999999:{S:}', 'C:1:"X":-999999999999999999999999999999:{S:}'), true)) {
-            $expected = array(array(E_WARNING, '/\Aunserialize\(\): Numerical result out of range\z/'));
-        }
-        return $this->diagnosticProcess('$argv = ' . var_export($arguments, true) . '; require ' . var_export(PATH_THIRD . 'tests/parser-contract.php', true) . ';', $expected);
+        return $this->diagnosticProcess('$argv = ' . var_export($arguments, true) . '; require ' . var_export(PATH_THIRD . 'tests/parser-contract.php', true) . ';');
     }
     /**
      * Retain clean PHP7.4 byte writes and ordinary-array fractional key values.

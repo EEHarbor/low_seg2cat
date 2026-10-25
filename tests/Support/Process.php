@@ -90,8 +90,9 @@ class Process
                 throw new \RuntimeException('Cannot prepare the owned native probe.');
             }
             $timeout = isset($context['timeout_seconds']) ? $context['timeout_seconds'] : 15.0;
-            $expected = isset($context['expected_diagnostics']) ? $context['expected_diagnostics'] : array();
-            return self::execute(array_merge($command, array($probe)), $environment, $timeout, $expected);
+            $bindings = isset($context['bindings']) ? $context['bindings'] : array();
+            $bindings['probe'] = $temporary;
+            return self::execute(array_merge($command, array($probe)), $environment, $timeout, $bindings);
         } finally {
             self::removeDirectory($temporary);
         }
@@ -176,46 +177,44 @@ class Process
      * @param array $command
      * @param array|null $environment
      * @param float $timeoutSeconds
-     * @param array $expectedDiagnostics Explicitly supervised negative-control receipts.
+     * @param array $bindings Explicit owned input paths, never diagnostic authority.
      * @return array
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public static function execute(array $command, ?array $environment = null, $timeoutSeconds = 15.0, array $expectedDiagnostics = array())
+    public static function execute(array $command, ?array $environment = null, $timeoutSeconds = 15.0, array $bindings = array())
     {
+        $original = $command;
+        $prepend = null;
         if (isset($command[0]) && $command[0] === PHP_BINARY) {
-            $command = self::guardPhpCommand($command);
+            $command = self::guardPhpCommand($command, $prepend);
         }
         if (!is_numeric($timeoutSeconds) || !is_finite((float) $timeoutSeconds) || $timeoutSeconds <= 0) {
             throw new \InvalidArgumentException('Process deadline must be positive and finite.');
         }
-        $output = tmpfile();
-        $errors = tmpfile();
+        $environment = $environment === null ? getenv() : $environment;
+        list($directory, $environment) = \LowSeg2CatNativeInvocation::begin($original, $command, $environment, $timeoutSeconds, $bindings);
+        $output = fopen($directory . '/stdout', 'w+');
+        $errors = fopen($directory . '/stderr', 'w+');
         if ($output === false || $errors === false) {
-            if (is_resource($output)) {
-                fclose($output);
-            }
-            if (is_resource($errors)) {
-                fclose($errors);
-            }
-            throw new \RuntimeException('Could not allocate process output streams.');
+            throw new \RuntimeException('Could not allocate retained process streams.');
         }
         $process = null;
-        $controlJournal = $expectedDiagnostics ? tempnam(sys_get_temp_dir(), 'low-seg2cat-control-') : null;
-        $environment = $environment === null ? getenv() : $environment;
-        $environment['LOW_SEG2CAT_DIAGNOSTIC_JOURNAL'] = $controlJournal ?: \LowSeg2CatDiagnostics::journal();
-        $journal = $environment['LOW_SEG2CAT_DIAGNOSTIC_JOURNAL'];
-        $journalBefore = strlen(file_get_contents($journal));
+        $result = array('status' => null, 'timed_out' => false, 'stdout' => '', 'stderr' => '');
         try {
+            if ($prepend !== null) {
+                self::validatePrepend($prepend, $bindings);
+            }
             $process = proc_open($command, array(0 => array('pipe', 'r'), 1 => $output, 2 => $errors), $pipes, null, $environment);
             if (!is_resource($process)) {
                 throw new \RuntimeException('Could not start PHP process.');
             }
             fclose($pipes[0]);
+            \LowSeg2CatNativeInvocation::started($directory, proc_get_status($process), $timeoutSeconds);
             $deadline = hrtime(true) + (int) ($timeoutSeconds * 1000000000);
             $state = self::waitForExit($process, $deadline);
-            $timedOut = $state['running'];
-            if ($timedOut) {
+            $result['timed_out'] = $state['running'];
+            if ($result['timed_out']) {
                 proc_terminate($process);
                 $state = self::waitForExit($process, hrtime(true) + 200000000);
             }
@@ -234,28 +233,24 @@ class Process
             if ($status < 0 && $state['signaled']) {
                 $status = 128 + $state['termsig'];
             }
-            rewind($output);
-            rewind($errors);
-            $stdout = stream_get_contents($output);
-            $stderr = stream_get_contents($errors);
-            \LowSeg2CatDiagnostics::observeNativeOutput($stderr, $journal, $journalBefore);
-            return array('status' => $timedOut ? 124 : $status, 'timed_out' => $timedOut,
-                'stdout' => $stdout, 'stderr' => $stderr);
+            $result['status'] = $result['timed_out'] ? 124 : $status;
         } finally {
             if (is_resource($process)) {
                 proc_terminate($process, 9);
                 proc_close($process);
             }
-            if ($controlJournal !== null) {
-                try {
-                    \LowSeg2CatDiagnostics::joinControl($controlJournal, $expectedDiagnostics);
-                } finally {
-                    unlink($controlJournal);
-                }
-            }
+            rewind($output);
+            rewind($errors);
+            $result['stdout'] = stream_get_contents($output);
+            $result['stderr'] = stream_get_contents($errors);
+            $journal = $environment['LOW_SEG2CAT_DIAGNOSTIC_JOURNAL'];
+            \LowSeg2CatDiagnostics::observeNativeOutput($result['stderr'], $journal, 0);
+            \LowSeg2CatNativeInvocation::complete($directory, $result);
             fclose($output);
             fclose($errors);
         }
+
+        return $result;
     }
 
     /**
@@ -309,33 +304,39 @@ class Process
      * Guard owned PHP file and inline entrypoints before compiling their source.
      *
      * @param array $command Selected PHP command and arguments.
+     * @param string|null $prepend Effective declared native prepend path.
      * @return array Strict command with application arguments unchanged.
      */
-    private static function guardPhpCommand(array $command): array
+    private static function guardPhpCommand(array $command, &$prepend): array
     {
         $guard = __DIR__ . '/diagnostics.php';
         $hasPrepend = false;
         $inlineOptions = array('-r', '--run', '-B', '--process-begin', '-R', '--process-code', '-E', '--process-end');
+        $valueOptions = array('-d', '--define', '-c', '--php-ini', '-z', '--zend-extension',
+            '-t', '--docroot', '-S', '--server', '-f', '--file', '-F', '--process-file',
+            '--rf', '--rc', '--re', '--rz', '--ri');
         for ($index = 1; isset($command[$index]); $index++) {
             $argument = $command[$index];
             if ($argument === '--' || $argument === '' || $argument[0] !== '-') {
                 break;
             }
-            if (in_array($argument, array('-d', '--define', '-c', '--php-ini', '-z', '--zend-extension'), true)) {
+            if (in_array($argument, $valueOptions, true)) {
                 if (($argument === '-d' || $argument === '--define') && isset($command[$index + 1])
                     && strpos($command[$index + 1], 'auto_prepend_file=') === 0) {
                     $hasPrepend = true;
+                    $prepend = substr($command[$index + 1], strlen('auto_prepend_file='));
                 }
                 $index++;
                 continue;
             }
             if (strpos($argument, '-dauto_prepend_file=') === 0 || strpos($argument, '--define=auto_prepend_file=') === 0) {
                 $hasPrepend = true;
+                $prepend = substr($argument, strpos($argument, 'auto_prepend_file=') + strlen('auto_prepend_file='));
                 continue;
             }
             if (in_array($argument, $inlineOptions, true) && isset($command[$index + 1])) {
                 $code = $command[++$index];
-                $command[$index] = 'require_once ' . var_export($guard, true) . '; eval(' . var_export($code, true) . ');';
+                $command[$index] = self::guardInlineCode($code, $guard);
                 continue;
             }
             foreach ($inlineOptions as $option) {
@@ -344,17 +345,110 @@ class Process
                     continue;
                 }
                 $code = substr($argument, strlen($prefix));
-                $command[$index] = $prefix . 'require_once ' . var_export($guard, true) . '; eval(' . var_export($code, true) . ');';
+                $command[$index] = $prefix . self::guardInlineCode($code, $guard);
                 break;
             }
         }
         $flags = array('-d', 'error_reporting=-1', '-d', 'display_errors=stderr', '-d', 'display_startup_errors=1', '-d', 'log_errors=0');
         if (!$hasPrepend) {
+            $prepend = $guard;
             $flags[] = '-d';
             $flags[] = 'auto_prepend_file=' . $guard;
         }
         array_splice($command, 1, 0, $flags);
         return $command;
+    }
+
+    /**
+     * Require the canonical guard before any declared native primary prelude.
+     *
+     * @param string $prepend Effective original PHP prepend path.
+     * @param array $bindings Declared owned input paths retained before validation.
+     * @return void
+     * @throws \RuntimeException When a prelude could execute without strict diagnostics.
+     */
+    private static function validatePrepend($prepend, array $bindings): void
+    {
+        $guard = __DIR__ . '/diagnostics.php';
+        if (is_file($prepend) && hash_file('sha256', $prepend) === hash_file('sha256', $guard)) {
+            return;
+        }
+        if (isset($bindings['work']) && $prepend === $bindings['work'] . '/gate.php') {
+            $expected = '<?php require ' . var_export($guard, true) . '; require '
+                . var_export($bindings['work'] . '/prepend.php', true) . ';';
+            if (is_file($prepend) && file_get_contents($prepend) === $expected) {
+                return;
+            }
+        }
+        throw new \RuntimeException('Native PHP prepend must use the canonical guard or an exact declared primary gate.');
+    }
+
+    /**
+     * Install the native guard after required declarations without relocating inline code.
+     *
+     * @param string $code Original CLI code without an opening tag.
+     * @param string $guard Canonical diagnostic bootstrap.
+     * @return string Original inline source with a same-line guard statement.
+     */
+    private static function guardInlineCode($code, $guard): string
+    {
+        $tokens = \token_get_all('<?php ' . $code);
+        $offset = \strlen($tokens[0][1]);
+        $insertion = 0;
+        $count = \count($tokens);
+        for ($index = 1; $index < $count;) {
+            $token = $tokens[$index];
+            if (\is_array($token) && \in_array($token[0], array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT), true)) {
+                $offset += \strlen($token[1]);
+                $index++;
+                continue;
+            }
+            if (!\is_array($token) || !\in_array($token[0], array(T_DECLARE, T_NAMESPACE), true)) {
+                break;
+            }
+
+            $declaration = $token[0];
+            $namespaceName = false;
+            $depth = 0;
+            $complete = false;
+            for (; $index < $count; $index++) {
+                $part = $tokens[$index];
+                $offset += \strlen(\is_array($part) ? $part[1] : $part);
+                if (\is_array($part)) {
+                    if ($declaration === T_NAMESPACE) {
+                        if ($part[0] === T_NS_SEPARATOR && !$namespaceName) {
+                            break 2;
+                        }
+                        if (!\in_array($part[0], array(T_NAMESPACE, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT), true)) {
+                            $namespaceName = true;
+                        }
+                    }
+                    continue;
+                }
+                if ($part === '(') {
+                    $depth++;
+                }
+                if ($part === ')') {
+                    $depth--;
+                }
+                if ($depth !== 0 || !\in_array($part, array(';', '{', ':'), true)) {
+                    continue;
+                }
+                $insertion = $offset - 6;
+                $complete = true;
+                $index++;
+                if ($part !== ';') {
+                    break 2;
+                }
+                break;
+            }
+            if (!$complete) {
+                break;
+            }
+        }
+
+        return \substr($code, 0, $insertion) . 'require_once ' . \var_export($guard, true) . ';'
+            . \substr($code, $insertion);
     }
 
 }

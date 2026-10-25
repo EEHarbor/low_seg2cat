@@ -2,8 +2,45 @@
 
 namespace Low\Seg2Cat\FluxCapacitor\Conduit;
 
-class SerializedData
+final class SerializedData
 {
+    /**
+     * Resolve a namespace hook once for its original lexical call site.
+     *
+     * @param string $method Original declaring method identity.
+     * @param string $namespace Original caller namespace.
+     * @param string $function Original unqualified function name.
+     * @return bool Whether the first resolution selected the namespace hook.
+     */
+    public static function hasLocal($method, $namespace, $function)
+    {
+        static $bindings = array();
+        $key = $method . ':' . $function;
+        if (!\array_key_exists($key, $bindings)) {
+            $bindings[$key] = \function_exists($namespace . '\\' . $function);
+        }
+
+        return $bindings[$key];
+    }
+
+    /**
+     * Keep a sole temporary native carrier while avoiding newly deprecated null/NAN casts.
+     *
+     * @param mixed $value Original row carrier.
+     * @return mixed Native carrier, retaining Stringable ownership for the native callee.
+     */
+    public static function nativeCarrier($value)
+    {
+        if ($value === null) {
+            return '';
+        }
+        if (\is_float($value) && \is_nan($value)) {
+            return 'NAN';
+        }
+
+        return $value;
+    }
+
     /**
      * Decode persisted values with the original native valid-prefix tolerance.
      *
@@ -16,24 +53,24 @@ class SerializedData
     public static function decode($value, &$valid = null, $rawCache = false)
     {
         $valid = false;
-        if (!is_string($value) || $value === '') {
+        if ($value === '') {
             return false;
         }
-        if (strpos($value, 'S:') !== false) {
+        if (\is_string($value) && \strpos($value, 'S:') !== false) {
             $value = self::normalizeEscapedStrings($value);
         }
 
         $valid = true;
         $parse_line = 0;
         $previous = null;
-        $previous = set_error_handler(static function ($severity, $message, $file, $line) use (&$valid, &$previous, &$parse_line, $rawCache) {
-            if (($severity === E_WARNING || $severity === E_NOTICE) && $file === __FILE__ && $line === $parse_line) {
-                if (preg_match('/\Aunserialize\(\): (?:Error at offset [0-9]+ of [0-9]+ bytes|Unexpected end of serialized data|Maximum depth of [0-9]+ exceeded\. The depth limit can be changed using the max_depth unserialize\(\) option or the unserialize_max_depth ini setting)\z/', $message)) {
+        $previous = \set_error_handler(static function ($severity, $message, $file, $line) use (&$valid, &$previous, &$parse_line, $rawCache) {
+            if (($severity === \E_WARNING || $severity === \E_NOTICE) && $file === __FILE__ && $line === $parse_line) {
+                if (\preg_match('/\Aunserialize\(\): (?:Error at offset [0-9]+ of [0-9]+ bytes|Unexpected end of serialized data|Maximum depth of [0-9]+ exceeded\. The depth limit can be changed using the max_depth unserialize\(\) option or the unserialize_max_depth ini setting)\z/', $message)) {
                     // Native failure cleanup still runs deferred object callbacks.
                     $valid = false;
                     return true;
                 }
-                if (preg_match('/\AInsufficient data for unserializing - -?[0-9]+ required, [0-9]+ present\z/', $message)) {
+                if (\preg_match('/\AInsufficient data for unserializing - -?[0-9]+ required, [0-9]+ present\z/', $message)) {
                     $valid = false;
                     return true;
                 }
@@ -42,21 +79,35 @@ class SerializedData
                     return true;
                 }
                 // PHP 7.4 accepted a complete first value followed by unused bytes.
-                if (preg_match('/\Aunserialize\(\): Extra data starting at offset [0-9]+ of [0-9]+ bytes\z/', $message)) {
+                if (\preg_match('/\Aunserialize\(\): Extra data starting at offset [0-9]+ of [0-9]+ bytes\z/', $message)) {
                     return true;
                 }
             }
             if ($previous !== null) {
-                return $previous(...func_get_args());
+                return $previous(...\func_get_args());
             }
             return false;
-        }, E_ALL);
+        }, \E_ALL);
         try {
             $parse_line = __LINE__ + 1;
-            return unserialize($value);
+            return \unserialize(self::releaseInput($value));
         } finally {
-            restore_error_handler();
+            \restore_error_handler();
         }
+    }
+
+    /**
+     * Transfer an opaque native argument without retaining it through hydration.
+     *
+     * @param mixed $value Sole owned parser argument.
+     * @return mixed Original argument for native conversion and destruction.
+     */
+    private static function releaseInput(&$value)
+    {
+        $temporary = $value;
+        $value = null;
+
+        return $temporary;
     }
 
     /**
@@ -67,7 +118,7 @@ class SerializedData
      */
     private static function normalizeEscapedStrings($value)
     {
-        $length = strlen($value);
+        $length = \strlen($value);
         $position = 0;
         $result = '';
         $depth = 0;
@@ -81,32 +132,32 @@ class SerializedData
                 $position++;
                 $depth--;
                 if ($depth <= 0) {
-                    return $result . substr($value, $position);
+                    return $result . \substr($value, $position);
                 }
                 continue;
             }
 
-            if (preg_match('/\G(?:N;|[bidrR]:[^;]*;|a:[0-9]+:\{)/', $value, $match, 0, $position)) {
+            if (\preg_match('/\G(?:N;|[bidrR]:[^;]*;|a:[0-9]+:\{)/', $value, $match, 0, $position)) {
                 $result .= $match[0];
-                $position += strlen($match[0]);
-                if (substr($match[0], -1) === '{') {
+                $position += \strlen($match[0]);
+                if (\substr($match[0], -1) === '{') {
                     $depth++;
                 }
                 if ($depth === 0) {
-                    return $result . substr($value, $position);
+                    return $result . \substr($value, $position);
                 }
                 continue;
             }
 
-            if (!preg_match('/\G([sSEOC]):([0-9]+):"/', $value, $match, 0, $position)) {
-                return $result . substr($value, $start);
+            if (!\preg_match('/\G([sSEOC]):([0-9]+):"/', $value, $match, 0, $position)) {
+                return $result . \substr($value, $start);
             }
 
-            $position += strlen($match[0]);
-            $digits = ltrim($match[2], '0');
+            $position += \strlen($match[0]);
+            $digits = \ltrim($match[2], '0');
             $remaining = (string) ($length - $position);
-            if (strlen($digits) > strlen($remaining) || (strlen($digits) === strlen($remaining) && strcmp($digits, $remaining) > 0)) {
-                return $result . substr($value, $start);
+            if (\strlen($digits) > \strlen($remaining) || (\strlen($digits) === \strlen($remaining) && \strcmp($digits, $remaining) > 0)) {
+                return $result . \substr($value, $start);
             }
             $size = (int) ($digits === '' ? '0' : $digits);
             $contents = '';
@@ -114,63 +165,63 @@ class SerializedData
             if ($type === 'S') {
                 for ($i = 0; $i < $size; $i++) {
                     if ($position >= $length) {
-                        return $result . substr($value, $start);
+                        return $result . \substr($value, $start);
                     }
                     $byte = $value[$position++];
                     if ($byte === '\\') {
-                        $hex = substr($value, $position, 2);
-                        if (strlen($hex) !== 2 || strspn($hex, '0123456789abcdefABCDEF') !== 2) {
-                            return $result . substr($value, $start);
+                        $hex = \substr($value, $position, 2);
+                        if (\strlen($hex) !== 2 || \strspn($hex, '0123456789abcdefABCDEF') !== 2) {
+                            return $result . \substr($value, $start);
                         }
-                        $byte = chr(hexdec($hex));
+                        $byte = \chr(\hexdec($hex));
                         $position += 2;
                     }
                     $contents .= $byte;
                 }
             } else {
                 if ($size > $length - $position) {
-                    return $result . substr($value, $start);
+                    return $result . \substr($value, $start);
                 }
                 $position += $size;
             }
 
             if ($type === 'O' || $type === 'C') {
-                if (!preg_match('/\G":([+-]?[0-9]+):\{/', $value, $tail, 0, $position)) {
-                    return $result . substr($value, $start);
+                if (!\preg_match('/\G":([+-]?[0-9]+):\{/', $value, $tail, 0, $position)) {
+                    return $result . \substr($value, $start);
                 }
-                $position += strlen($tail[0]);
+                $position += \strlen($tail[0]);
                 if ($type === 'C') {
-                    $digits = ltrim(ltrim($tail[1], '+-'), '0');
+                    $digits = \ltrim(\ltrim($tail[1], '+-'), '0');
                     if (($tail[1][0] === '-' && $digits !== '') || $position >= $length) {
-                        return $result . substr($value, $start);
+                        return $result . \substr($value, $start);
                     }
                     $remaining = (string) ($length - $position - 1);
-                    if (strlen($digits) > strlen($remaining) || (strlen($digits) === strlen($remaining) && strcmp($digits, $remaining) > 0)) {
-                        return $result . substr($value, $start);
+                    if (\strlen($digits) > \strlen($remaining) || (\strlen($digits) === \strlen($remaining) && \strcmp($digits, $remaining) > 0)) {
+                        return $result . \substr($value, $start);
                     }
                     $payload_length = (int) ($digits === '' ? '0' : $digits);
                     if ($value[$position + $payload_length] !== '}') {
-                        return $result . substr($value, $start);
+                        return $result . \substr($value, $start);
                     }
                     $position += $payload_length + 1;
                 }
-                $result .= substr($value, $start, $position - $start);
+                $result .= \substr($value, $start, $position - $start);
                 if ($type === 'O') {
                     $depth++;
                 }
                 if ($depth === 0) {
-                    return $result . substr($value, $position);
+                    return $result . \substr($value, $position);
                 }
                 continue;
             }
 
-            if (substr($value, $position, 2) !== '";') {
-                return $result . substr($value, $start);
+            if (\substr($value, $position, 2) !== '";') {
+                return $result . \substr($value, $start);
             }
             $position += 2;
-            $result .= $type === 'S' ? 's:' . strlen($contents) . ':"' . $contents . '";' : substr($value, $start, $position - $start);
+            $result .= $type === 'S' ? 's:' . \strlen($contents) . ':"' . $contents . '";' : \substr($value, $start, $position - $start);
             if ($depth === 0) {
-                return $result . substr($value, $position);
+                return $result . \substr($value, $position);
             }
         }
 

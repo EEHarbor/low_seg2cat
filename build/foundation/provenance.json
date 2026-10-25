@@ -175,5 +175,42 @@
     ],
     "tool_changes": "Invocation-owned durable journals; exact separately supervised negative controls; native startup/compilation stream retention; bare inline/file guarding and late shutdown rejection",
     "lineage": "Own edits; 07 key conversion observation and 02/09 review observations only. Existing 01/05 decoder and03 fixture ancestry retained. No02/09 implementation copied."
+  },
+  "blocked_correction_v8": {
+    "author": "slot08",
+    "lineage": "Read-only own Fieldpack57c74d5 source adaptation, independently validated per LowSeg. No09/06/root implementation/probe copied; their observations only. Existing07/04 lexer and01/05 protocol lineage retained.",
+    "changes": [
+      "Optional empty-array/float-zero key aliases",
+      "Inline native settings offsets/NAN/null and globally bind new native operations",
+      "Preserve original lexical local hooks before native carrier normalization; helper-owned first bool selection shares inherited callsites",
+      "Local exact7errno mkdir closure avoids new legacy class method and retains native configured path"
+    ],
+    "decoder_sha256": "5500abf5c2a9e3550aeb4f0a5e4ed3a865d7db2972f7b79cdf71eadbf580834d",
+    "status": "Unvalidated draft; B1 handler callback state/prior mask unresolved, no publication."
+  },
+  "owner08_ordinary_v8": {
+    "author": "slot08",
+    "source": "Own Fieldpack v21 source, after held local v20 checkpoint9b795b5. No slot09 implementation/permanent fixture copied. Earlier07/04 lexer and01/05 parser lineage remains.",
+    "scope": [
+      "Helper method-local binding map survives real class-static restore",
+      "Direct helper loading before original caller choices",
+      "Nested original double-suppressed row/carrier/parser calls and opaque native argument transfer",
+      "Primitive-only setter array/byte locals retain public argument lifetime and raw ArrayAccess ownership",
+      "Raw key-hook operands/outer hash choice; optional false-like identities and intentional zero/collision fixes",
+      "Separate original mkdir sites, original masks and property references; exact seven native errno fallback",
+      "Restore full original separate mkdir expressions (function, DIR_WRITE_MODE and property references) and original ArrayAccess getter expression mask. Shared errno handler only; no common native-call wrapper."
+    ],
+    "helper_source_sha256": "5eb42daca00df72386ec90dc4941a13211eb34cb5feb1c7a5394d2deec3b6598",
+    "status": "Draft source adaptation; fresh native proofs, finite harness, matrix and independent review pending. B1/B2 remain."
+  },
+  "owner08_original_sites_v22": {
+    "authorship": "Own08 direct original lexical expressions and independently authored actual producer regressions; peer06 source observations only.",
+    "scope": [
+      "Separate original mkdir expressions retain independent function/constant/reference caches and original reporting masks",
+      "Original computed ArrayAccess getter @ scope restored",
+      "Host search-bit guard applies only to real filesystem-resolved paths; successful virtual storage retains native behavior",
+      "Only native mkdir selections install the known-native failure boundary; original local namespace hooks retain their own handler state."
+    ],
+    "blockers": "Native prior handler state/severity and opaque legacy Stringable wire remain explicit B1/B2; no publication approval."
   }
 }

@@ -10,12 +10,11 @@ class PrimaryView
      * @param string $layout
      * @param array $variables
      * @param string $prepare Owned diagnostic/early-exit control code.
-     * @param array $expectedDiagnostics Exact supervised harness-control receipts.
      * @return array
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public static function render($layout, array $variables, $prepare = '', array $expectedDiagnostics = array())
+    public static function render($layout, array $variables, $prepare = '')
     {
         if (!in_array($layout, array('loose', 'archive'), true)) {
             throw new \InvalidArgumentException('Unknown primary license-view layout.');
@@ -89,7 +88,12 @@ class PrimaryView
             if ($coverageDirectory) {
                 $environment['XDEBUG_MODE'] = 'coverage';
             }
-            $result = Process::execute(array_merge($command, array($measured)), $environment, 15.0, $expectedDiagnostics);
+            $bindings = array('work' => $temporary, 'completion' => $completed);
+            if ($coverageDirectory) {
+                $bindings['fixture'] = $coverageDirectory;
+                $bindings['report'] = $destination;
+            }
+            $result = Process::execute(array_merge($command, array($measured)), $environment, 15.0, $bindings);
             if ($result['status'] === 0 && !is_file($completed)) {
                 $result['status'] = 2;
                 $result['stderr'] .= "Primary view did not complete.\n";

@@ -201,11 +201,17 @@ class FilesystemContractTest extends TestCase
         };
         set_error_handler($handler, E_ALL);
         try {
-            $method = new \ReflectionMethod(PersistentCache::class, 'createDirectory');
+            $property = new \ReflectionProperty(PersistentCache::class, 'cache_path');
             if (PHP_VERSION_ID < 80100) {
-                $method->setAccessible(true);
+                $property->setAccessible(true);
             }
-            self::assertFalse($method->invoke(null, 'ownedcache://directory'));
+            $original = $property->getValue();
+            $property->setValue(null, 'ownedcache://directory/');
+            try {
+                self::assertFalse(PersistentCache::set('unexpected-callback', 'stored'));
+            } finally {
+                $property->setValue(null, $original);
+            }
             self::assertSame(array(array(E_USER_WARNING, 'mkdir(): Permission denied', PHP_VERSION_ID < 80000 ? 5 : 4)), $events);
             $probe = static function () {};
             $after = set_error_handler($probe);
@@ -233,6 +239,18 @@ class OwnedMkdirWarningWrapper
      * @param int $options Native mkdir options.
      * @return bool
      */
+    /**
+     * Report a missing owned directory without introducing a stat warning.
+     *
+     * @param string $path Requested owned directory.
+     * @param int $flags Native stat flags.
+     * @return false
+     */
+    public function url_stat($path, $flags)
+    {
+        return false;
+    }
+
     public function mkdir($path, $mode, $options)
     {
         trigger_error('mkdir(): Permission denied', E_USER_WARNING);

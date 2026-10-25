@@ -75,7 +75,7 @@ class EE3 extends AbstractBridge
                 $method = 'index';
             }
 
-            if (!preg_match('#^https?://#i', $method)) {
+            if (!\preg_match('#^https?://#i', $method)) {
                 $url = $this->getBaseURL($method);
             } else {
                 $url = $method;
@@ -97,9 +97,9 @@ class EE3 extends AbstractBridge
             }
         }
 
-        if (array_key_exists($last_segment, $active_map)) {
+        if (\array_key_exists($last_segment, $active_map)) {
             $activeMethod = $active_map[$last_segment] === '/' ? 'index' : $active_map[$last_segment];
-            if (array_key_exists($activeMethod, $headers)) {
+            if (\array_key_exists($activeMethod, $headers)) {
                 $activeTitle = $titles[$activeMethod];
                 $headers[$activeMethod]->isActive();
             }
@@ -503,9 +503,19 @@ class EE3 extends AbstractBridge
             ->get('fieldtypes');
 
         if ((bool) $ftSettingsQuery->num_rows()) {
-            $payload = $ftSettingsQuery->row('settings');
-            $decoded = is_string($payload) ? base64_decode($payload) : false;
-            $ftSettings = is_string($decoded) ? \Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::decode($decoded) : array();
+            require_once __DIR__ . '/../Conduit/SerializedData.php';
+            // Native resolves the outer parser before the carrier and row callbacks.
+            $localParser = \Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::hasLocal(__METHOD__, __NAMESPACE__, 'unserialize');
+            $localCarrier = \Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::hasLocal(__METHOD__, __NAMESPACE__, 'base64_decode');
+            if ($localParser) {
+                $ftSettings = @unserialize($localCarrier
+                    ? @base64_decode($ftSettingsQuery->row('settings'))
+                    : @\base64_decode(\Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::nativeCarrier($ftSettingsQuery->row('settings'))));
+            } else {
+                $ftSettings = @\Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::decode($localCarrier
+                    ? @base64_decode($ftSettingsQuery->row('settings'))
+                    : @\base64_decode(\Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::nativeCarrier($ftSettingsQuery->row('settings'))));
+            }
 
             // It is possible there is actually nothing in the FT settings. So if not, just return an empty array
             if (!$ftSettings) {

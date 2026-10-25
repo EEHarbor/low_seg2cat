@@ -21,7 +21,7 @@ class NativeCompilationTest extends TestCase
         try {
             copy($file, $temporary);
             $this->assertSame($hash, hash_file('sha256', $temporary), 'Compilation copy must be byte-identical.');
-            $result = Process::execute(array(PHP_BINARY, '-d', 'error_reporting=-1', '-d', 'display_errors=stderr', '-l', $temporary));
+            $result = Process::execute(array(PHP_BINARY, '-d', 'error_reporting=-1', '-d', 'display_errors=stderr', '-l', $temporary), null, 15.0, array('fixture' => $temporary));
             $this->assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
             $this->assertSame('', $result['stderr']);
             $this->assertStringContainsString('No syntax errors detected', $result['stdout']);
@@ -59,7 +59,7 @@ class NativeCompilationTest extends TestCase
      */
     public function testDiagnosticHarnessDetectsSuppressedDeprecation()
     {
-        $result = Process::probe('try { @trigger_error("diagnostic sentinel", E_USER_DEPRECATED); } catch (\\ErrorException $error) {}', array('harness_only' => true, 'expected_diagnostics' => array(array(E_USER_DEPRECATED, '/\Adiagnostic sentinel\z/'))));
+        $result = Process::probe('try { @trigger_error("diagnostic sentinel", E_USER_DEPRECATED); } catch (\\ErrorException $error) {}', array('harness_only' => true));
         $this->assertSame(2, $result['status']);
         $this->assertSame('', $result['stdout']);
         $this->assertStringContainsString('LOW_SEG2CAT_DIAGNOSTIC', $result['stderr']);

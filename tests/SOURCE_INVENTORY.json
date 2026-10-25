@@ -276,8 +276,8 @@
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Base/Upd.php": {
-        "sha256": "3d88e9e6740e1ca2a3eed4e66f5d2e6c333a5549aeed7503c8adc259cf28d93e",
-        "bytes": 3981,
+        "sha256": "2aff7ab99f7976421fe2b9d7f4bc03b1091b63d67d7c06ef04d827b406192275",
+        "bytes": 4187,
         "functions": [
             {
                 "name": "__construct",
@@ -289,11 +289,11 @@
             },
             {
                 "name": "update",
-                "line": 56
+                "line": 62
             },
             {
                 "name": "uninstall",
-                "line": 81
+                "line": 87
             }
         ]
     },
@@ -478,8 +478,8 @@
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Bridge/EE2.php": {
-        "sha256": "7c8584c37b35c56cfff636b5fd13485d88619ec873f4e225e0097d05577da9fd",
-        "bytes": 16430,
+        "sha256": "14f6161e15f67e8949bf14c59b232feb9059e0cc3c139d37e258bdfb1e0f20db",
+        "bytes": 17238,
         "functions": [
             {
                 "name": "__construct",
@@ -583,25 +583,25 @@
             },
             {
                 "name": "javascript_to_page",
-                "line": 490
+                "line": 500
             },
             {
                 "name": "module_installed",
-                "line": 495
+                "line": 505
             },
             {
                 "name": "assign_parameters",
-                "line": 507
+                "line": 517
             },
             {
                 "name": "assign_variables",
-                "line": 517
+                "line": 527
             }
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Bridge/EE3.php": {
-        "sha256": "f5dc796372868ea5c4225cdbbeee71875673f6287a86c446ebec2845b9b99fb6",
-        "bytes": 17173,
+        "sha256": "ae80e05ae2949f94e56a22d816319ce129d29a9cb52a5ffeac1d882d73ea3279",
+        "bytes": 17984,
         "functions": [
             {
                 "name": "__construct",
@@ -713,21 +713,21 @@
             },
             {
                 "name": "javascript_to_page",
-                "line": 530
+                "line": 540
             },
             {
                 "name": "module_installed",
-                "line": 535
+                "line": 545
             },
             {
                 "name": "assign_parameters",
-                "line": 540
+                "line": 550
             }
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Bridge/EE4.php": {
-        "sha256": "4577b32d938ee10377f03ced9886b4b0f1358d0183782e56f1a5cf71e602c874",
-        "bytes": 17257,
+        "sha256": "2cf45c787d3805c785c84c0c03f5ec9ca98ea26395a95efec55d8ebcec77d9bb",
+        "bytes": 18068,
         "functions": [
             {
                 "name": "__construct",
@@ -839,21 +839,21 @@
             },
             {
                 "name": "javascript_to_page",
-                "line": 530
+                "line": 540
             },
             {
                 "name": "module_installed",
-                "line": 535
+                "line": 545
             },
             {
                 "name": "assign_parameters",
-                "line": 540
+                "line": 550
             }
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Bridge/EE5.php": {
-        "sha256": "2d878a726d597c5e9b0b0750d63ceaac83a13075d14f8fefd41a3cab3035911b",
-        "bytes": 17601,
+        "sha256": "7cb6e0543950b2232a3d3fb5b29fa8e9b9fba6476a2dbb471f7925e47f9bec47",
+        "bytes": 18412,
         "functions": [
             {
                 "name": "__construct",
@@ -965,15 +965,15 @@
             },
             {
                 "name": "javascript_to_page",
-                "line": 539
+                "line": 549
             },
             {
                 "name": "module_installed",
-                "line": 544
+                "line": 554
             },
             {
                 "name": "assign_parameters",
-                "line": 549
+                "line": 559
             }
         ]
     },
@@ -983,8 +983,8 @@
         "functions": []
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/GlobalFieldSettings.php": {
-        "sha256": "93b529191808a1d3887fbd123126b02ff27d5cc5670a0c589700aef6b4c1dae6",
-        "bytes": 3911,
+        "sha256": "a40bfe4b055c3a1b1d3a06deeeede23ffab1851148c3c6d1858faf4d2a1e080a",
+        "bytes": 6118,
         "functions": [
             {
                 "name": "__construct",
@@ -996,21 +996,17 @@
             },
             {
                 "name": "getSettings",
-                "line": 51
+                "line": 70
             },
             {
                 "name": "updateSetting",
-                "line": 77
-            },
-            {
-                "name": "nativeArrayKey",
-                "line": 108
+                "line": 106
             }
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/McpNav.php": {
-        "sha256": "e43e9216709269a04eee36601e96c067e610e8d3d269af94c29c8381ea18805b",
-        "bytes": 8201,
+        "sha256": "0d4b543524e02bf47036f61468f15895a44204f0c95942f4743d7226312449d4",
+        "bytes": 8425,
         "functions": [
             {
                 "name": "__construct",
@@ -1058,29 +1054,29 @@
             },
             {
                 "name": "getUrl",
-                "line": 216
+                "line": 222
             },
             {
                 "name": "defaultItems",
-                "line": 231
+                "line": 237
             },
             {
                 "name": "defaultButtons",
-                "line": 236
+                "line": 242
             },
             {
                 "name": "defaultActiveMap",
-                "line": 241
+                "line": 247
             },
             {
                 "name": "setToolbarIcon",
-                "line": 254
+                "line": 260
             }
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/PersistentCache.php": {
-        "sha256": "c710c236f66042d9cbdc03644ad98acc8134985e818bbad537a72868db164643",
-        "bytes": 9755,
+        "sha256": "4a8f1776956f92bf42343450134efd9fc994b34eb4103009457061938804ac77",
+        "bytes": 11634,
         "functions": [
             {
                 "name": "get",
@@ -1108,51 +1104,59 @@
             },
             {
                 "name": "{closure}",
-                "line": 155
+                "line": 159
             },
             {
                 "name": "prepCacheData",
-                "line": 176
+                "line": 192
             },
             {
                 "name": "serveCacheData",
-                "line": 187
-            },
-            {
-                "name": "createDirectory",
-                "line": 200
-            },
-            {
-                "name": "{closure}",
-                "line": 204
+                "line": 203
             },
             {
                 "name": "checkPath",
-                "line": 227
+                "line": 220
+            },
+            {
+                "name": "{closure}",
+                "line": 224
             }
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/SerializedData.php": {
-        "sha256": "e0708232cc981733d9eba6973fe3398ccafe63fbeaee8ad914ac0756a40a2424",
-        "bytes": 7410,
+        "sha256": "5eb42daca00df72386ec90dc4941a13211eb34cb5feb1c7a5394d2deec3b6598",
+        "bytes": 9062,
         "functions": [
             {
+                "name": "hasLocal",
+                "line": 15
+            },
+            {
+                "name": "nativeCarrier",
+                "line": 32
+            },
+            {
                 "name": "decode",
-                "line": 16
+                "line": 53
             },
             {
                 "name": "{closure}",
-                "line": 29
+                "line": 66
+            },
+            {
+                "name": "releaseInput",
+                "line": 105
             },
             {
                 "name": "normalizeEscapedStrings",
-                "line": 68
+                "line": 119
             }
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/StaticCache.php": {
-        "sha256": "bb3a53e9ba7dfd038f8f9b940814667c81ac5e35bf25dae0d5e6ae1fadddb63e",
-        "bytes": 4228,
+        "sha256": "607949062426ea1e5558c998b80aef7adf25abc54d468c998031040674180b1d",
+        "bytes": 5058,
         "functions": [
             {
                 "name": "get",
@@ -1188,7 +1192,7 @@
             },
             {
                 "name": "{closure}",
-                "line": 108
+                "line": 112
             }
         ]
     },
@@ -1266,7 +1270,7 @@
     "low_seg2cat/low_seg2cat.phar::{stub}": {
         "sha256": "2d62c624bb99ada816e0c39f5488a78c4f3a39ba75c4dc40ca1cedaae19d79be",
         "bytes": 7918,
-        "archive_sha256": "9247fe2abb2141a7d158ab6d273f003570451f2a8a7ca8799468b34e37b5f814",
+        "archive_sha256": "e2da15914d9040dd14b6f24a52b3c3648d9f8293f52299b19c481cc83eed8d53",
         "functions": [
             {
                 "name": "go",

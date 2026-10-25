@@ -4,8 +4,8 @@ namespace Low\Seg2Cat\FluxCapacitor\Conduit;
 
 use Low\Seg2Cat\FluxCapacitor\FluxCapacitor;
 
-if (is_file(PATH_THIRD . 'low_seg2cat/Conduit/McpNav.php')
-    && is_readable(PATH_THIRD . 'low_seg2cat/Conduit/McpNav.php')) {
+if (\is_file(PATH_THIRD . 'low_seg2cat/Conduit/McpNav.php')
+    && \is_readable(PATH_THIRD . 'low_seg2cat/Conduit/McpNav.php')) {
     include_once PATH_THIRD . 'low_seg2cat/Conduit/McpNav.php';
 }
 
@@ -213,13 +213,19 @@ abstract class McpNav
     // }
 
 
+    /**
+     * Resolve a native controller URL or retain an absolute external URL.
+     *
+     * @param string $method Controller action or external URL.
+     * @return mixed Native CP URL or external URL string.
+     */
     public function getUrl($method = 'index')
     {
         if ($method == '/') {
             $method = 'index';
         }
 
-        if (!preg_match('#^https?://#i', $method)) {
+        if (!\preg_match('#^https?://#i', $method)) {
             $url = $this->flux->getBaseURL($method);
         } else {
             $url = $method;

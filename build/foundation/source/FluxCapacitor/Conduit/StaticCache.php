@@ -15,7 +15,7 @@ class StaticCache
     {
         $key = self::createKey($key, $key_processed);
 
-        return array_key_exists($key, self::$cache_array) ? self::$cache_array[$key] : false;
+        return \array_key_exists($key, self::$cache_array) ? self::$cache_array[$key] : false;
     }
 
     /**
@@ -65,7 +65,7 @@ class StaticCache
      */
     public static function has($key, $key_processed = false)
     {
-        return array_key_exists(self::createKey($key, $key_processed), self::$cache_array);
+        return \array_key_exists(self::createKey($key, $key_processed), self::$cache_array);
     }
 
     /**
@@ -105,18 +105,34 @@ class StaticCache
             $key = array($key);
         }
 
-        $key = array_filter($key, static function ($part) { return $part !== null && $part !== false && $part !== ''; });
-        if (count($key) > 1) {
-            $parts = array_map('strval', array_values($key));
+        require_once __DIR__ . '/SerializedData.php';
+        $localHash = SerializedData::hasLocal(__METHOD__, __NAMESPACE__, 'sha1');
+        $localJoin = SerializedData::hasLocal(__METHOD__, __NAMESPACE__, 'implode');
+        $localFilter = SerializedData::hasLocal(__METHOD__, __NAMESPACE__, 'array_filter');
+        $keep = static function ($part) { return $part === 0 || $part === '0' || (bool) $part; };
+        if ($localHash || $localJoin || $localFilter) {
+            if ($localHash) {
+                return sha1($localJoin
+                    ? implode(':', $localFilter ? array_filter($key) : \array_filter($key, $keep))
+                    : \implode(':', $localFilter ? array_filter($key) : \array_filter($key, $keep)));
+            }
+
+            return \sha1($localJoin
+                ? implode(':', $localFilter ? array_filter($key) : \array_filter($key, $keep))
+                : \implode(':', $localFilter ? array_filter($key) : \array_filter($key, $keep)));
+        }
+
+        $key = \array_filter($key, $keep);
+        if (\count($key) > 1) {
+            $parts = \array_map('strval', \array_values($key));
             foreach ($parts as $part) {
-                if (strpbrk($part, ':\\') !== false) {
-                    // Scalar hashes are forty hex digits, so this prefix cannot alias them.
-                    return 'compound-' . sha1(serialize($parts));
+                if (\strpbrk($part, ':\\') !== false) {
+                    return 'compound-' . \sha1(\serialize($parts));
                 }
             }
             $key = $parts;
         }
 
-        return sha1(implode(':', $key));
+        return \sha1(\implode(':', $key));
     }
 }
