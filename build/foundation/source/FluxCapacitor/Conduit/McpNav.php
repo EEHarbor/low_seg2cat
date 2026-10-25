@@ -4,7 +4,8 @@ namespace Low\Seg2Cat\FluxCapacitor\Conduit;
 
 use Low\Seg2Cat\FluxCapacitor\FluxCapacitor;
 
-if (is_file(PATH_THIRD . 'low_seg2cat/Conduit/McpNav.php')) {
+if (is_file(PATH_THIRD . 'low_seg2cat/Conduit/McpNav.php')
+    && is_readable(PATH_THIRD . 'low_seg2cat/Conduit/McpNav.php')) {
     include_once PATH_THIRD . 'low_seg2cat/Conduit/McpNav.php';
 }
 

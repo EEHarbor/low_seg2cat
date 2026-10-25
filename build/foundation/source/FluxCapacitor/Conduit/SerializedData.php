@@ -9,10 +9,11 @@ class SerializedData
      *
      * @param mixed $value Stored serialized bytes.
      * @param bool|null $valid Whether native parsing completed without a known parse error.
+     * @param bool $rawCache Preserve the raw cache caller's numerical warnings.
      * @return mixed Native decoded prefix value, or false when native parsing fails.
      * @throws \Throwable When a user callback or external diagnostic handler throws.
      */
-    public static function decode($value, &$valid = null)
+    public static function decode($value, &$valid = null, $rawCache = false)
     {
         $valid = false;
         if (!is_string($value) || $value === '') {
@@ -25,7 +26,7 @@ class SerializedData
         $valid = true;
         $parse_line = 0;
         $previous = null;
-        $previous = set_error_handler(static function ($severity, $message, $file, $line) use (&$valid, &$previous, &$parse_line) {
+        $previous = set_error_handler(static function ($severity, $message, $file, $line) use (&$valid, &$previous, &$parse_line, $rawCache) {
             if (($severity === E_WARNING || $severity === E_NOTICE) && $file === __FILE__ && $line === $parse_line) {
                 if (preg_match('/\Aunserialize\(\): (?:Error at offset [0-9]+ of [0-9]+ bytes|Unexpected end of serialized data|Maximum depth of [0-9]+ exceeded\. The depth limit can be changed using the max_depth unserialize\(\) option or the unserialize_max_depth ini setting)\z/', $message)) {
                     // Native failure cleanup still runs deferred object callbacks.
@@ -36,8 +37,8 @@ class SerializedData
                     $valid = false;
                     return true;
                 }
-                // Native integer overflow clamps the value and completes parsing.
-                if ($message === 'unserialize(): Numerical result out of range') {
+                // Stored settings retain native clamps; raw cache retains its original warning.
+                if (!$rawCache && $message === 'unserialize(): Numerical result out of range') {
                     return true;
                 }
                 // PHP 7.4 accepted a complete first value followed by unused bytes.

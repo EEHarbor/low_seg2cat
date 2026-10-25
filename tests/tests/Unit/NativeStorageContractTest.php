@@ -47,6 +47,15 @@ class NativeStorageContractTest extends TestCase
     {
         foreach (array('decoder', 'global', 'persistent') as $caller) {
             list($status, $stdout, $stderr) = $this->runContract($caller, $tail, 'side-effect', $hydration);
+            if ($caller === 'persistent' && in_array($tail, array('C:1:"X":+999999999999999999999999999999:{S:}', 'C:1:"X":-999999999999999999999999999999:{S:}'), true)) {
+                self::assertSame(2, $status, $stdout . $stderr);
+                self::assertStringContainsString('Numerical result out of range', $stderr);
+                $result = json_decode($stdout, true);
+                self::assertSame(0, $result['calls']);
+                self::assertSame(array('ErrorException', 'unserialize(): Numerical result out of range'), $result['error']);
+                self::assertTrue($result['handler_restored']);
+                continue;
+            }
             self::assertSame(0, $status, $stdout . $stderr);
             self::assertSame('', $stderr);
             $result = json_decode($stdout, true);
@@ -152,7 +161,7 @@ class NativeStorageContractTest extends TestCase
     }
 
     /**
-     * Keep accepted native integer clamps through actual cache/settings callers.
+     * Keep accepted native integer clamps through stored-settings callers.
      *
      * @return void
      */
@@ -164,16 +173,28 @@ class NativeStorageContractTest extends TestCase
         self::assertTrue($valid);
         ee()->db->rowsByTable['fieldtypes'] = array(array('settings' => base64_encode($wire)));
         self::assertSame($expected, (new \Low\Seg2Cat\FluxCapacitor\Conduit\GlobalFieldSettings())->getSettings());
-        $cache = '\\Low\\Seg2Cat\\FluxCapacitor\\Conduit\\PersistentCache';
-        self::assertTrue($cache::set('owned-clamp', array()));
-        try {
-            file_put_contents(PATH_CACHE . 'low_seg2cat/' . sha1('owned-clamp'), $wire);
-            \Low\Seg2Cat\FluxCapacitor\Conduit\StaticCache::clear();
-            self::assertSame($expected, $cache::get('owned-clamp'));
-        } finally {
-            $cache::delete('owned-clamp');
-        }
+    }
 
+
+    /**
+     * Keep originally unsuppressed raw cache range warnings observable when caught.
+     *
+     * @return void
+     */
+    public function testRawCacheRangeWarningsRemainVisible(): void
+    {
+        foreach (array('i:999999999999999999999999999999;', 'i:-999999999999999999999999999999;', 'a:1:{i:0;i:999999999999999999999999999999;}') as $wire) {
+            $code = '$cache = "\\Low\Seg2Cat\\FluxCapacitor\\Conduit\\PersistentCache"; '
+                . '$cache::set("owned-raw-range", array()); '
+                . 'file_put_contents(PATH_CACHE . "low_seg2cat/" . sha1("owned-raw-range"), ' . var_export($wire, true) . '); '
+                . '\Low\Seg2Cat\FluxCapacitor\Conduit\StaticCache::clear(); '
+                . 'try { $cache::get("owned-raw-range"); } catch (ErrorException $error) { echo "caught"; } '
+                . 'finally { $cache::delete("owned-raw-range"); }';
+            list($status, $stdout, $stderr) = $this->diagnosticProcess($code, array(array(E_WARNING, '/\Aunserialize\(\): Numerical result out of range\z/')));
+            self::assertSame(2, $status, $stdout . $stderr);
+            self::assertSame('caught', $stdout);
+            self::assertStringContainsString('Numerical result out of range', $stderr);
+        }
     }
 
     /**
@@ -293,6 +314,9 @@ class NativeStorageContractTest extends TestCase
     {
         $arguments = array('owned', $caller, $tail, $mode, $hydration);
         $expected = $mode === 'diagnostic' ? array(array(E_USER_DEPRECATED, '/\Aowned malformed callback diagnostic\z/')) : array();
+        if ($caller === 'persistent' && in_array($tail, array('C:1:"X":+999999999999999999999999999999:{S:}', 'C:1:"X":-999999999999999999999999999999:{S:}'), true)) {
+            $expected = array(array(E_WARNING, '/\Aunserialize\(\): Numerical result out of range\z/'));
+        }
         return $this->diagnosticProcess('$argv = ' . var_export($arguments, true) . '; require ' . var_export(PATH_THIRD . 'tests/parser-contract.php', true) . ';', $expected);
     }
     /**
@@ -308,7 +332,12 @@ class NativeStorageContractTest extends TestCase
             array('text', 1, new NativeOffsetText(), 'e', 'tlxt'),
             array(array('A', 'B'), 1.5, 'Z', 'B', array('A', 'Z')),
             array(array('A', 'B'), 0.5, 'Z', 'A', array('Z', 'B')),
-            array(array('A', 'B'), -0.5, 'Z', 'A', array('Z', 'B'))) as $case) {
+            array(array('A', 'B'), -0.5, 'Z', 'A', array('Z', 'B')),
+            array(array('zero'), INF, 'Z', 'zero', array('Z')),
+            array(array('zero'), -INF, 'Z', 'zero', array('Z')),
+            array(array('zero'), NAN, 'Z', 'zero', array('Z')),
+            array(array('zero'), 1.0e100, 'Z', 'zero', array('Z')),
+            array(array(PHP_INT_MIN => 'minimum'), 2.0 ** 63, 'Z', 'minimum', array(PHP_INT_MIN => 'Z'))) as $case) {
             NativeOffsetText::$calls = 0;
             $database = new NativeOffsetDatabase(base64_encode(serialize($case[0])));
             ee()->db = $database;

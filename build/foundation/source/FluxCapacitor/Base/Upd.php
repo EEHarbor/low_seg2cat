@@ -61,7 +61,10 @@ class Upd
 
         // If you add an extension after installing, it just doesnt work.
         try{
-            @include_once PATH_THIRD . 'low_seg2cat/ext.low_seg2cat.php';
+            if (is_file(PATH_THIRD . 'low_seg2cat/ext.low_seg2cat.php')
+                && is_readable(PATH_THIRD . 'low_seg2cat/ext.low_seg2cat.php')) {
+                include_once PATH_THIRD . 'low_seg2cat/ext.low_seg2cat.php';
+            }
 
             $class = $this->module_name . '_ext';
 

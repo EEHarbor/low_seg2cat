@@ -43,10 +43,34 @@ The authoritative replacement counts, exact commands, sealed input hashes, full 
 
 ## Blocked checkpoint limitation and corrected native supervision
 
-This is useful partial compatibility work, not a publication-ready result. Native serialized-object callbacks may install/pop persistent error handlers, and a previous handler may have a narrower severity mask. The temporary parser boundary cannot preserve those full native contracts through the available callable-only API. Actual original/current witnesses are bound to the external blocker packet. No approximate stack reconstruction, balanced-callback restriction or publication is authorized. Green configured suites do not close this blocker.
+This is useful partial compatibility work, not a publication-ready result. Native serialized-object and stream-wrapper mkdir callbacks may install/pop persistent error handlers, and a previous handler may have a narrower severity mask. The temporary parser and directory-creation boundaries cannot preserve those full native contracts through the available callable-only API. Actual original/current witnesses are bound to the external blocker packet. No approximate stack reconstruction, balanced-callback restriction or publication is authorized. Green configured suites do not close this blocker.
 
 The selected original malformed-cache regression explicitly requires a quiet false miss; the unchanged named oracle and all seven initial source-red reports are retained externally. Known parser diagnostics remain locally scoped; unexpected callback diagnostics remain checked. This intended fix is distinct from repositories whose public malformed-cache warnings were not selected for repair.
 
 Native children share an invocation-owned durable diagnostic journal. Every unexpected receipt is written before throwing; ignored results and killed children cannot authorize a green checked parent. Explicit negative harness controls use an isolated journal with exact severities and anchored messages, then join every unrecognized receipt into the parent. Native startup/compilation output is retained and joined separately; complete stdout/stderr/status remain available. Late shutdown diagnostics exit after persistence. Root journals survive shutdown so later callbacks cannot lose their evidence; per-run temporary evidence owns cleanup. Application arguments after the selected script are preserved.
 
 This corrective batch preserves native ordinary-array float key conversion and PHP7.4 first-byte string assignments, including one Stringable conversion and actual saved bytes. Fieldpack additionally restores the public zero-argument Version callback and distinct cleanup working-directory restoration. Fieldpack and Low Seg2Cat reuse converted compound key parts so a Stringable callback runs once and the original ordinary key identity remains usable. No peer implementation was copied for these slot08 corrections; peer native observations are disclosed in the review packet.
+
+### Current reviewed-boundary correction
+
+Raw disk cache now forwards its original numerical-range warning, including overflowing
+custom-payload lengths. The selected quiet malformed-cache oracle remains separate;
+stored-settings callers keep their original clamped values and newer PHP retains clean
+PHP7.4 prefix/S-token behavior. The superseded raw-cache clamp assertions were corrected
+against actual original74 strict execution: oversized C tails stop before hydration and
+remain red in explicitly supervised native children. No dataset was removed or broadly
+filtered. Ordinary callback diagnostics retain every argument and native handler state/
+severity-mask preservation remains the concrete B1 blocker, now also proven for stream
+wrapper mkdir callbacks. No approximate handler reconstruction is applied.
+
+Ordinary array offsets reduce finite floating keys to a native signed word before casting;
+nonfinite keys retain native zero. Native byte writes and ArrayAccess dispatch stay covered.
+Unreadable optional navigation/extension files are skipped while readable customizations
+still execute. The narrow corrections and permanent controls are authored by slot08 from
+native observations; no peer implementation was copied in this batch. Slot07's external
+mkdir witness is reused only as evidence, with attribution in the external packet.
+
+Owned inline commands guard short/long run, begin, per-line and end-code spellings before
+evaluating the original source. Healthy first-statement strict declarations and literal file
+arguments remain valid. Ignored long-inline native results are rejected by the actual
+checked parent through its invocation-owned diagnostic journal.

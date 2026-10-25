@@ -186,7 +186,8 @@ class PersistentCache
      */
     private static function serveCacheData($value)
     {
-        return \Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::decode($value);
+        $valid = null;
+        return \Low\Seg2Cat\FluxCapacitor\Conduit\SerializedData::decode($value, $valid, true);
     }
 
     /**

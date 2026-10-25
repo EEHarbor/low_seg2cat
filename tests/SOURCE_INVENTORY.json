@@ -276,8 +276,8 @@
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Base/Upd.php": {
-        "sha256": "d1062072c568c2acbadebda03e53277365c4311e730209caca82ff48231feee0",
-        "bytes": 3810,
+        "sha256": "3d88e9e6740e1ca2a3eed4e66f5d2e6c333a5549aeed7503c8adc259cf28d93e",
+        "bytes": 3981,
         "functions": [
             {
                 "name": "__construct",
@@ -293,7 +293,7 @@
             },
             {
                 "name": "uninstall",
-                "line": 78
+                "line": 81
             }
         ]
     },
@@ -983,8 +983,8 @@
         "functions": []
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/GlobalFieldSettings.php": {
-        "sha256": "9c6a18eefcab3edfbca4a5df5d3c64906f2376ef63b443b34b338546872f1d0a",
-        "bytes": 3247,
+        "sha256": "93b529191808a1d3887fbd123126b02ff27d5cc5670a0c589700aef6b4c1dae6",
+        "bytes": 3911,
         "functions": [
             {
                 "name": "__construct",
@@ -1001,82 +1001,86 @@
             {
                 "name": "updateSetting",
                 "line": 77
+            },
+            {
+                "name": "nativeArrayKey",
+                "line": 108
             }
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/McpNav.php": {
-        "sha256": "caf620879c781740e9e763821687daa5b40e83c7b1dc19d5423e5ddf2f0104cd",
-        "bytes": 8135,
+        "sha256": "e43e9216709269a04eee36601e96c067e610e8d3d269af94c29c8381ea18805b",
+        "bytes": 8201,
         "functions": [
             {
                 "name": "__construct",
-                "line": 33
+                "line": 34
             },
             {
                 "name": "generateNav",
-                "line": 66
+                "line": 67
             },
             {
                 "name": "formatItems",
-                "line": 79
+                "line": 80
             },
             {
                 "name": "itemsToNav",
-                "line": 113
+                "line": 114
             },
             {
                 "name": "buttonsToItems",
-                "line": 129
+                "line": 130
             },
             {
                 "name": "setActive",
-                "line": 139
+                "line": 140
             },
             {
                 "name": "setBreadcrumb",
-                "line": 168
+                "line": 169
             },
             {
                 "name": "getActiveItem",
-                "line": 176
+                "line": 177
             },
             {
                 "name": "deferGenerate",
-                "line": 181
+                "line": 182
             },
             {
                 "name": "preGenerateNav",
-                "line": 186
+                "line": 187
             },
             {
                 "name": "postGenerateNav",
-                "line": 190
+                "line": 191
             },
             {
                 "name": "getUrl",
-                "line": 215
+                "line": 216
             },
             {
                 "name": "defaultItems",
-                "line": 230
+                "line": 231
             },
             {
                 "name": "defaultButtons",
-                "line": 235
+                "line": 236
             },
             {
                 "name": "defaultActiveMap",
-                "line": 240
+                "line": 241
             },
             {
                 "name": "setToolbarIcon",
-                "line": 253
+                "line": 254
             }
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/PersistentCache.php": {
-        "sha256": "caac86ccb7385292d883f701d459c9ea6084939fdab83f0d7eb1c057fb6ece72",
-        "bytes": 9718,
+        "sha256": "c710c236f66042d9cbdc03644ad98acc8134985e818bbad537a72868db164643",
+        "bytes": 9755,
         "functions": [
             {
                 "name": "get",
@@ -1116,33 +1120,33 @@
             },
             {
                 "name": "createDirectory",
-                "line": 199
+                "line": 200
             },
             {
                 "name": "{closure}",
-                "line": 203
+                "line": 204
             },
             {
                 "name": "checkPath",
-                "line": 226
+                "line": 227
             }
         ]
     },
     "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Conduit/SerializedData.php": {
-        "sha256": "b95aa98f1c2d9e76322644359be0722164fe4c5554cf23a78bafdfd22e265ad9",
-        "bytes": 7271,
+        "sha256": "e0708232cc981733d9eba6973fe3398ccafe63fbeaee8ad914ac0756a40a2424",
+        "bytes": 7410,
         "functions": [
             {
                 "name": "decode",
-                "line": 15
+                "line": 16
             },
             {
                 "name": "{closure}",
-                "line": 28
+                "line": 29
             },
             {
                 "name": "normalizeEscapedStrings",
-                "line": 67
+                "line": 68
             }
         ]
     },
@@ -1262,7 +1266,7 @@
     "low_seg2cat/low_seg2cat.phar::{stub}": {
         "sha256": "2d62c624bb99ada816e0c39f5488a78c4f3a39ba75c4dc40ca1cedaae19d79be",
         "bytes": 7918,
-        "archive_sha256": "a440ad5734913ddb41a0e2b701f0539941fbbcc50f84b9b42d0e20eb58157797",
+        "archive_sha256": "9247fe2abb2141a7d158ab6d273f003570451f2a8a7ca8799468b34e37b5f814",
         "functions": [
             {
                 "name": "go",

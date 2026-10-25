@@ -315,6 +315,7 @@ class Process
     {
         $guard = __DIR__ . '/diagnostics.php';
         $hasPrepend = false;
+        $inlineOptions = array('-r', '--run', '-B', '--process-begin', '-R', '--process-code', '-E', '--process-end');
         for ($index = 1; isset($command[$index]); $index++) {
             $argument = $command[$index];
             if ($argument === '--' || $argument === '' || $argument[0] !== '-') {
@@ -332,14 +333,18 @@ class Process
                 $hasPrepend = true;
                 continue;
             }
-            if ($argument === '-r' && isset($command[$index + 1])) {
-                $code = $command[$index + 1];
-                $command[$index + 1] = 'require_once ' . var_export($guard, true) . '; eval(' . var_export($code, true) . ');';
-                break;
+            if (in_array($argument, $inlineOptions, true) && isset($command[$index + 1])) {
+                $code = $command[++$index];
+                $command[$index] = 'require_once ' . var_export($guard, true) . '; eval(' . var_export($code, true) . ');';
+                continue;
             }
-            if (strpos($argument, '-r') === 0 && strlen($argument) > 2) {
-                $code = substr($argument, 2);
-                $command[$index] = '-rrequire_once ' . var_export($guard, true) . '; eval(' . var_export($code, true) . ');';
+            foreach ($inlineOptions as $option) {
+                $prefix = strlen($option) === 2 ? $option : $option . '=';
+                if (strpos($argument, $prefix) !== 0 || strlen($argument) <= strlen($prefix)) {
+                    continue;
+                }
+                $code = substr($argument, strlen($prefix));
+                $command[$index] = $prefix . 'require_once ' . var_export($guard, true) . '; eval(' . var_export($code, true) . ');';
                 break;
             }
         }

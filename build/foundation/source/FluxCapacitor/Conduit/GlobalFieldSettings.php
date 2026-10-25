@@ -36,7 +36,7 @@ class GlobalFieldSettings
         }
 
         if (is_array($ftSettings) && is_float($name)) {
-            $name = (int) $name;
+            $name = self::nativeArrayKey($name);
         }
 
         return isset($ftSettings[$name]) ? $ftSettings[$name] : null;
@@ -81,7 +81,7 @@ class GlobalFieldSettings
             return false;
         }
         if (is_array($ftSettings) && is_float($key)) {
-            $key = (int) $key;
+            $key = self::nativeArrayKey($key);
         }
         if (is_string($ftSettings) && (is_scalar($value) || is_resource($value)
             || (is_object($value) && method_exists($value, '__toString')))) {
@@ -97,5 +97,30 @@ class GlobalFieldSettings
             ->update('fieldtypes', $settingsForDb);
 
         return true;
+    }
+
+    /**
+     * Retain native signed-word offsets without casting nonfinite or oversized floats.
+     *
+     * @param float $key Native ordinary-array offset.
+     * @return int The signed machine-word key used by native arrays.
+     */
+    private static function nativeArrayKey($key)
+    {
+        if (!is_finite($key)) {
+            return 0;
+        }
+
+        $width = 2.0 ** (PHP_INT_SIZE * 8);
+        $half = $width / 2;
+        $key = fmod($key, $width);
+        if ($key >= $half) {
+            $key -= $width;
+        }
+        if ($key < -$half) {
+            $key += $width;
+        }
+
+        return (int) $key;
     }
 }

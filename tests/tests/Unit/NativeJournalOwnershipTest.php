@@ -17,10 +17,20 @@ class NativeJournalOwnershipTest extends TestCase
         $expected = array(array(E_USER_DEPRECATED, '/\\Aowned bare diagnostic\\z/'));
         try {
             file_put_contents($directory . '/entry.php', '<?php ' . $code);
-            foreach (array(array(PHP_BINARY, '-r', $code), array(PHP_BINARY, '-r' . $code), array(PHP_BINARY, $directory . '/entry.php')) as $command) {
+            foreach (array(array(PHP_BINARY, '-r', $code), array(PHP_BINARY, '-r' . $code),
+                array(PHP_BINARY, '--run', $code), array(PHP_BINARY, '--run=' . $code),
+                array(PHP_BINARY, '-B', $code, '-R', ';'), array(PHP_BINARY, '--process-begin=' . $code, '-R', ';'),
+                array(PHP_BINARY, '-R', ';', '-E', $code), array(PHP_BINARY, '-R', ';', '--process-end=' . $code),
+                array(PHP_BINARY, $directory . '/entry.php')) as $command) {
                 $result = \Tests\Support\Process::execute($command, getenv(), 5.0, $expected);
                 self::assertSame(2, $result['status']);
                 self::assertStringContainsString('LOW_SEG2CAT_DIAGNOSTIC', $result['stderr']);
+            }
+            $strict = 'declare(strict_types=1); echo "strict code";';
+            foreach (array('-r', '--run') as $option) {
+                $result = \Tests\Support\Process::execute(array(PHP_BINARY, $option, $strict), getenv(), 5.0);
+                self::assertSame(0, $result['status'], $result['stderr']);
+                self::assertSame('strict code', $result['stdout']);
             }
             file_put_contents($directory . '/arguments.php', '<?php echo json_encode(array_slice($argv, 1));');
             $command = array(PHP_BINARY, $directory . '/arguments.php', '-r', 'literal value');
@@ -58,7 +68,7 @@ class NativeJournalOwnershipTest extends TestCase
      */
     public static function childLifecycles(): array
     {
-        return array('ordinary' => array(false), 'deadline' => array(true));
+        return array('ordinary' => array(false, false), 'deadline' => array(true, false), 'long-inline' => array(false, true));
     }
 
     /**
@@ -66,15 +76,18 @@ class NativeJournalOwnershipTest extends TestCase
      *
      * @dataProvider childLifecycles
      * @param bool $timeout Terminate the child after it records its diagnostic.
+     * @param bool $inline Exercise the native long inline option.
      * @return void
      */
-    public function testIgnoredChildDiagnosticCannotPass($timeout): void
+    public function testIgnoredChildDiagnosticCannotPass($timeout, $inline): void
     {
         $root = dirname(__DIR__, 3);
         $directory = sys_get_temp_dir() . '/low_seg2cat-owned-journal-' . bin2hex(random_bytes(8));
         mkdir($directory, 0700);
         $code = 'try { @trigger_error("owned ignored child diagnostic", E_USER_DEPRECATED); } catch (\ErrorException $error) {}' . ($timeout ? ' usleep(2000000);' : '');
-        $body = '\Tests\Support\Process::probe(' . var_export($code, true) . ', array("harness_only" => true, "timeout_seconds" => 0.4)); self::assertTrue(true);';
+        $body = $inline
+            ? '\Tests\Support\Process::execute(array(PHP_BINARY, "--run", ' . var_export($code, true) . '), getenv(), 0.4); self::assertTrue(true);'
+            : '\Tests\Support\Process::probe(' . var_export($code, true) . ', array("harness_only" => true, "timeout_seconds" => 0.4)); self::assertTrue(true);';
         try {
             file_put_contents($directory . '/OwnedJournalTest.php', '<?php final class OwnedJournalTest extends \Tests\TestCase { public function testOwned(): void { ' . $body . ' } }');
             $arguments = array($root . '/tests/.phpunit/run-phpunit.sh', '--no-configuration', '--bootstrap', $root . '/tests/bootstrap.php', '--do-not-cache-result', '--log-junit', $directory . '/junit.xml', $directory . '/OwnedJournalTest.php');
