@@ -316,6 +316,120 @@ final class LowSeg2CatNativeInvocation
             }
             $stdout = str_replace('"pid":' . $started['pid'] . ',', '"pid":"<NATIVE_PID>",', $stdout);
         }
+        $tracePaths = array();
+        $argumentLimit = PHP_VERSION_ID < 80000 ? 15 : (int) ini_get('zend.exception_string_param_max_len');
+        if ($argumentLimit > 0) {
+            foreach (explode("\n", $journal) as $encoded) {
+                $event = json_decode($encoded, true);
+                if (!is_array($event) || count($event) !== 4 || !is_int($event[0])
+                    || !is_string($event[2]) || !is_int($event[3]) || strlen($event[2]) <= $argumentLimit) {
+                    continue;
+                }
+                $source = $normalize($event[2]);
+                $role = null;
+                foreach (array('work', 'probe', 'fixture') as $name) {
+                    if (strpos($source, '<' . strtoupper($name) . '>/') === 0
+                        || ($source === '<' . strtoupper($name) . '>' && isset($plan['fixtures'][$name . '/']['sha256']))) {
+                        $role = strtoupper($name);
+                        break;
+                    }
+                }
+                if ($role === null) {
+                    continue;
+                }
+                $calls = array(array('#0 [internal function]: LowSeg2CatDiagnostics::handle(' . $event[0] . ', ', $source, true));
+                if (isset($plan['case']['class'], $plan['case']['name'], $plan['bindings']['probe'], $plan['fixtures']['probe/probe.php'])
+                    && $plan['case']['class'] === 'Tests\\ProcessFixtureTest'
+                    && $plan['case']['name'] === 'testNativeProbeRejectsSuppressedNestedDiagnostics'
+                    && $event[2] === $plan['bindings']['probe'] . '/nested.php') {
+                    $calls[] = array('#2 ' . $plan['bindings']['probe'] . '/probe.php(3): require(', $source, false);
+                }
+                $class = isset($plan['case']['class']) ? $plan['case']['class'] : null;
+                $name = isset($plan['case']['name']) ? $plan['case']['name'] : null;
+                $work = isset($plan['bindings']['work']) ? $plan['bindings']['work'] : null;
+                $generated = ($class === 'Tests\\NativeAccessorFixtureTest'
+                        && in_array($name, array('testRejectedAccessorRunPublishesNoGraphAndRemovesItsCopy with data set "hidden diagnostic"',
+                            'testRejectedAccessorRunPublishesNoGraphAndRemovesItsCopy with data set "compile diagnostic"'), true))
+                    || ($class === 'Tests\\PrimaryViewFixtureTest'
+                        && in_array($name, array('testPreparationFailurePublishesNoSourceGraph with data set "suppressed generated diagnostic"',
+                            'testPreparationFailurePublishesNoSourceGraph with data set "generated compile diagnostic"',
+                            'testPreparationFailurePublishesNoSourceGraph with data set "nested generated diagnostic"'), true));
+                if ($generated && $work !== null && isset($plan['fixtures']['work/gate.php'], $plan['fixtures']['work/prepend.php'])) {
+                    if ($source === '<WORK>/prepend.php' && $event[3] === 17) {
+                        $calls[] = array('#0 ' . $work . '/gate.php(1): LowSeg2CatDiagnostics::handle(' . $event[0] . ', ', $source, true);
+                        $calls[] = array('#2 ' . $work . '/gate.php(1): require(', $source, false);
+                    }
+                    if ($class === 'Tests\\PrimaryViewFixtureTest' && $source === '<WORK>/nested.php' && $event[3] === 1) {
+                        $calls[] = array('#2 ' . $work . '/prepend.php(17): require(', $source, false);
+                        $calls[] = array('#3 ' . $work . '/gate.php(1): require(', '<WORK>/prepend.php', false);
+                    }
+                }
+                if ($class === 'Tests\\RunnerFixtureTest' && $event[3] === 1) {
+                    if ($name === 'testDirectEntryRejectsEarlySupportDiagnostics with data set "ordinary bootstrap"'
+                        && $source === '<WORK>/Support/native.php' && isset($plan['fixtures']['work/entry.php'])) {
+                        $calls[] = array('#2 ' . $work . '/entry.php(4): require_once(', $source, false);
+                    }
+                    if ($name === 'testDirectEntryRejectsEarlySupportDiagnostics with data set "native bootstrap"'
+                        && $source === '<WORK>/Support/Environment.php' && isset($plan['fixtures']['work/Support/entry.php'])) {
+                        $calls[] = array('#2 ' . $work . '/Support/entry.php(20): require_once(', $source, false);
+                    }
+                    $startup = in_array($name, array('testLauncherRejectsStartupDiagnostics with data set "before bootstrap"',
+                        'testLauncherRejectsStartupDiagnostics with data set "after bootstrap"',
+                        'testLauncherRejectsStartupDiagnostics with data set "bootstrap compilation"',
+                        'testCoveragePublishesOnlyAfterFreshExecutedCases with data set "startup before bootstrap"',
+                        'testCoveragePublishesOnlyAfterFreshExecutedCases with data set "startup after bootstrap"',
+                        'testCoveragePublishesOnlyAfterFreshExecutedCases with data set "startup compilation"'), true);
+                    if ($startup && ($source === '<FIXTURE>' || $source === '<WORK>/bootstrap.php')) {
+                        $loader = 'phar://' . dirname(__DIR__, 2) . '/tests/.phpunit/phpunit-9.phar/phpunit/';
+                        $calls[] = array('#0 ' . $loader . 'Util/FileLoader.php(57): LowSeg2CatDiagnostics::handle(' . $event[0] . ', ', $source, true);
+                        foreach (array(2, 3) as $frame) {
+                            $calls[] = array('#' . $frame . ' ' . $loader . 'Util/FileLoader.php(43): PHPUnit\\Util\\FileLoader::load(', $source, false);
+                        }
+                        $calls[] = array('#2 ' . $loader . 'Util/FileLoader.php(57): include_once(', $source, false);
+                        foreach (array(3, 4) as $frame) {
+                            $calls[] = array('#' . $frame . ' ' . $loader . 'TextUI/Command.php(419): PHPUnit\\Util\\FileLoader::checkAndLoad(', $source, false);
+                        }
+                        foreach (array(4, 5) as $frame) {
+                            $calls[] = array('#' . $frame . ' ' . $loader . 'TextUI/Command.php(278): PHPUnit\\TextUI\\Command->handleBootstrap(', $source, false);
+                        }
+                    }
+                }
+                foreach ($calls as $call) {
+                    foreach ($paths as $path => $pathRole) {
+                        if ($pathRole !== '<' . $role . '>' || strpos($call[1], $pathRole) !== 0) {
+                            continue;
+                        }
+                        $argument = $path . substr($call[1], strlen($pathRole));
+                        if (strlen($argument) <= $argumentLimit) {
+                            continue;
+                        }
+                        $token = "'" . substr($argument, 0, $argumentLimit) . "...'";
+                        $replacement = "'<" . $role . "_SOURCE_PREFIX>'";
+                        $tracePaths[] = $call[2]
+                            ? array($normalize($call[0]), ', ' . $token . ', ' . $event[3], ', ' . $replacement . ', ' . $event[3])
+                            : array($normalize($call[0]), '(' . $token . ')', '(' . $replacement . ')');
+                    }
+                }
+            }
+        }
+        // Full source/caller inputs remain bound; only their native cropped path argument varies.
+        $normalizeTrace = static function ($bytes) use ($tracePaths, $normalize) {
+            $lines = explode("\n", $bytes);
+            foreach ($lines as &$line) {
+                $line = $normalize($line);
+                foreach ($tracePaths as $path) {
+                    if (strpos($line, $path[0]) === 0) {
+                        $line = str_replace($path[1], $path[2], $line);
+                    }
+                }
+            }
+            unset($line);
+            return implode("\n", $lines);
+        };
+        $stdout = $normalizeTrace($stdout);
+        $stderr = $normalizeTrace($stderr);
+        $nativeErrors = $normalizeTrace($nativeErrors);
+
         $stdout = preg_replace('/^Time: [0-9:.]+, Memory: [0-9.]+ MB$/m', 'Time: <duration>, Memory: <memory> MB', $stdout);
         $nativeErrors = preg_replace('/^\[[0-9]{2}-[A-Za-z]{3}-[0-9]{4} [^\r\n]*\] /m', '', $nativeErrors);
         $case = $plan['case'];
