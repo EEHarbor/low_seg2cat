@@ -59,20 +59,28 @@ final class LowSeg2CatNativeInvocation
         }
         mkdir($directory, 0700);
         $environment['LOW_SEG2CAT_DIAGNOSTIC_JOURNAL'] = $directory . '/diagnostics.jsonl';
+        $environment['LOW_SEG2CAT_NATIVE_ERROR_LOG'] = $directory . '/native-errors.log';
+        file_put_contents($environment['LOW_SEG2CAT_NATIVE_ERROR_LOG'], '');
         $environment['LOW_SEG2CAT_NATIVE_RECEIPTS'] = self::$root;
         $environment['LOW_SEG2CAT_NATIVE_PARENT'] = substr($directory, strlen(self::$root) + 1);
         file_put_contents($environment['LOW_SEG2CAT_DIAGNOSTIC_JOURNAL'], '');
-        $temporary = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR);
+        $temporaryAlias = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR);
+        $temporary = realpath($temporaryAlias) ?: $temporaryAlias;
         $paths = array(self::$root => '<NATIVE>', dirname(__DIR__, 2) => '<REPO>', PHP_BINARY => '<PHP>');
         if ($temporary !== '') {
             $paths[$temporary] = '<TMP>';
+            $paths[$temporaryAlias] = '<TMP>';
         }
         foreach ($bindings as $role => $path) {
             if (!in_array($role, array('work', 'fixture', 'probe', 'report', 'completion'), true) || !is_string($path)
-                || strpos($path, $temporary . DIRECTORY_SEPARATOR) !== 0) {
+                || (strpos($path, $temporary . DIRECTORY_SEPARATOR) !== 0 && strpos($path, $temporaryAlias . DIRECTORY_SEPARATOR) !== 0)) {
                 throw new RuntimeException('Only explicit owned native fixture bindings are supported.');
             }
             $paths[$path] = '<' . strtoupper($role) . '>';
+            $physical = realpath($path);
+            if ($physical !== false && strpos($physical, $temporary . DIRECTORY_SEPARATOR) === 0) {
+                $paths[$physical] = '<' . strtoupper($role) . '>';
+            }
         }
         uksort($paths, static function ($left, $right) { return strlen($right) <=> strlen($left); });
         $normalize = static function ($value) use ($paths) {
@@ -123,16 +131,32 @@ final class LowSeg2CatNativeInvocation
         $selected = array_intersect_key($environment, array_flip(array('PHP_BINARY', 'TMPDIR', 'TMP', 'TEMP', 'XDEBUG_MODE',
             'LOW_SEG2CAT_EE_VERSION', 'LOW_SEG2CAT_REQUEST_TYPE', 'LOW_SEG2CAT_DIRECT_ACCESS', 'LOW_SEG2CAT_MISSING_PHAR',
             'LOW_SEG2CAT_XDEBUG_EXTENSION', 'LOW_SEG2CAT_COVERAGE', 'LOW_SEG2CAT_MODULE_NAV_THIRD_PATH', 'LOW_SEG2CAT_REAL_FIELDTYPE')));
-        if (isset($selected['TMPDIR']) && rtrim($selected['TMPDIR'], DIRECTORY_SEPARATOR) === $temporary) {
+        $originalSelected = $selected;
+        if (isset($selected['TMPDIR']) && (realpath($selected['TMPDIR']) ?: rtrim($selected['TMPDIR'], DIRECTORY_SEPARATOR)) === $temporary) {
             $selected['TMPDIR'] = $temporary;
         }
         ksort($selected);
         self::write($directory . '/planned.json', array('owner_pid' => getmypid(), 'case' => self::$case, 'ordinal' => self::$ordinal,
-            'command' => $original, 'guarded_command' => $command, 'environment' => $selected, 'fixtures' => $fixtures,
-            'cwd' => getcwd(), 'timeout' => (float) $timeout, 'code' => null, 'bindings' => $bindings));
+            'command' => $original, 'guarded_command' => $command, 'original_environment' => $originalSelected, 'environment' => $selected, 'fixtures' => $fixtures,
+            'cwd' => getcwd(), 'timeout' => (float) $timeout, 'code' => null, 'bindings' => $bindings,
+            'native_error_log' => $environment['LOW_SEG2CAT_NATIVE_ERROR_LOG']));
         self::$plans[$directory] = false;
 
         return array($directory, $environment);
+    }
+
+    /**
+     * Bind the actual guarded arguments before native startup.
+     *
+     * @param string $directory Invocation receipt directory.
+     * @param array $command Complete guarded argument bytes.
+     * @return void
+     */
+    public static function guardedCommand($directory, array $command): void
+    {
+        $plan = json_decode(file_get_contents($directory . '/planned.json'), true);
+        $plan['guarded_command'] = $command;
+        self::write($directory . '/planned.json', $plan);
     }
 
     /**
@@ -163,11 +187,11 @@ final class LowSeg2CatNativeInvocation
             || (is_file($plan['bindings']['completion']) && file_get_contents($plan['bindings']['completion']) === 'complete');
         $completion = array('exit' => $result['status'], 'timed_out' => $result['timed_out'], 'semantic_completion' => $semanticCompletion,
             'stdout_sha256' => hash('sha256', $result['stdout']), 'stderr_sha256' => hash('sha256', $result['stderr']),
-            'diagnostics_sha256' => hash('sha256', $journal));
+            'diagnostics_sha256' => hash('sha256', $journal), 'native_errors_sha256' => hash('sha256', $result['native_errors']));
         self::write($directory . '/completed.json', $completion);
-        $profile = self::profile($plan, $completion, $result['stdout'], $result['stderr'], $journal, $directory);
+        $profile = self::profile($plan, $completion, $result['stdout'], $result['stderr'], $journal, $result['native_errors'], $directory);
         self::write($directory . '/profile.json', $profile);
-        $accepted = $result['status'] === 0 && !$result['timed_out'] && $result['stderr'] === '' && $journal === '' && $semanticCompletion;
+        $accepted = $result['status'] === 0 && !$result['timed_out'] && $result['stderr'] === '' && $journal === '' && $result['native_errors'] === '' && $semanticCompletion;
         if (!$accepted) {
             $identity = $plan['case'] === null ? null : $plan['case']['class'] . '::' . $plan['case']['name'] . '#' . $plan['ordinal'];
             $accepted = $identity !== null && !isset(self::$used[$identity]) && self::ownedControl($profile, $directory);
@@ -185,7 +209,7 @@ final class LowSeg2CatNativeInvocation
                 }
             }
             LowSeg2CatDiagnostics::nativeFailure(array(E_WARNING, 'Rejected native lifecycle: exit=' . var_export($result['status'], true)
-                . ', timeout=' . (int) $result['timed_out'] . ', receipts=' . $directory, __FILE__, __LINE__));
+                . ', timeout=' . (int) $result['timed_out'] . ', native_log=' . (int) ($result['native_errors'] !== '') . ', receipts=' . $directory, __FILE__, __LINE__));
         }
     }
 
@@ -246,21 +270,28 @@ final class LowSeg2CatNativeInvocation
      * @param string $stdout Full output bytes.
      * @param string $stderr Full diagnostic bytes.
      * @param string $journal Durable prethrow events.
+     * @param string $nativeErrors Complete native PHP log bytes.
      * @param string $directory Current retained invocation directory.
      * @return array Exact finite support-control profile.
      */
-    private static function profile(array $plan, array $completion, $stdout, $stderr, $journal, $directory): array
+    private static function profile(array $plan, array $completion, $stdout, $stderr, $journal, $nativeErrors, $directory): array
     {
-        $temporary = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR);
+        $temporaryAlias = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR);
+        $temporary = realpath($temporaryAlias) ?: $temporaryAlias;
         $paths = array(self::$root => '<NATIVE>', dirname(__DIR__, 2) => '<REPO>', PHP_BINARY => '<PHP>');
         if ($temporary !== '') {
             $paths[$temporary] = '<TMP>';
+            $paths[$temporaryAlias] = '<TMP>';
         }
         foreach ($plan['bindings'] as $name => $path) {
-            if (!in_array($name, array('work', 'fixture', 'probe', 'report', 'completion'), true) || !is_string($path) || strpos($path, $temporary . DIRECTORY_SEPARATOR) !== 0) {
+            if (!in_array($name, array('work', 'fixture', 'probe', 'report', 'completion'), true) || !is_string($path) || (strpos($path, $temporary . DIRECTORY_SEPARATOR) !== 0 && strpos($path, $temporaryAlias . DIRECTORY_SEPARATOR) !== 0)) {
                 return array('invalid_bindings' => true);
             }
             $paths[$path] = '<' . strtoupper($name) . '>';
+            $physical = realpath($path);
+            if ($physical !== false && strpos($physical, $temporary . DIRECTORY_SEPARATOR) === 0) {
+                $paths[$physical] = '<' . strtoupper($name) . '>';
+            }
         }
         uksort($paths, static function ($left, $right) { return strlen($right) <=> strlen($left); });
         $normalize = static function ($value) use ($paths) {
@@ -286,6 +317,7 @@ final class LowSeg2CatNativeInvocation
             $stdout = str_replace('"pid":' . $started['pid'] . ',', '"pid":"<NATIVE_PID>",', $stdout);
         }
         $stdout = preg_replace('/^Time: [0-9:.]+, Memory: [0-9.]+ MB$/m', 'Time: <duration>, Memory: <memory> MB', $stdout);
+        $nativeErrors = preg_replace('/^\[[0-9]{2}-[A-Za-z]{3}-[0-9]{4} [^\r\n]*\] /m', '', $nativeErrors);
         $case = $plan['case'];
         if ($case !== null) {
             $case['file'] = $normalize($case['file']);
@@ -299,7 +331,7 @@ final class LowSeg2CatNativeInvocation
             'environment' => array_map($normalize, $plan['environment']), 'fixtures' => $plan['fixtures'],
             'cwd' => $normalize($plan['cwd']), 'timeout' => $plan['timeout'], 'code' => $plan['code'] === null ? null : $normalize($plan['code']),
             'exit' => $completion['exit'], 'timed_out' => $completion['timed_out'], 'semantic_completion' => $completion['semantic_completion'], 'stdout' => $normalize($stdout),
-            'stderr' => $normalize($stderr), 'journal' => $normalize($journal));
+            'stderr' => $normalize($stderr), 'journal' => $normalize($journal), 'native_errors' => $normalize($nativeErrors));
     }
 
     /**
@@ -364,7 +396,7 @@ final class LowSeg2CatNativeInvocation
         $profile['fixtures_count'] = count($profile['fixtures']);
         $profile['fixtures_sha256'] = hash('sha256', json_encode($profile['fixtures'], JSON_UNESCAPED_SLASHES));
         unset($profile['fixtures']);
-        foreach (array('code', 'stdout', 'stderr', 'journal') as $name) {
+        foreach (array('code', 'stdout', 'stderr', 'journal', 'native_errors') as $name) {
             $profile[$name . '_sha256'] = $profile[$name] === null ? null : hash('sha256', $profile[$name]);
             unset($profile[$name]);
         }

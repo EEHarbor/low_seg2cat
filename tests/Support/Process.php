@@ -186,9 +186,6 @@ class Process
     {
         $original = $command;
         $prepend = null;
-        if (isset($command[0]) && $command[0] === PHP_BINARY) {
-            $command = self::guardPhpCommand($command, $prepend);
-        }
         if (!is_numeric($timeoutSeconds) || !is_finite((float) $timeoutSeconds) || $timeoutSeconds <= 0) {
             throw new \InvalidArgumentException('Process deadline must be positive and finite.');
         }
@@ -200,26 +197,47 @@ class Process
             throw new \RuntimeException('Could not allocate retained process streams.');
         }
         $process = null;
-        $result = array('status' => null, 'timed_out' => false, 'stdout' => '', 'stderr' => '');
+        $nativePid = null;
+        $stop = static function ($signal) use (&$process, &$nativePid, $directory) {
+            if ($nativePid !== null && is_file($directory . '/group.pid')
+                && file_get_contents($directory . '/group.pid') === (string) $nativePid) {
+                posix_kill(-$nativePid, $signal);
+            }
+            if (is_resource($process)) {
+                proc_terminate($process, $signal);
+            }
+        };
+        $result = array('status' => null, 'timed_out' => false, 'stdout' => '', 'stderr' => '', 'native_errors' => '');
         try {
+            if (isset($command[0]) && $command[0] === PHP_BINARY) {
+                $command = self::guardPhpCommand($command, $prepend, $environment['LOW_SEG2CAT_NATIVE_ERROR_LOG']);
+            }
+            \LowSeg2CatNativeInvocation::guardedCommand($directory, $command);
             if ($prepend !== null) {
                 self::validatePrepend($prepend, $bindings);
             }
-            $process = proc_open($command, array(0 => array('pipe', 'r'), 1 => $output, 2 => $errors), $pipes, null, $environment);
+            $launch = array_merge(array(PHP_BINARY, '-d', 'error_reporting=-1', '-d', 'display_errors=stderr',
+                '-d', 'display_startup_errors=1', '-d', 'html_errors=0', '-d', 'log_errors=1',
+                '-d', 'error_log=' . $environment['LOW_SEG2CAT_NATIVE_ERROR_LOG'],
+                '-d', 'auto_prepend_file=' . __DIR__ . '/diagnostics.php',
+                dirname(__DIR__) . '/scripts/process-worker.php', $directory . '/group.pid'), $command);
+            $process = proc_open($launch, array(0 => array('pipe', 'r'), 1 => $output, 2 => $errors), $pipes, null, $environment);
             if (!is_resource($process)) {
                 throw new \RuntimeException('Could not start PHP process.');
             }
             fclose($pipes[0]);
-            \LowSeg2CatNativeInvocation::started($directory, proc_get_status($process), $timeoutSeconds);
+            $started = proc_get_status($process);
+            $nativePid = $started['pid'];
+            \LowSeg2CatNativeInvocation::started($directory, $started, $timeoutSeconds);
             $deadline = hrtime(true) + (int) ($timeoutSeconds * 1000000000);
             $state = self::waitForExit($process, $deadline);
             $result['timed_out'] = $state['running'];
             if ($result['timed_out']) {
-                proc_terminate($process);
+                $stop(9);
                 $state = self::waitForExit($process, hrtime(true) + 200000000);
             }
             if ($state['running']) {
-                proc_terminate($process, 9);
+                $stop(9);
                 $state = self::waitForExit($process, hrtime(true) + 1000000000);
             }
             if ($state['running']) {
@@ -227,6 +245,7 @@ class Process
             }
             // Older PHP loses the collected exit code when proc_close reaps it.
             $exitCode = $state['exitcode'];
+            $stop(9);
             $closed = proc_close($process);
             $process = null;
             $status = $exitCode >= 0 ? $exitCode : $closed;
@@ -236,13 +255,14 @@ class Process
             $result['status'] = $result['timed_out'] ? 124 : $status;
         } finally {
             if (is_resource($process)) {
-                proc_terminate($process, 9);
+                $stop(9);
                 proc_close($process);
             }
             rewind($output);
             rewind($errors);
             $result['stdout'] = stream_get_contents($output);
             $result['stderr'] = stream_get_contents($errors);
+            $result['native_errors'] = file_get_contents($environment['LOW_SEG2CAT_NATIVE_ERROR_LOG']);
             $journal = $environment['LOW_SEG2CAT_DIAGNOSTIC_JOURNAL'];
             \LowSeg2CatDiagnostics::observeNativeOutput($result['stderr'], $journal, 0);
             \LowSeg2CatNativeInvocation::complete($directory, $result);
@@ -305,9 +325,10 @@ class Process
      *
      * @param array $command Selected PHP command and arguments.
      * @param string|null $prepend Effective declared native prepend path.
+     * @param string $nativeLog Parent-owned native error-log destination.
      * @return array Strict command with application arguments unchanged.
      */
-    private static function guardPhpCommand(array $command, &$prepend): array
+    private static function guardPhpCommand(array $command, &$prepend, $nativeLog): array
     {
         $guard = __DIR__ . '/diagnostics.php';
         $hasPrepend = false;
@@ -349,13 +370,13 @@ class Process
                 break;
             }
         }
-        $flags = array('-d', 'error_reporting=-1', '-d', 'display_errors=stderr', '-d', 'display_startup_errors=1', '-d', 'log_errors=0');
+        $flags = array('-d', 'error_reporting=-1', '-d', 'display_errors=stderr', '-d', 'display_startup_errors=1', '-d', 'log_errors=1', '-d', 'error_log=' . $nativeLog, '-d', 'html_errors=0');
         if (!$hasPrepend) {
             $prepend = $guard;
             $flags[] = '-d';
             $flags[] = 'auto_prepend_file=' . $guard;
         }
-        array_splice($command, 1, 0, $flags);
+        array_splice($command, $index, 0, $flags);
         return $command;
     }
 
@@ -438,7 +459,15 @@ class Process
                 $complete = true;
                 $index++;
                 if ($part !== ';') {
-                    break 2;
+                    $emptyEnd = $declaration === T_DECLARE ? self::emptyDeclarationEnd($tokens, $index, $part) : null;
+                    if ($emptyEnd === null) {
+                        break 2;
+                    }
+                    for (; $index <= $emptyEnd; $index++) {
+                        $token = $tokens[$index];
+                        $offset += \strlen(\is_array($token) ? $token[1] : $token);
+                    }
+                    $insertion = $offset - 6;
                 }
                 break;
             }
@@ -449,6 +478,35 @@ class Process
 
         return \substr($code, 0, $insertion) . 'require_once ' . \var_export($guard, true) . ';'
             . \substr($code, $insertion);
+    }
+
+    /**
+     * Skip an empty declare body that PHP7.4 permits before a namespace header.
+     *
+     * @param array $tokens Native inline tokens.
+     * @param int $index First token inside the declaration body.
+     * @param string $delimiter Opening brace or alternate-syntax colon.
+     * @return int|null Closing token when no statement executes in the body.
+     */
+    private static function emptyDeclarationEnd(array $tokens, $index, $delimiter): ?int
+    {
+        while (isset($tokens[$index]) && \is_array($tokens[$index])
+            && \in_array($tokens[$index][0], array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT), true)) {
+            $index++;
+        }
+        if ($delimiter === '{') {
+            return ($tokens[$index] ?? null) === '}' ? $index : null;
+        }
+        if (!isset($tokens[$index]) || !\is_array($tokens[$index]) || $tokens[$index][0] !== T_ENDDECLARE) {
+            return null;
+        }
+        $index++;
+        while (isset($tokens[$index]) && \is_array($tokens[$index])
+            && \in_array($tokens[$index][0], array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT), true)) {
+            $index++;
+        }
+
+        return ($tokens[$index] ?? null) === ';' ? $index : null;
     }
 
 }

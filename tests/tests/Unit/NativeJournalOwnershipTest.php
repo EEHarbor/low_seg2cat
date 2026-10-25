@@ -5,6 +5,77 @@ namespace Tests;
 class NativeJournalOwnershipTest extends TestCase
 {
     /**
+     * Retain a caught first-statement diagnostic through the worker's native exec.
+     *
+     * @return void
+     */
+    public function testWorkerPreludeCannotLoseCaughtDiagnostics(): void
+    {
+        $directory = sys_get_temp_dir() . '/owned-worker-prelude-' . bin2hex(random_bytes(8));
+        mkdir($directory . '/tests/scripts', 0700, true);
+        mkdir($directory . '/tests/Support', 0700);
+        try {
+            copy(LOW_SEG2CAT_ROOT . '/tests/Support/diagnostics.php', $directory . '/tests/Support/diagnostics.php');
+            $source = file_get_contents(LOW_SEG2CAT_ROOT . '/tests/scripts/process-worker.php');
+            $source = substr_replace($source, '
+try { @trigger_error("owned worker startup diagnostic", E_USER_DEPRECATED); } catch (\ErrorException $error) {}
+', 5, 0);
+            file_put_contents($directory . '/tests/scripts/process-worker.php', $source);
+            $command = array(PHP_BINARY, $directory . '/tests/scripts/process-worker.php', $directory . '/group.pid', PHP_BINARY,
+                '-d', 'error_reporting=-1', '-d', 'display_errors=stderr', '-d', 'display_startup_errors=1',
+                '-d', 'auto_prepend_file=' . LOW_SEG2CAT_ROOT . '/tests/Support/diagnostics.php', '-r', 'echo "healthy";');
+            $result = \Tests\Support\Process::execute($command, getenv(), 4.0, array('work' => $directory));
+            self::assertSame(0, $result['status']);
+            self::assertSame('healthy', $result['stdout']);
+            self::assertStringContainsString('owned worker startup diagnostic', $result['stderr']);
+        } finally {
+            $entries = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST);
+            foreach ($entries as $entry) {
+                if ($entry->isDir()) {
+                    rmdir($entry->getPathname());
+                    continue;
+                }
+                unlink($entry->getPathname());
+            }
+            rmdir($directory);
+        }
+    }
+
+    /**
+     * Reap the checked wrapper's PHP descendant before joining its deadline.
+     *
+     * @return void
+     */
+    public function testDeadlineReapsCheckedWrapperDescendants(): void
+    {
+        $root = dirname(__DIR__, 3);
+        $directory = sys_get_temp_dir() . '/owned-wrapper-deadline-' . bin2hex(random_bytes(8));
+        mkdir($directory, 0700);
+        try {
+            $body = 'file_put_contents(' . var_export($directory . '/marker', true) . ', "started"); '
+                . 'file_put_contents(' . var_export($directory . '/pid', true) . ', (string) getmypid()); usleep(1200000); '
+                . 'file_put_contents(' . var_export($directory . '/marker', true) . ', "completed"); $this->assertTrue(true);';
+            file_put_contents($directory . '/OwnedWrapperSleepTest.php', '<?php final class OwnedWrapperSleepTest extends \PHPUnit\Framework\TestCase { public function testSleeps(): void { ' . $body . ' } }');
+            $command = array($root . '/tests/.phpunit/run-phpunit.sh', '--no-configuration',
+                '--bootstrap', $root . '/tests/bootstrap.php', '--do-not-cache-result', '--log-junit', $directory . '/late.xml',
+                $directory . '/OwnedWrapperSleepTest.php');
+            $result = \Tests\Support\Process::execute($command, array_merge(getenv(), array('PHP_BINARY' => PHP_BINARY)), 0.6, array('work' => $directory));
+            self::assertSame(124, $result['status']);
+            self::assertTrue($result['timed_out']);
+            self::assertSame('started', file_get_contents($directory . '/marker'));
+            usleep(1300000);
+            self::assertSame('started', file_get_contents($directory . '/marker'));
+            self::assertSame('', is_file($directory . '/late.xml') ? file_get_contents($directory . '/late.xml') : '');
+            self::assertFalse(posix_kill((int) file_get_contents($directory . '/pid'), 0));
+        } finally {
+            foreach (new \FilesystemIterator($directory, \FilesystemIterator::SKIP_DOTS) as $file) {
+                unlink($file->getPathname());
+            }
+            rmdir($directory);
+        }
+    }
+
+    /**
      * Retain healthy guarded primary preludes through every native directive spelling.
      *
      * @return void
@@ -58,10 +129,12 @@ class NativeJournalOwnershipTest extends TestCase
                 self::assertStringContainsString('LOW_SEG2CAT_DIAGNOSTIC', $result['stderr']);
             }
             $strict = 'declare(strict_types=1); echo "strict code";';
-            foreach (array('-r', '--run') as $option) {
-                $result = \Tests\Support\Process::execute(array(PHP_BINARY, $option, $strict), getenv(), 5.0);
-                self::assertSame(0, $result['status'], $result['stderr']);
-                self::assertSame('strict code', $result['stdout']);
+            foreach (array($strict, 'declare(ticks=1){} namespace OwnedInline; echo "strict code";', 'declare(ticks=1):enddeclare; namespace OwnedInline; echo "strict code";') as $inlineCode) {
+                foreach (array('-r', '--run') as $option) {
+                    $result = \Tests\Support\Process::execute(array(PHP_BINARY, $option, $inlineCode), getenv(), 5.0);
+                    self::assertSame(0, $result['status'], $result['stderr']);
+                    self::assertSame('strict code', $result['stdout']);
+                }
             }
             file_put_contents($directory . '/arguments.php', '<?php echo json_encode(array_slice($argv, 1));');
             $command = array(PHP_BINARY, $directory . '/arguments.php', '-r', 'literal value');
@@ -72,6 +145,49 @@ class NativeJournalOwnershipTest extends TestCase
             foreach (new \FilesystemIterator($directory, \FilesystemIterator::SKIP_DOTS) as $file) {
                 unlink($file->getPathname());
             }
+            rmdir($directory);
+        }
+    }
+
+    /**
+     * Preserve application stdout independently of the native diagnostic log.
+     *
+     * @return void
+     */
+    public function testWarningShapedLiteralOutputRemainsHealthy(): void
+    {
+        $text = "Warning: owned literal in /owned/literal.php on line 7\n<br /><b>Warning</b>: owned literal in <b>/owned/literal.php</b> on line <b>7</b><br />";
+        $result = \Tests\Support\Process::probe('echo ' . var_export($text, true) . ';', array('harness_only' => true));
+        self::assertSame(0, $result['status']);
+        self::assertSame($text, $result['stdout']);
+        self::assertSame('', $result['stderr']);
+        self::assertSame('', $result['native_errors']);
+    }
+
+    /**
+     * Accept owned probes beneath the native temporary root's physical alias.
+     *
+     * @return void
+     */
+    public function testProbeAcceptsTemporaryDirectoryAlias(): void
+    {
+        $directory = sys_get_temp_dir() . '/owned-temp-alias-' . bin2hex(random_bytes(8));
+        mkdir($directory, 0700);
+        mkdir($directory . '/target', 0700);
+        symlink($directory . '/target', $directory . '/alias');
+        try {
+            $code = 'require ' . var_export(LOW_SEG2CAT_ROOT . '/tests/Support/native.php', true)
+                . '; require ' . var_export(LOW_SEG2CAT_ROOT . '/tests/Support/Process.php', true)
+                . '; $result = \Tests\Support\Process::probe("echo \"kept\";", array("harness_only" => true)); '
+                . 'echo json_encode(array($result["status"], $result["stdout"], $result["stderr"]));';
+            $environment = array_merge(getenv(), array('TMPDIR' => $directory . '/alias'));
+            $result = \Tests\Support\Process::execute(array(PHP_BINARY, '-r', $code), $environment, 5.0);
+            self::assertSame(0, $result['status'], $result['stderr']);
+            self::assertSame(array(0, 'kept', ''), json_decode($result['stdout'], true));
+            self::assertSame('', $result['native_errors']);
+        } finally {
+            unlink($directory . '/alias');
+            rmdir($directory . '/target');
             rmdir($directory);
         }
     }
@@ -99,7 +215,9 @@ class NativeJournalOwnershipTest extends TestCase
     {
         return array('ordinary' => array(false, false, 'diagnostic'), 'deadline' => array(true, false, 'diagnostic'),
             'long-inline' => array(false, true, 'diagnostic'), 'nonzero' => array(false, false, 'nonzero'),
-            'stderr' => array(false, false, 'stderr'), 'timeout before diagnostic' => array(true, false, 'timeout'), 'untrusted prepend' => array(false, false, 'prepend'));
+            'stderr' => array(false, false, 'stderr'), 'timeout before diagnostic' => array(true, false, 'timeout'), 'untrusted prepend' => array(false, false, 'prepend'),
+            'native stdout plain' => array(false, false, 'native-plain'), 'native stdout HTML' => array(false, false, 'native-html'),
+            'late native stdout' => array(false, false, 'native-late'));
     }
 
     /**
@@ -125,6 +243,13 @@ class NativeJournalOwnershipTest extends TestCase
         }
         if ($fault === 'timeout') {
             $code = 'usleep(2000000);';
+        }
+        if (strpos($fault, 'native-') === 0) {
+            $warning = 'set_error_handler(static function () { return false; }); $display = ini_set("display_errors", "1"); '
+                . '$html = ini_set("html_errors", ' . ($fault === 'native-html' ? '"1"' : '"0"') . '); '
+                . 'trigger_error("owned native stdout diagnostic", E_USER_WARNING); restore_error_handler(); '
+                . 'ini_set("display_errors", $display); ini_set("html_errors", $html);';
+            $code = $fault === 'native-late' ? 'register_shutdown_function(static function () { ' . $warning . ' exit(0); });' : $warning;
         }
         if ($inline) {
             $code = 'require ' . var_export($root . '/low_seg2cat/autoload.php', true) . '; ' . $code;

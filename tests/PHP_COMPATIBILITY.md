@@ -74,3 +74,19 @@ Owned inline commands guard short/long run, begin, per-line and end-code spellin
 evaluating the original source. Healthy first-statement strict declarations and literal file
 arguments remain valid. Ignored long-inline native results are rejected by the actual
 checked parent through its invocation-owned diagnostic journal.
+
+
+## Parent-owned native PHP log correction
+
+The current tooling checkpoint keeps a distinct native PHP error log for every owned child. Complete stdout/stderr, the sticky prethrow journal and the native log are retained and hashed before the outcome joins its checked parent. An ignored exit-zero child with a real plain/HTML native warning on stdout now rejects the parent; exact warning-shaped application text remains healthy output. No stdout diagnostic pattern or product-warning allowance is introduced. Late native warnings remain visible after PHP shutdown through a small Python checked parent. The existing pinned-tool and fresh executed-JUnit checks remain in place.
+
+Strict logging/startup options follow caller PHP options before the selected script. Exact finite tooling controls include native-log bytes and the Python runner's input hash; raw timestamped logs remain retained. Fixture copies include the new runtime dependency, with the healthy pre-fault invocation verified before fault injection. The complete refreshed matrix, original-case retention and updated independent review are bound in the external checkpoint packet. Production sources and distributed archive bytes are unchanged in this tooling-only correction. Prior matrices/reviews remain historical. B1 handler stack/mask and B2 opaque legacy-wire limitations still block publication.
+
+Native temporary-root validation now recognizes its actual canonical filesystem alias while retaining declared original argument/environment bytes. An owned symlink-alias positive probe covers the macOS raw-versus-physical path boundary; finite input and output equality remain required.
+
+
+The checked-wrapper deadline correction now runs native commands in a confirmed owned process group. Termination reaps the wrapper and stops its PHP descendants before terminal stream/log hashes are joined. Actual delayed marker, child-PID and incomplete-JUnit checks cover the public checked wrapper; an early-created empty report is retained as incomplete, never accepted as executed tests. Worker startup loads the canonical diagnostic guard before source execution, and caught first-statement diagnostics remain durable across exec. Previous wrapper-only timeout attempts are preserved as failures.
+
+The same narrowly grounded declaration-header correction preserves native-valid empty braced/alternate declare bodies before a namespace on PHP7.4; actual direct/current before-and-after cases remain bound in the packet. No other CLI grammar expansion is included.
+
+Owned work bindings normalize both raw macOS temporary aliases and their verified physical paths inside the same temporary root. Input capture and symlink restrictions remain unchanged. Deadline cleanup kills the confirmed process group before the shell can produce a later termination report or a descendant can finish its JUnit output.
