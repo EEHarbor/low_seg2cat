@@ -1,3 +1,11 @@
+# Practical suite cleanup — 2026-10-27
+
+The current configured suite and results are described in `README.md`: 33 tests/117 assertions on PHP 7.4 and 8.0–8.5. Shared Foundation/PHAR tests, artificial harness cases and orphaned measurement support were removed. Original add-on source and PHAR bytes were unchanged. All seven runs retain four realistic source errors and one source failure; no source repair was attempted.
+
+Earlier entries below are historical coverage-campaign evidence and may refer to removed tests/scripts.
+
+---
+
 # Low Seg2Cat PHPUnit campaign
 
 Status: **incomplete, source and coverage blockers retained**. Tests only; no production fixes.

@@ -37,7 +37,7 @@ class ProceduralTest extends TestCase
     }
 
     /**
-     * Render both license templates with legacy and modern EE alert handling.
+     * Render the add-on license template with legacy and modern EE alert handling.
      *
      * @dataProvider licenseViews
      * @param string $file
@@ -64,15 +64,14 @@ class ProceduralTest extends TestCase
     }
 
     /**
-     * Supply each independently shipped license template and both display branches.
+     * Supply the add-on license template and both display branches.
      *
      * @return array
      */
     public static function licenseViews()
     {
         $root = dirname(__DIR__, 3);
-        $files = array($root . '/low_seg2cat/views/license.php',
-            'phar://' . $root . '/low_seg2cat/low_seg2cat.phar/Views/license.php');
+        $files = array($root . '/low_seg2cat/views/license.php');
         $cases = array();
         foreach ($files as $file) {
             $cases[] = array($file, 7, 'valid-key', 'valid-key');
@@ -81,16 +80,4 @@ class ProceduralTest extends TestCase
         return $cases;
     }
 
-    /**
-     * Ignore an unrelated namespace and fail clearly when an archived class is absent.
-     *
-     * @return void
-     */
-    public function testAutoloaderRejectsForeignAndMissingClasses()
-    {
-        $this->assertFalse(class_exists('Foreign\\MissingClass'));
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Class at location phar://');
-        class_exists('Low\\Seg2Cat\\FluxCapacitor\\MissingClass');
-    }
 }

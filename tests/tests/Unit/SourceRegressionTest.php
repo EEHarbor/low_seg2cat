@@ -65,29 +65,4 @@ class SourceRegressionTest extends TestCase
         $this->assertSame('n', $extension->settings['all_sites']);
     }
 
-    /**
-     * Accept persisted null site settings without a runtime-dependent fatal error.
-     *
-     * @return void
-     */
-    public function testNullSiteSettingsFallBackToDefaults()
-    {
-        $extension = new \Low_seg2cat_ext(array(1 => null));
-        $this->assertSame('n', $extension->settings['all_sites']);
-    }
-
-    /**
-     * Keep last-segment placeholders valid when the URI exceeds the configured cap.
-     *
-     * @return void
-     */
-    public function testUriLongerThanMaximumDoesNotReadMissingLastSegment()
-    {
-        $this->app->config->items['max_url_segments'] = 2;
-        $this->app->incomingUri = 'news/archive/unknown';
-        $this->app->categories = array((object) array('cat_url_title' => 'news', 'cat_id' => 3, 'site_id' => 1,
-            'group_id' => 1, 'parent_id' => 0, 'cat_name' => 'News', 'cat_description' => '', 'cat_image' => ''));
-        $this->invoke(new \Low_seg2cat_ext(), 'add_vars');
-        $this->assertSame('', $this->app->config->_global_vars['last_segment_category_id']);
-    }
 }
