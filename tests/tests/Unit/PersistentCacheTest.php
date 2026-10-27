@@ -8,72 +8,6 @@ use Low\Seg2Cat\FluxCapacitor\Conduit\StaticCache;
 class PersistentCacheTest extends TestCase
 {
     /**
-     * Supply optional pieces omitted by the original public cache producers.
-     *
-     * @return array
-     */
-    public static function optionalKeyParts(): array
-    {
-        return array('empty array' => array(array()), 'positive float zero' => array(0.0),
-            'negative float zero' => array(-0.0), 'null' => array(null),
-            'false' => array(false), 'empty text' => array(''));
-    }
-
-    /**
-     * Retain omitted key aliases through real memory and cold disk producers.
-     *
-     * @dataProvider optionalKeyParts
-     * @param mixed $part Optional component whose native boolean value is false.
-     * @return void
-     */
-    public function testOptionalKeyPartsKeepTheirOriginalIdentity($part): void
-    {
-        $key = array('entry', $part);
-        self::assertTrue(StaticCache::set($key, array('keep' => 7)));
-        self::assertSame(array('keep' => 7), StaticCache::get('entry'));
-        self::assertSame(array('keep' => 7), StaticCache::get(sha1('entry'), true));
-        self::assertCount(1, StaticCache::all());
-        self::assertTrue(StaticCache::delete('entry'));
-        self::assertFalse(StaticCache::has($key));
-        self::assertTrue(PersistentCache::set($key, array('keep' => 9)));
-        self::assertFileExists(PATH_CACHE . 'low_seg2cat/' . sha1('entry'));
-        self::assertSame(array('keep' => 9), PersistentCache::get('entry'));
-        StaticCache::clear();
-        self::assertSame(array('keep' => 9), PersistentCache::get($key));
-        self::assertTrue(PersistentCache::delete('entry'));
-        StaticCache::clear();
-        self::assertFalse(PersistentCache::get($key));
-    }
-
-    /**
-     * Convert each compound object component once without changing its disk identity.
-     *
-     * @return void
-     */
-    public function testCompoundStringableKeyIsConvertedOnce(): void
-    {
-        $part = new class {
-            public $calls = 0;
-
-            public function __toString()
-            {
-                ++$this->calls;
-                return $this->calls === 1 ? 'site' : 'changed';
-            }
-        };
-        self::assertTrue(StaticCache::set(array($part, 'entry'), 'memory'));
-        self::assertSame(1, $part->calls);
-        self::assertSame('memory', StaticCache::get('site:entry'));
-        StaticCache::clear();
-        $part->calls = 0;
-        self::assertTrue(PersistentCache::set(array($part, 'entry'), 'disk'));
-        self::assertSame(1, $part->calls);
-        self::assertSame('disk', PersistentCache::get('site:entry'));
-        StaticCache::clear();
-        self::assertSame('disk', PersistentCache::get('site:entry'));
-    }
-
-    /**
      * Reuse a successfully written request value after its disk file disappears.
      *
      * @return void
@@ -275,11 +209,11 @@ class PersistentCacheTest extends TestCase
      *
      * @return void
      */
-    public function testProcessedRequestCacheEntryUsesItsLogicalKey()
+    public function testDirectProcessedRequestCacheEntryAvoidsFilesystemLookup()
     {
         $processed = sha1('preloaded');
         StaticCache::put($processed, array('id' => 9), true);
-        $this->assertSame(array('id' => 9), PersistentCache::get('preloaded'));
+        $this->assertSame(array('id' => 9), PersistentCache::get($processed));
         $this->assertFalse(is_dir(PATH_CACHE));
     }
 

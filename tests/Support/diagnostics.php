@@ -153,7 +153,7 @@ final class LowSeg2CatDiagnostics
 
 require_once __DIR__ . '/NativeInvocation.php';
 
-LowSeg2CatDiagnostics::initialize();
+LowSeg2CatDiagnostics::initialize(); LowSeg2CatNativeInvocation::bindCaseOutput();
 error_reporting(-1);
 set_error_handler(array(LowSeg2CatDiagnostics::class, 'handle'), E_ALL);
 register_shutdown_function(array(LowSeg2CatDiagnostics::class, 'finish'));

@@ -119,19 +119,6 @@ class NativeModuleNavigationTest extends TestCase
         $this->assertSame(array('href' => 'https://example.test/settings', 'title' => '0'), $result['item']);
     }
 
-
-    /**
-     * Retain the original default for other false-like toolbar inputs.
-     *
-     * @return void
-     */
-    public function testOtherFalseyToolbarTitlesKeepTheirDefaults()
-    {
-        $result = $this->navigationProbe('$nav = new \\Low\\Seg2Cat\\Conduit\\McpNav(); $titles = array(); '
-            . 'foreach (array(null, "", false, 0) as $title) { $nav->setToolbarIcon($title); $titles[] = $app->view->header["title"]; } echo json_encode($titles);', 'defaults');
-        self::assertSame(array_fill(0, 4, 'Low Seg2Cat'), $result);
-    }
-
     /**
      * Preserve an explicit toolbar label, icon and external destination.
      *

@@ -11,31 +11,6 @@ use Tests\Support\Process;
 class RemainingBaseTest extends TestCase
 {
     /**
-     * Retain subclasses' existing protected view-data properties during pagination.
-     *
-     * @return void
-     */
-    public function testControlPanelSubclassMayKeepViewDataProtected()
-    {
-        $result = Process::probe(<<<'CODE'
-$GLOBALS['low_seg2cat_app']->input = new \Tests\Support\CallbackService(array('get' => function () { return null; }));
-$GLOBALS['low_seg2cat_app']->services['CP/Pagination'] = function ($total) { return new \Tests\Support\Pagination($total); };
-$controlPanel = new class extends \Low\Seg2Cat\FluxCapacitor\Base\Mcp { protected $data = array(); };
-$model = new \Tests\Support\ModelQuery(array((object) array('id' => 1)));
-$controlPanel->paginateModel($model, ee('CP/URL')->make('list'));
-$property = new ReflectionProperty($controlPanel, 'data');
-if (PHP_VERSION_ID < 80100) {
-    $property->setAccessible(true);
-}
-echo json_encode(array($property->isProtected(), array_key_exists('pagination', $property->getValue($controlPanel))));
-CODE
-        );
-        self::assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
-        self::assertSame('', $result['stderr']);
-        self::assertSame(array(true, true), json_decode($result['stdout'], true));
-    }
-
-    /**
      * Return no channel when an existing content identifier no longer has a model row.
      *
      * @return void

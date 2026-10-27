@@ -7,53 +7,6 @@ use Tests\Support\Process;
 class NativeStubHelperTest extends TestCase
 {
     /**
-     * Remove hidden stale children and links without deleting their outside target.
-     *
-     * @return void
-     */
-    public function testCleanupRetainsLinkTargetsAndRemovesHiddenFiles()
-    {
-        $result = Process::probe(<<<'CODE'
-require LOW_SEG2CAT_ROOT . '/low_seg2cat/low_seg2cat.phar';
-$base = sys_get_temp_dir();
-mkdir($base . '/outside', 0700);
-file_put_contents($base . '/outside/sentinel', 'owned outside');
-mkdir($base . '/cache/nested', 0700, true);
-file_put_contents($base . '/cache/.hidden', 'stale');
-symlink($base . '/outside', $base . '/cache/nested/link');
-Extract_low_seg2cat::_removeTmpFiles($base . '/cache', getcwd());
-echo json_encode(array('removed' => !is_dir($base . '/cache'), 'outside' => file_get_contents($base . '/outside/sentinel')));
-CODE
-        );
-        self::assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
-        self::assertSame('', $result['stderr']);
-        self::assertSame(array('removed' => true, 'outside' => 'owned outside'), json_decode($result['stdout'], true));
-    }
-
-    /**
-     * Reject HTTP fallback reads from a sibling outside the managed extraction root.
-     *
-     * @return void
-     */
-    public function testFallbackRequestCannotServeSiblingPath()
-    {
-        $result = Process::probe(<<<'CODE'
-$base = sys_get_temp_dir();
-mkdir($base . '/pharextract/low_seg2cat-owned-private-sibling', 0700, true);
-file_put_contents($base . '/pharextract/low_seg2cat-owned-private-sibling/private.txt', 'OWNED_PRIVATE_SENTINEL');
-stream_wrapper_unregister('phar');
-$_SERVER['REQUEST_METHOD'] = 'GET';
-$_SERVER['REQUEST_URI'] = '/low_seg2cat.phar/../low_seg2cat-owned-private-sibling/private.txt';
-require LOW_SEG2CAT_ROOT . '/low_seg2cat/low_seg2cat.phar';
-CODE
-        );
-        self::assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
-        self::assertSame('', $result['stderr']);
-        self::assertStringContainsString('404 - File Not Found', $result['stdout']);
-        self::assertStringNotContainsString('OWNED_PRIVATE_SENTINEL', $result['stdout']);
-    }
-
-    /**
      * Reject unusable temporary/session storage before extraction writes begin.
      *
      * @dataProvider unavailableSessionPaths

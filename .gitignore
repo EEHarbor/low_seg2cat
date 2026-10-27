@@ -2,3 +2,5 @@
 /tests/.phpunit/.download.*
 /tests/reports/
 /.phpunit.result.cache
+
+/tests/.phpunit/phpunit-9-output.phar.json

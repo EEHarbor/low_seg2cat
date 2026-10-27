@@ -61,7 +61,7 @@ final class LowSeg2CatNativeInvocation
         $environment['LOW_SEG2CAT_DIAGNOSTIC_JOURNAL'] = $directory . '/diagnostics.jsonl';
         $environment['LOW_SEG2CAT_NATIVE_ERROR_LOG'] = $directory . '/native-errors.log';
         file_put_contents($environment['LOW_SEG2CAT_NATIVE_ERROR_LOG'], '');
-        $environment['LOW_SEG2CAT_NATIVE_RECEIPTS'] = self::$root;
+        $environment['LOW_SEG2CAT_NATIVE_RECEIPTS'] = self::$root; self::caseEnvironment($environment);
         $environment['LOW_SEG2CAT_NATIVE_PARENT'] = substr($directory, strlen(self::$root) + 1);
         file_put_contents($environment['LOW_SEG2CAT_DIAGNOSTIC_JOURNAL'], '');
         $temporaryAlias = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR);
@@ -83,7 +83,7 @@ final class LowSeg2CatNativeInvocation
             }
         }
         uksort($paths, static function ($left, $right) { return strlen($right) <=> strlen($left); });
-        $normalize = static function ($value) use ($paths) {
+        self::caseToolPaths($paths); $normalize = static function ($value) use ($paths) {
             foreach ($paths as $path => $role) {
                 $value = str_replace(array($path, substr(json_encode($path), 1, -1)), $role, $value);
             }
@@ -152,9 +152,9 @@ final class LowSeg2CatNativeInvocation
      * @param array $command Complete guarded argument bytes.
      * @return void
      */
-    public static function guardedCommand($directory, array $command): void
+    public static function guardedCommand($directory, array &$command): void
     {
-        $plan = json_decode(file_get_contents($directory . '/planned.json'), true);
+        self::guardCaseTool($command); $plan = json_decode(file_get_contents($directory . '/planned.json'), true);
         $plan['guarded_command'] = $command;
         self::write($directory . '/planned.json', $plan);
     }
@@ -182,12 +182,12 @@ final class LowSeg2CatNativeInvocation
     public static function complete($directory, array $result): void
     {
         $plan = json_decode(file_get_contents($directory . '/planned.json'), true);
-        $journal = file_get_contents($directory . '/diagnostics.jsonl');
+        $journal = self::nativeOutputJournal($directory, $result, $plan, $frames);
         $semanticCompletion = !isset($plan['bindings']['completion'])
             || (is_file($plan['bindings']['completion']) && file_get_contents($plan['bindings']['completion']) === 'complete');
         $completion = array('exit' => $result['status'], 'timed_out' => $result['timed_out'], 'semantic_completion' => $semanticCompletion,
             'stdout_sha256' => hash('sha256', $result['stdout']), 'stderr_sha256' => hash('sha256', $result['stderr']),
-            'diagnostics_sha256' => hash('sha256', $journal), 'native_errors_sha256' => hash('sha256', $result['native_errors']));
+            'diagnostics_sha256' => hash('sha256', $journal), 'native_errors_sha256' => hash('sha256', $result['native_errors']), 'native_stdout_frames' => $frames);
         self::write($directory . '/completed.json', $completion);
         $profile = self::profile($plan, $completion, $result['stdout'], $result['stderr'], $journal, $result['native_errors'], $directory);
         self::write($directory . '/profile.json', $profile);
@@ -294,7 +294,7 @@ final class LowSeg2CatNativeInvocation
             }
         }
         uksort($paths, static function ($left, $right) { return strlen($right) <=> strlen($left); });
-        $normalize = static function ($value) use ($paths) {
+        self::caseToolPaths($paths); $normalize = static function ($value) use ($paths) {
             foreach ($paths as $path => $role) {
                 $value = str_replace(array($path, substr(json_encode($path), 1, -1)), $role, $value);
             }
@@ -518,4 +518,263 @@ final class LowSeg2CatNativeInvocation
         return $profile;
     }
 
+    /**
+     * Fill only a missing diagnostic channel while retaining every detected frame.
+     *
+     * @param string $directory Owned child receipt directory.
+     * @param array $result Complete unchanged terminal streams and status.
+     * @param array $plan Original checked inputs.
+     * @param array|null $frames Detected source-bound stdout frames.
+     * @return string Complete child diagnostic journal.
+     */
+    private static function nativeOutputJournal($directory, array $result, array $plan, &$frames): string
+    {
+        $frames = self::nativeOutputFrames($result['stdout'], $plan);
+        $journal = file_get_contents($directory . '/diagnostics.jsonl');
+        if ($journal === '' && $result['stderr'] === '' && $result['native_errors'] === '' && $result['status'] === 0) {
+            foreach ($frames as $frame) {
+                $event = array(E_WARNING, 'Native stdout diagnostic: ' . $frame['severity'] . ': ' . $frame['message'], $frame['file'], $frame['line']);
+                $journal .= json_encode($event, JSON_UNESCAPED_SLASHES) . "\n";
+            }
+            if ($journal !== '') {
+                file_put_contents($directory . '/diagnostics.jsonl', $journal, FILE_APPEND | LOCK_EX);
+            }
+        }
+
+        return $journal;
+    }
+
+    /**
+     * Recognize complete native PHP stdout frames from retained owned source.
+     *
+     * @param string $output Complete unchanged child stdout.
+     * @param array $plan Original checked command, case and owned bindings.
+     * @return array Verified native diagnostic frames and source identities.
+     */
+    private static function nativeOutputFrames($output, array $plan): array
+    {
+        $kinds = '(Warning|Notice|Deprecated|Fatal error|Parse error|Recoverable fatal error|Strict Standards)';
+        $labels = substr($kinds, 1, -1);
+        $plain = '((?:(?!\r?\n(?:PHP )?(?:' . $labels . '): )[\s\S])*?)';
+        $html = '((?:(?!<b>(?:' . $labels . ')</b>:)[\s\S])*?)';
+        $patterns = array('~^(?:PHP )?' . $kinds . ': ' . $plain . ' in ([^\r\n]+) on line ([1-9][0-9]*)\r?$~m',
+            '~<b>' . $kinds . '</b>:\s*' . $html . ' in <b>([^<\r\n]+)</b> on line <b>([1-9][0-9]*)</b><br\s*/?>~');
+        $frames = array();
+        foreach ($patterns as $pattern) {
+            preg_match_all($pattern, $output, $matches, PREG_SET_ORDER);
+            foreach ($matches as $match) {
+                $file = html_entity_decode($match[3], ENT_QUOTES, 'UTF-8');
+                $line = (int) $match[4];
+                $inline = false;
+                foreach ($plan['guarded_command'] as $argument) {
+                    $inline = $inline || in_array($argument, array('-r', '--run'), true)
+                        || (strpos($argument, '-r') === 0 && strlen($argument) > 2) || strpos($argument, '--run=') === 0;
+                }
+                $verified = $file === 'Command line code' && $inline;
+                $digest = null;
+                if (!$verified && is_file($file)) {
+                    $owned = strpos($file, dirname(__DIR__, 2) . DIRECTORY_SEPARATOR) === 0
+                        || (isset($plan['case']['file']) && $file === $plan['case']['file'])
+                        || in_array($file, $plan['guarded_command'], true);
+                    foreach ($plan['bindings'] as $path) {
+                        $owned = $owned || $file === $path || strpos($file, rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR) === 0;
+                    }
+                    if ($owned) {
+                        $source = file_get_contents($file);
+                        $verified = $line <= count(explode("\n", $source));
+                        $digest = hash('sha256', $source);
+                    }
+                }
+                if ($verified) {
+                    $frames[] = array('severity' => $match[1], 'message' => html_entity_decode($match[2], ENT_QUOTES, 'UTF-8'),
+                        'file' => $file, 'line' => $line, 'source_sha256' => $digest, 'raw_base64' => base64_encode($match[0]));
+                }
+            }
+        }
+
+        return $frames;
+    }
+
+
+    private static object $caseOutput;
+
+    /**
+     * Bind the checked parent's append-only original-case output channel before tests run.
+     *
+     * @return void
+     * @throws RuntimeException When the declared channel or derived tool is invalid.
+     */
+    public static function bindCaseOutput(): void
+    {
+        if (isset(self::$caseOutput)) {
+            return;
+        }
+        $path = getenv('LOW_SEG2CAT_CASE_OUTPUT');
+        if (!$path) {
+            return;
+        }
+        $tool = dirname(__DIR__) . '/.phpunit/phpunit-9-output.phar';
+        $record = json_decode(file_get_contents($tool . '.json'), true, 512, JSON_THROW_ON_ERROR);
+        if (is_link($path) || !is_file($path) || is_link($tool)
+            || $record['artifact_sha256'] !== hash_file('sha256', $tool)
+            || $record['recipe_sha256'] !== hash_file('sha256', dirname(__DIR__) . '/.phpunit/prepare-output.php')) {
+            throw new RuntimeException('Checked original-output ownership is invalid.');
+        }
+        $state = (object) array('path' => $path, 'nonce' => getenv('LOW_SEG2CAT_CASE_NONCE'),
+            'tool' => $tool, 'artifact' => $record['artifact_sha256'], 'handle' => fopen($path, 'ab'));
+        if (!is_resource($state->handle) || !$state->nonce) {
+            throw new RuntimeException('Cannot bind the checked original-output channel.');
+        }
+        self::$caseOutput = $state;
+        self::appendCaseOutput(array('kind' => 'bind', 'pid' => getmypid(), 'artifact_sha256' => $state->artifact));
+    }
+
+    /**
+     * Retain the original buffer before assertions and after a successful output callback.
+     *
+     * @param object $owner Actual original TestCase instance, including direct subclasses.
+     * @param string $bytes Unmodified original output-buffer bytes.
+     * @param string $stage Original body or successful callback boundary.
+     * @return void
+     * @throws RuntimeException When no checked owner or complete retained channel exists.
+     */
+    public static function caseOutput($owner, string $bytes, string $stage): void
+    {
+        if (!isset(self::$caseOutput)) {
+            throw new RuntimeException('Derived PHPUnit has no original-output owner.');
+        }
+        $reflection = new ReflectionClass($owner);
+        $source = $reflection->getFileName();
+        $contents = file_get_contents($source);
+        $retained = dirname(self::$caseOutput->path) . '/case-inputs/' . hash('sha256', $contents);
+        if (!is_file($retained) && file_put_contents($retained, $contents, LOCK_EX) !== strlen($contents)) {
+            throw new RuntimeException('Cannot retain original-case source bytes.');
+        }
+        if (is_link($retained) || hash_file('sha256', $retained) !== hash('sha256', $contents)) {
+            throw new RuntimeException('Original-case source bytes changed.');
+        }
+        self::appendCaseOutput(array('kind' => 'case', 'pid' => getmypid(),
+            'class' => get_class($owner), 'name' => $owner->getName(), 'file' => $source, 'stage' => $stage,
+            'source_sha256' => hash('sha256', $contents),
+            'bytes' => strlen($bytes), 'sha256' => hash('sha256', $bytes), 'body_base64' => base64_encode($bytes)));
+    }
+
+    /**
+     * Append one complete immutable-owner record independently of the current environment.
+     *
+     * @param array $record Native bind identity or complete original case output.
+     * @return void
+     * @throws RuntimeException When any byte cannot be retained.
+     */
+    private static function appendCaseOutput(array $record): void
+    {
+        $record['nonce'] = self::$caseOutput->nonce;
+        $bytes = json_encode($record, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n";
+        $handle = self::$caseOutput->handle;
+        if (!flock($handle, LOCK_EX)) {
+            throw new RuntimeException('Cannot lock the original-output channel.');
+        }
+        try {
+            $written = 0;
+            while ($written < strlen($bytes)) {
+                $count = fwrite($handle, substr($bytes, $written));
+                if ($count === false || $count === 0) {
+                    throw new RuntimeException('Cannot retain complete original-output bytes.');
+                }
+                $written += $count;
+            }
+            if (!fflush($handle)) {
+                throw new RuntimeException('Cannot flush original-output bytes.');
+            }
+        } finally {
+            flock($handle, LOCK_UN);
+        }
+    }
+
+    /**
+     * Pass the immutable checked output owner into each existing native environment.
+     *
+     * @param array $environment Original selected child environment.
+     * @return void
+     */
+    private static function caseEnvironment(array &$environment): void
+    {
+        if (isset(self::$caseOutput)) {
+            $environment['LOW_SEG2CAT_CASE_OUTPUT'] = self::$caseOutput->path;
+            $environment['LOW_SEG2CAT_CASE_NONCE'] = self::$caseOutput->nonce;
+        }
+    }
+
+    /**
+     * Select only the verified pinned PHPUnit tool after original argv were retained.
+     *
+     * @param array $command Guarded executable arguments before native launch.
+     * @return void
+     * @throws RuntimeException When the derived artifact changed.
+     */
+    private static function guardCaseTool(array &$command): void
+    {
+        if (($command[0] ?? null) !== PHP_BINARY || !isset(self::$caseOutput)) {
+            return;
+        }
+        if (hash_file('sha256', self::$caseOutput->tool) !== self::$caseOutput->artifact) {
+            throw new RuntimeException('Derived PHPUnit changed before native launch.');
+        }
+        $values = array('-d', '--define', '-c', '--php-ini', '-z', '--zend-extension',
+            '-t', '--docroot', '-S', '--server', '--rf', '--rc', '--re', '--rz', '--ri');
+        $selected = null;
+        $prefix = '';
+        for ($index = 1; isset($command[$index]); $index++) {
+            $argument = $command[$index];
+            if (in_array($argument, array('-r', '--run', '-B', '--process-begin', '-R', '--process-code',
+                '-E', '--process-end', '-F', '--process-file'), true)) {
+                return;
+            }
+            foreach (array('-r', '--run=', '-B', '--process-begin=', '-R', '--process-code=', '-E', '--process-end=') as $inline) {
+                if (strpos($argument, $inline) === 0 && strlen($argument) > strlen($inline)) {
+                    return;
+                }
+            }
+            if ($argument === '--' || $argument === '-f' || $argument === '--file') {
+                $selected = $index + 1;
+                break;
+            }
+            if (strpos($argument, '--file=') === 0 || (strpos($argument, '-f') === 0 && strlen($argument) > 2)) {
+                $selected = $index;
+                $prefix = strpos($argument, '--file=') === 0 ? '--file=' : '-f';
+                break;
+            }
+            if (in_array($argument, $values, true)) {
+                $index++;
+                continue;
+            }
+            if ($argument !== '' && $argument[0] === '-') {
+                continue;
+            }
+            $selected = $index;
+            break;
+        }
+        if ($selected === null || !isset($command[$selected])) {
+            return;
+        }
+        $source = substr($command[$selected], strlen($prefix));
+        if (basename($source) === 'phpunit-9.phar' && is_file($source)
+            && hash_file('sha256', $source) === '6b5235f282c6ccab3674ac27c5b1ddbd1da838e74bf07002ddcfd030d31298d7') {
+            $command[$selected] = $prefix . self::$caseOutput->tool;
+        }
+    }
+
+    /**
+     * Keep the declared derived-tool path in the original finite tool role.
+     *
+     * @param array $paths Already owned path-to-role bindings.
+     * @return void
+     */
+    private static function caseToolPaths(array &$paths): void
+    {
+        if (isset(self::$caseOutput)) {
+            $paths[self::$caseOutput->tool] = dirname(__DIR__) . '/.phpunit/phpunit-9.phar';
+            uksort($paths, static function ($left, $right) { return strlen($right) <=> strlen($left); });
+        }
+    }
 }
