@@ -1,0 +1,19 @@
+{
+  "dependency_commit": "ad6358a2b67db30cd2286fa39711caa975aceee1",
+  "accessor_reference": {
+    "path": "/Users/tomjaeger/Sites/ee_repo_2/system/ee/ExpressionEngine/Boot/boot.php",
+    "sha256": "ffc0518ca34b0c8d9d58188b72333002c2afb7e1823e4022de9546186e52a005",
+    "contract": "get_instance() returns the current global legacy facade. The bounded collaborator returns the current owned object and counts calls."
+  },
+  "measured_source": {
+    "inventory_name": "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Bridge/EE.php",
+    "sha256": "0abbc4c81cc84506d84d8f4c6d5f1f6d56ef276803d36cfecf195e83aaec1006"
+  },
+  "application_version": "2.5.5",
+  "contexts": [
+    "missing ee with predefined version",
+    "existing ee with predefined version",
+    "missing ee with version requested through facade config"
+  ],
+  "limits": "The original AbstractBridge and EE2 definitions are loaded without constructing a bridge. The primary EE.php bytes are identical to the original archive. This is a bounded accessor/declaration bootstrap, not execution of a complete ExpressionEngine 2 request or proof of conditional constructor attribution. Function paths are omitted and their coverage remains null."
+}

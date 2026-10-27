@@ -1,0 +1,4 @@
+/tests/.phpunit/*.phar
+/tests/.phpunit/.download.*
+/tests/reports/
+/.phpunit.result.cache

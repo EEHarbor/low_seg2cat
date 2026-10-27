@@ -1,0 +1,130 @@
+{
+  "grading": false,
+  "intended_handling": "unknown",
+  "source_changed": false,
+  "current_strict_coverage_credit": false,
+  "scenario": "Direct top-level Base/Mcp::paginateModel call with omitted URL has no outer route function. The original fallback supplies an empty string to the typed CP Pagination renderer.",
+  "observation": "The bounded faithful renderer raises TypeError, as unmodified real EE Pagination also does for strings. This establishes the argument boundary, not a promise to support that caller or a graceful fallback requirement.",
+  "question": "Should a top-level null-URL call be supported, and what route should be used without an outer function?",
+  "source_code": "$app = ee();\n$app->input = new \\Tests\\Support\\CallbackService(array('get' => function () { return false; }));\n$app->services['CP/Pagination'] = function ($total) { return new \\Tests\\Support\\Pagination($total); };\n$controlPanel = new class extends \\Low\\Seg2Cat\\FluxCapacitor\\Base\\Mcp { public $data = array(); };\n$model = new \\Tests\\Support\\ModelQuery(array((object) array('id' => 1)));\n$returned = $controlPanel->paginateModel($model);\necho json_encode(array('same_model' => $returned === $model, 'count' => $model->all()->count(), 'pagination' => $controlPanel->data['pagination']));",
+  "source_code_sha256": "930e342f628ca3d7927d3a0eee37e5301c9c561c3a8c1ad958f7f5bed39622f7",
+  "controls": [
+    {
+      "runtime": "74",
+      "command": [
+        "/Users/tomjaeger/Library/Application Support/Herd/bin/php74",
+        "-d",
+        "auto_prepend_file=/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/diagnostics.php",
+        "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/top-level-pagination-observation.php"
+      ],
+      "observed": {
+        "status": 255,
+        "timed_out": false,
+        "stdout": "\nFatal error: Uncaught TypeError: Argument 1 passed to Tests\\Support\\Pagination::render() must be an instance of Tests\\Support\\Url, string given, called in phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE5.php on line 200 and defined in /Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/Environment.php:428\nStack trace:\n#0 phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE5.php(200): Tests\\Support\\Pagination->render('')\n#1 phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Base/Mcp.php(171): Low\\Seg2Cat\\FluxCapacitor\\Bridge\\EE5->pagination(Array)\n#2 /private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-probe-0eac88cbcbeb3954/probe.php(6): Low\\Seg2Cat\\FluxCapacitor\\Base\\Mcp->paginateModel(Object(Tests\\Support\\ModelQuery))\n#3 {main}\n  thrown in /Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/Environment.php on line 428\n",
+        "stderr": ""
+      }
+    },
+    {
+      "runtime": "80",
+      "command": [
+        "/Users/tomjaeger/Library/Application Support/Herd/bin/php80",
+        "-d",
+        "auto_prepend_file=/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/diagnostics.php",
+        "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/top-level-pagination-observation.php"
+      ],
+      "observed": {
+        "status": 255,
+        "timed_out": false,
+        "stdout": "\nFatal error: Uncaught TypeError: Tests\\Support\\Pagination::render(): Argument #1 ($url) must be of type Tests\\Support\\Url, string given, called in phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE5.php on line 200 and defined in /Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/Environment.php:428\nStack trace:\n#0 phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE5.php(200): Tests\\Support\\Pagination->render('')\n#1 phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Base/Mcp.php(171): Low\\Seg2Cat\\FluxCapacitor\\Bridge\\EE5->pagination(Array)\n#2 /private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-probe-82bc04444583f6e0/probe.php(6): Low\\Seg2Cat\\FluxCapacitor\\Base\\Mcp->paginateModel(Object(Tests\\Support\\ModelQuery))\n#3 {main}\n  thrown in /Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/Environment.php on line 428\n",
+        "stderr": ""
+      }
+    },
+    {
+      "runtime": "81",
+      "command": [
+        "/Users/tomjaeger/Library/Application Support/Herd/bin/php81",
+        "-d",
+        "auto_prepend_file=/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/diagnostics.php",
+        "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/top-level-pagination-observation.php"
+      ],
+      "observed": {
+        "status": 255,
+        "timed_out": false,
+        "stdout": "\nFatal error: Uncaught TypeError: Tests\\Support\\Pagination::render(): Argument #1 ($url) must be of type Tests\\Support\\Url, string given, called in phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE5.php on line 200 and defined in /Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/Environment.php:428\nStack trace:\n#0 phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE5.php(200): Tests\\Support\\Pagination->render('')\n#1 phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Base/Mcp.php(171): Low\\Seg2Cat\\FluxCapacitor\\Bridge\\EE5->pagination(Array)\n#2 /private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-probe-68b3e11fb0a5fe4b/probe.php(6): Low\\Seg2Cat\\FluxCapacitor\\Base\\Mcp->paginateModel(Object(Tests\\Support\\ModelQuery))\n#3 {main}\n  thrown in /Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/Environment.php on line 428\n",
+        "stderr": ""
+      }
+    },
+    {
+      "runtime": "82",
+      "command": [
+        "/Users/tomjaeger/Library/Application Support/Herd/bin/php82",
+        "-d",
+        "auto_prepend_file=/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/diagnostics.php",
+        "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/top-level-pagination-observation.php"
+      ],
+      "observed": {
+        "status": 255,
+        "timed_out": false,
+        "stdout": "\nFatal error: Uncaught TypeError: Tests\\Support\\Pagination::render(): Argument #1 ($url) must be of type Tests\\Support\\Url, string given, called in phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE5.php on line 200 and defined in /Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/Environment.php:428\nStack trace:\n#0 phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE5.php(200): Tests\\Support\\Pagination->render('')\n#1 phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Base/Mcp.php(165): Low\\Seg2Cat\\FluxCapacitor\\Bridge\\EE5->pagination(Array)\n#2 /private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-probe-3a2d8e8412eafa70/probe.php(6): Low\\Seg2Cat\\FluxCapacitor\\Base\\Mcp->paginateModel(Object(Tests\\Support\\ModelQuery))\n#3 {main}\n  thrown in /Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/Environment.php on line 428\n",
+        "stderr": ""
+      }
+    },
+    {
+      "runtime": "83",
+      "command": [
+        "/Users/tomjaeger/Library/Application Support/Herd/bin/php83",
+        "-d",
+        "auto_prepend_file=/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/diagnostics.php",
+        "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/top-level-pagination-observation.php"
+      ],
+      "observed": {
+        "status": 255,
+        "timed_out": false,
+        "stdout": "\nFatal error: Uncaught TypeError: Tests\\Support\\Pagination::render(): Argument #1 ($url) must be of type Tests\\Support\\Url, string given, called in phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE5.php on line 200 and defined in /Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/Environment.php:428\nStack trace:\n#0 phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE5.php(200): Tests\\Support\\Pagination->render('')\n#1 phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Base/Mcp.php(165): Low\\Seg2Cat\\FluxCapacitor\\Bridge\\EE5->pagination(Array)\n#2 /private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-probe-3c010c19a72a53fe/probe.php(6): Low\\Seg2Cat\\FluxCapacitor\\Base\\Mcp->paginateModel(Object(Tests\\Support\\ModelQuery))\n#3 {main}\n  thrown in /Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/Environment.php on line 428\n",
+        "stderr": ""
+      }
+    },
+    {
+      "runtime": "84",
+      "command": [
+        "/Users/tomjaeger/Library/Application Support/Herd/bin/php84",
+        "-d",
+        "auto_prepend_file=/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/diagnostics.php",
+        "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/top-level-pagination-observation.php"
+      ],
+      "observed": {
+        "status": 255,
+        "timed_out": false,
+        "stdout": "\nFatal error: Uncaught TypeError: Tests\\Support\\Pagination::render(): Argument #1 ($url) must be of type Tests\\Support\\Url, string given, called in phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE5.php on line 200 and defined in /Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/Environment.php:428\nStack trace:\n#0 phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE5.php(200): Tests\\Support\\Pagination->render('')\n#1 phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Base/Mcp.php(165): Low\\Seg2Cat\\FluxCapacitor\\Bridge\\EE5->pagination(Array)\n#2 /private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-probe-4c67ab3a0cebcd24/probe.php(6): Low\\Seg2Cat\\FluxCapacitor\\Base\\Mcp->paginateModel(Object(Tests\\Support\\ModelQuery))\n#3 {main}\n  thrown in /Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/Environment.php on line 428\n",
+        "stderr": ""
+      }
+    },
+    {
+      "runtime": "85",
+      "command": [
+        "/Users/tomjaeger/Library/Application Support/Herd/bin/php85",
+        "-d",
+        "auto_prepend_file=/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/diagnostics.php",
+        "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/top-level-pagination-observation.php"
+      ],
+      "observed": {
+        "status": 255,
+        "timed_out": false,
+        "stdout": "\nFatal error: Uncaught TypeError: Tests\\Support\\Pagination::render(): Argument #1 ($url) must be of type Tests\\Support\\Url, string given, called in phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE5.php on line 200 and defined in /Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/Environment.php:428\nStack trace:\n#0 phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Bridge/EE5.php(200): Tests\\Support\\Pagination->render('')\n#1 phar:///Users/tomjaeger/Sites/add-ons/low_seg2cat/low_seg2cat/low_seg2cat.phar/FluxCapacitor/Base/Mcp.php(165): Low\\Seg2Cat\\FluxCapacitor\\Bridge\\EE5->pagination(Array)\n#2 /private/var/folders/07/g6ql86ns3m75y257j7nb6pv00000gn/T/low-seg2cat-probe-f452fc4cab2f8bb7/probe.php(6): Low\\Seg2Cat\\FluxCapacitor\\Base\\Mcp->paginateModel(Object(Tests\\Support\\ModelQuery))\n#3 {main}\n  thrown in /Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/Support/Environment.php on line 428\n",
+        "stderr": ""
+      }
+    }
+  ],
+  "primary_contract": "updater-cache-contract.json pagination: seven controls using unmodified EE Url/Pagination definitions.",
+  "historical_false_fixture_graph": {
+    "label": "child-41",
+    "excluded_from_current_strict_index": true,
+    "reason": "Published former control used an untyped Recorder returning itself; it is not valid current strict coverage proof.",
+    "compressed_sha256": "8d3fad8a910579127332761fe12443a0c3352a92d45a46a65b664fd96c7130df"
+  },
+  "limits": [
+    "No confirmed normal EE route defect or expected-success source oracle.",
+    "Healthy explicit URL and ordinary outer method caller paths remain graded separately.",
+    "These diagnostic observations provide no current line, branch or path completion credit."
+  ]
+}

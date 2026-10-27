@@ -1,0 +1,99 @@
+{
+  "baseline": "b87bb7bc952923f6eaa29820b16db983014ba932",
+  "production_baseline": "38a3d826df9b2ef2fbf96eca08efce5211386e68",
+  "inventory_sha256": "41f926a3d58ce6ed861f01006c246adee38e424f821e1eb9df9a5b85eade6696",
+  "full_cases": 309,
+  "paired_junit_sha256": "b1380428a8d7f28eb6769f1afcf826077fb42b51d5185e7543297ce9f815b50c",
+  "fresh_raw_directory": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/coverage.n9a6D1",
+  "fresh_clover_directory": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/legacy-309-clover",
+  "prior_representations": 89,
+  "all_prior_normalized_exact": true,
+  "prior_byte_identical": 81,
+  "prior_native_child_byte_identical": 80,
+  "verified_primary_copy_paths_changed": 8,
+  "new_representations": [
+    {
+      "label": "child-90",
+      "method": "getNav",
+      "source_unit": "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Bridge/EE2.php",
+      "source_sha256": "0d18d68414187fe4c015db3fb94bde152f4e09e8b87e70f3eac303e477d2e073",
+      "raw_sha256": "a5fd5d463c2b3eaee7007d5944f0d4a28084f23dbae4dc50941ddd516458b17b",
+      "gzip_sha256": "60370732fe397747e471da8e7636fd2c4310f2b2844783bbaee27000c56ead8e",
+      "probe_sha256": "edad3ffb31bd61f9b199137086a4092134d49b2b5fe7a9522a261adb544f7907",
+      "ee_version": "2.5.5",
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "basic_block_covered": 6,
+      "basic_block_total": 6,
+      "ordinary_outcome_covered": 7,
+      "ordinary_outcome_total": 8,
+      "unhit_ordinary_exits": [
+        {
+          "source": "0",
+          "target": 25,
+          "line": 81,
+          "hit": 0,
+          "synthetic_exit": false
+        }
+      ],
+      "synthetic_exits": [
+        {
+          "source": "25",
+          "target": 2147483645,
+          "line": 90,
+          "hit": 0,
+          "synthetic_exit": true
+        }
+      ],
+      "path_coverage_percent": null,
+      "behavior": "populated internal/external menu followed by default empty menu",
+      "line_covered": 7,
+      "line_executable": 7,
+      "line_scope": {
+        "start": 78,
+        "end": 90,
+        "basis": "native function opcode bounds; no overlapping declaration"
+      },
+      "uncovered_lines": []
+    },
+    {
+      "label": "child-91",
+      "method": "getCachePath",
+      "source_unit": "low_seg2cat/low_seg2cat.phar::FluxCapacitor/Bridge/EE2.php",
+      "source_sha256": "0d18d68414187fe4c015db3fb94bde152f4e09e8b87e70f3eac303e477d2e073",
+      "raw_sha256": "db5f78c9d21e74c16ec898b56c03d955736d1475f4ac2c96d2b08c152f53bdfc",
+      "gzip_sha256": "40ff7e22913061cad89f9293ae46f2b67fc586b568e0c75e786470b97f74bbf1",
+      "probe_sha256": "62a28d085e3b0c52c009cbc17f7eedbe0652af7b06e0f7e8b0f46c1f747b5842",
+      "ee_version": "2.5.5",
+      "php": "8.2.30",
+      "xdebug": "3.5.3",
+      "basic_block_covered": 3,
+      "basic_block_total": 3,
+      "ordinary_outcome_covered": 3,
+      "ordinary_outcome_total": 3,
+      "unhit_ordinary_exits": [],
+      "synthetic_exits": [],
+      "path_coverage_percent": null,
+      "behavior": "one instance reads missing, configured and empty cache_path values",
+      "line_covered": 4,
+      "line_executable": 4,
+      "line_scope": {
+        "start": 388,
+        "end": 395,
+        "basis": "native function opcode bounds; no overlapping declaration"
+      },
+      "uncovered_lines": []
+    }
+  ],
+  "function_paths": "omitted_by_collector",
+  "path_coverage_percent": null,
+  "no_context_counter_merge": true,
+  "limits": "Cache-path method has all 3 blocks and 3 ordinary exits in one graph; synthetic exit remains separate. Menu transition has all 6 blocks but only 7/8 recorded ordinary exits; the initial foreach-reset alternative remains zero even after a verified empty-menu call. No menu outcome closure or full EE2 integration is claimed.",
+  "skill_summary": {
+    "methods": 12,
+    "below_floor": 1,
+    "above_floor": 0,
+    "at_target": 11
+  },
+  "normal_matrix": "/Users/tomjaeger/Sites/add-ons/low_seg2cat/tests/reports/matrix-099pf8m_"
+}
