@@ -2,68 +2,44 @@
 title: Installation
 ---
 
-<h3>Compatibility</h3>
-Low Seg2Cat v3 is compatible with EE3 and up. The EE1 and EE2 compatible versions are no longer under development, but are still available on Github.
+<h1>Installation</h1>
 
-<h3>Installation</h3>
-<li>Download and unzip Low Seg2Cat</li>
-<li>Copy the low_seg2cat folder to your /system/user/addons directory</li>
-<li>In your Control Panel, go to the Add-on Manager and click the Install-link in the Low Seg2Cat row</li>
-<li>All set!</li>
+<p>Low Seg2Cat matches URI segments to category URL titles and makes the matching category information available as template variables. After installation, configure <a href="settings">Settings</a> and use the <a href="variables">Template Variables</a> reference.</p>
 
-<h3>Upgrade</h3>
-To upgrade Low Seg2Cat from a previous version, download and overwrite the files as per the installation instructions. The add-on will be upgraded automatically.
+<h2 id="compatibility">Compatibility</h2>
 
-<h3>Settings</h3>
+<p>These instructions cover Low Seg2Cat 4.x. The package metadata lists ExpressionEngine 3 and PHP 5.6 as minimum versions. The changelog records ExpressionEngine 4, 5, and 6 support in 4.0.0 and ExpressionEngine 7 compatibility in 4.0.2. Use a release suitable for your ExpressionEngine and PHP versions.</p>
 
-<b>Search all sites</b>
+<p>The older <a href="https://github.com/EEHarbor/low_seg2cat/tree/ee1">ExpressionEngine 1</a> and <a href="https://github.com/EEHarbor/low_seg2cat/tree/ee2">ExpressionEngine 2</a> branches are historical versions and are no longer under development.</p>
 
-<li>When set to Yes, all categories across all MSM sites will be matched. This will ignore any Category Groups selected.</li>
+<h2 id="installation">Installing Low Seg2Cat</h2>
 
-<b>Category Groups</b>
+<ol>
+    <li>Download and extract the Low Seg2Cat package.</li>
+    <li>Copy its <code>low_seg2cat</code> add-on folder into <code>system/user/addons/</code>, then confirm that <code>addon.setup.php</code> is directly inside the installed <code>low_seg2cat/</code> folder. Use your configured system-directory location if it has been renamed.</li>
+    <li>Open <strong>Add-Ons</strong> in the ExpressionEngine control panel and install <strong>Low Seg2Cat</strong>. Control-panel labels vary between supported ExpressionEngine releases.</li>
+    <li>Open Low Seg2Cat's settings and review the category groups and other <a href="settings">options</a>.</li>
+    <li>Visit a page whose URI includes a category URL title and check the corresponding <a href="variables">template variable</a>.</li>
+</ol>
 
-<li>Limit the search for matching categories by selected groups. When no groups are selected, all groups will be searched.</li>
+<h2 id="upgrade">Updating Low Seg2Cat</h2>
 
-<b>URI Pattern</b>
+<ol>
+    <li>Back up your site's database and files, and test the update on a copy of your site.</li>
+    <li>Read the changelog for the release you are installing.</li>
+    <li>Replace the existing <code>system/user/addons/low_seg2cat/</code> files with the new package's add-on files.</li>
+    <li>Open Add-Ons and complete any update action shown by your ExpressionEngine version. Low Seg2Cat's extension update runs when ExpressionEngine processes its version change. Do not uninstall the add-on as an update step.</li>
+    <li>Check the saved settings and a template that uses the category variables.</li>
+</ol>
 
-<li>	Enter a regex pattern or leave blank. If you enter a pattern, the variables will only be registered if the current URI matches it.</li>
+<h2 id="settings">Settings</h2>
 
-<b>Set all segments</b>
+<p>The <a href="settings">Settings reference</a> covers Search all sites, Category groups, URI pattern, Set all segments, Ignore pagination, and Parse file paths, including their defaults.</p>
 
-<li>If set to Yes, Low Seg2Cat will always set variables for all (9) segments, regardless of their presence.</li>
+<h2 id="template-variables">Template Variables</h2>
 
-<b>Ignore pagination</b>
+<p>Use the <a href="variables">Template Variables reference</a> for numbered-segment variables, last-segment variables, and combined category-ID lists. It also explains empty results and provides literal template examples.</p>
 
-<li>If set to Yes, Low Seg2Cat will ignore the presence of a pagination segment at the end of a URI.</li>
+<h2 id="caveats">Duplicate category URL titles</h2>
 
-<b>Parse file paths</b>
-
-<li>If set to Yes, Low Seg2Cat will parse `{filedir_x}` variables inside the Category Image field.</li>
-
-
-<h3>Template Variables</h3>
-
-<li>{segment_n_category_id}</li>
-<li>{segment_n_category_name}</li>
-<li>{segment_n_category_description}</li>
-<li>{segment_n_category_image}</li>
-<li>{segment_n_category_parent_id}</li>
-<li>{segment_n_category_group_id}</li>
-<li>{last_segment_category_id}</li>
-<li>{last_segment_category_name}</li>
-<li>{last_segment_category_description}</li>
-<li>{last_segment_category_image}</li>
-<li>{last_segment_category_parent_id}</li>
-<li>{last_segment_category_group_id}</li>
-<li>{segment_category_ids}</li>
-<li>{segment_category_ids_piped}</li>
-
-where n is the segment number. {segment_category_ids} will return an inclusive stack of all found category ids, for example: 4&amp;12. {segment_category_ids_piped} will return an exclusive list: 4|12.
-
-<h3>Caveats</h3>
-
-If there are multiple categories with the same url_title, but in different groups, this extension will only return one of those. So best make sure your category url_titles are unique, or you select the relevant Category Groups in the settings so they are.
-
-
-
-
+<p>If more than one category has the same URL title, Low Seg2Cat can return only one matching category for that title. Do not rely on which duplicate is chosen. Keep category URL titles unique within the searched sites and groups, or restrict <a href="settings#category-groups">Category groups</a> to remove the ambiguity. Search all sites ignores that group restriction.</p>
