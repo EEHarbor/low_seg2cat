@@ -1,0 +1,63 @@
+---
+title: Settings
+---
+
+<h1>Settings</h1>
+
+<p>Open Low Seg2Cat's settings from Add-Ons in the ExpressionEngine control panel. These options determine which categories match URI segments and how the <a href="variables">template variables</a> are populated.</p>
+
+<h2 id="search-all-sites">Search all sites</h2>
+
+<div class="doc-terms" role="group" aria-label="Search all sites setting">
+    <div><span class="param-important">Default</span>: No</div>
+</div>
+
+<p>When set to No, category matching is limited to the current ExpressionEngine site and the selected Category groups. When set to Yes, categories from all sites are searched and the Category groups selection is ignored.</p>
+
+<h2 id="category-groups">Category groups</h2>
+
+<div class="doc-terms" role="group" aria-label="Category groups setting">
+    <div><span class="param-important">Default</span>: All category groups</div>
+</div>
+
+<p>Select the groups to search within the current site. With no groups selected, all groups in that site are eligible. This setting has no effect while Search all sites is Yes.</p>
+
+<p>Limit the search to groups with unique category URL titles. When duplicate titles exist in the searched categories, Low Seg2Cat returns one category for the title, with no guaranteed choice between duplicates.</p>
+
+<h2 id="uri-pattern">URI pattern</h2>
+
+<div class="doc-terms" role="group" aria-label="URI pattern setting">
+    <div><span class="param-important">Default</span>: Blank</div>
+</div>
+
+<p>Leave this blank to allow all URIs. Otherwise, enter a valid regular expression including delimiters. Low Seg2Cat registers its variables only when the URI matches. For example, this pattern allows a URI containing an <code>articles</code> segment:</p>
+
+<pre class="highlight"><code>#(^|/)articles(/|$)#</code></pre>
+
+<p>A nonmatching URI skips variable registration entirely; Set all segments does not override this restriction. If Ignore pagination is enabled, its trailing pagination segment is removed before the pattern is checked.</p>
+
+<h2 id="set-all-segments">Set all segments</h2>
+
+<div class="doc-terms" role="group" aria-label="Set all segments setting">
+    <div><span class="param-important">Default</span>: Yes</div>
+</div>
+
+<p>When set to Yes, initialize numbered category variables up to ExpressionEngine's configured <code>max_url_segments</code> value, using 12 when that configuration value is unset or empty. Segments without a matching category receive empty values.</p>
+
+<p>When set to No, initialize variables only for the segments present in the URI. A request with no segments does not register Low Seg2Cat variables in this mode.</p>
+
+<h2 id="ignore-pagination">Ignore pagination</h2>
+
+<div class="doc-terms" role="group" aria-label="Ignore pagination setting">
+    <div><span class="param-important">Default</span>: No</div>
+</div>
+
+<p>When set to Yes, remove a trailing slash followed by <code>P</code> or <code>C</code> and digits from Low Seg2Cat's URI lookup, such as <code>/P20</code> or <code>/C20</code>. For <code>/articles/news/P20</code>, the last-segment variables can then describe <code>news</code> instead of the pagination segment. This affects Low Seg2Cat's lookup; it does not change ExpressionEngine's standard segment variables.</p>
+
+<h2 id="parse-file-paths">Parse file paths</h2>
+
+<div class="doc-terms" role="group" aria-label="Parse file paths setting">
+    <div><span class="param-important">Default</span>: No</div>
+</div>
+
+<p>When set to Yes, pass Category Image values through ExpressionEngine's file-path parser so that supported references such as <code>{filedir_1}category.jpg</code> can become usable paths. When set to No, return the stored Category Image value. The formats understood by that parser depend on your ExpressionEngine version.</p>
