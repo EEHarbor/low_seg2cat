@@ -7,7 +7,7 @@ use Tests\Support\Process;
 class NativeCompilationTest extends TestCase
 {
     /**
-     * Compile every shipped PHP unit in a new interpreter under E_ALL.
+     * Compile each loose add-on PHP unit in a new interpreter under E_ALL.
      *
      * @dataProvider shippedSources
      * @param string $file
@@ -31,7 +31,7 @@ class NativeCompilationTest extends TestCase
     }
 
     /**
-     * Derive sources from the committed hash inventory, including archived files/stub.
+     * Derive loose add-on sources from the committed hash inventory.
      *
      * @return array
      */
@@ -41,13 +41,10 @@ class NativeCompilationTest extends TestCase
         $inventory = json_decode(file_get_contents($root . '/tests/SOURCE_INVENTORY.json'), true);
         $cases = array();
         foreach ($inventory as $name => $entry) {
-            if (strpos($name, '::') === false) {
-                $cases[$name] = array($root . '/' . $name, $entry['sha256']);
+            if (strpos($name, '::') !== false) {
                 continue;
             }
-            list($archive, $member) = explode('::', $name, 2);
-            $cases[$name] = array($member === '{stub}' ? $root . '/' . $archive : 'phar://' . $root . '/' . $archive . '/' . $member,
-                $member === '{stub}' ? $entry['archive_sha256'] : $entry['sha256']);
+            $cases[$name] = array($root . '/' . $name, $entry['sha256']);
         }
         return $cases;
     }

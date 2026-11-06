@@ -1,5 +1,13 @@
 # Low Seg2Cat PHPUnit campaign
 
+## Test scope as of 2026-11-05
+
+The configured suite now tests add-on behavior and its diagnostic harness. Direct shared Foundation class, PHAR member/stub, and archive-template tests were removed because Foundation maintains its own suite. Add-on cases that use the real bundled dependency, loose templates, normal loose-source loading boundaries, source identity inventories, and strict diagnostics remain. No production code or PHAR was changed by this cleanup.
+
+The older coverage descriptions, counts, and dependency failures below are historical evidence from the broader suite. They do not describe the current test scope. Read fresh complete checked-launcher results for current validation; retained failures remain visible. This cleanup does not certify production compatibility or reapprove inherited production changes.
+
+## Historical checkpoint notes
+
 Status: **incomplete, source and coverage blockers retained**. Tests only; no production fixes.
 
 Baseline `38a3d826df9b2ef2fbf96eca08efce5211386e68`; branch `unit-tests-2026`; origin `git@github.com:EEHarbor/low_seg2cat.git`. The clean develop checkout was freshly fetched and successfully pulled with `git pull --ff-only origin develop`; HEAD/origin parity was `0 0`. No other worktree or existing unit-tests branch was present. Network commands needed sandbox escalation after ordinary DNS failures. Production `low_seg2cat/` remains byte-for-byte unchanged against the pinned baseline.

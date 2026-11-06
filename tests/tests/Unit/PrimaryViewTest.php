@@ -9,14 +9,14 @@ use Tests\Support\ViewRenderer;
 class PrimaryViewTest extends TestCase
 {
     /**
-     * Cover both original templates with meaningful display and checkbox inputs.
+     * Cover the add-on template with meaningful display and checkbox inputs.
      *
      * @return array
      */
     public static function licenseViews()
     {
         $cases = array();
-        foreach (array('loose', 'archive') as $layout) {
+        foreach (array('loose') as $layout) {
             $cases[$layout . ' legacy'] = array($layout, 2, 'valid-key', false, 'valid-key');
             $cases[$layout . ' quoted'] = array($layout, 7, 'key"<&', false, 'key&quot;&lt;&amp;');
             $cases[$layout . ' ignored'] = array($layout, 7, 'low-seg2cat-ignore-site-1', true, '');
@@ -43,8 +43,7 @@ class PrimaryViewTest extends TestCase
         $this->app->services['CP/Alert'] = new CallbackService(array('getAllInlines' => function () {
             return '<aside>alerts</aside>';
         }));
-        $source = $layout === 'loose' ? LOW_SEG2CAT_ROOT . '/low_seg2cat/views/license.php'
-            : 'phar://' . LOW_SEG2CAT_ROOT . '/low_seg2cat/low_seg2cat.phar/Views/license.php';
+        $source = LOW_SEG2CAT_ROOT . '/low_seg2cat/views/license.php';
         $expected = (new ViewRenderer())->render($source, $variables);
         $result = PrimaryView::render($layout, $variables);
         $this->assertSame(0, $result['status'], $result['stdout'] . $result['stderr']);
@@ -55,8 +54,5 @@ class PrimaryViewTest extends TestCase
         $this->assertSame($version > 2, strpos($result['stdout'], '<aside>alerts</aside>') !== false);
         $this->assertSame(hash_file('sha256', $source), $result['measurement_source']['original_sha256']);
         $this->assertSame($result['measurement_source']['original_sha256'], $result['measurement_source']['measurement_sha256']);
-        if ($layout === 'archive') {
-            $this->assertFileDoesNotExist(dirname($result['measurement_source']['measured_source']));
-        }
     }
 }

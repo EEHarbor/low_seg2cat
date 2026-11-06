@@ -1,5 +1,13 @@
 # Addon-only PHP compatibility validation
 
+## Test scope as of 2026-11-05
+
+The configured suite now tests add-on behavior and its diagnostic harness. Direct shared Foundation class, PHAR member/stub, and archive-template tests were removed because Foundation maintains its own suite. Add-on cases that use the real bundled dependency, loose templates, normal loose-source loading boundaries, source identity inventories, and strict diagnostics remain. No production code or PHAR was changed by this cleanup.
+
+The older coverage descriptions, counts, and dependency failures below are historical evidence from the broader suite. They do not describe the current test scope. Read fresh complete checked-launcher results for current validation; retained failures remain visible. This cleanup does not certify production compatibility or reapprove inherited production changes.
+
+## Historical checkpoint notes
+
 The 2026-10-26 scope correction excludes Foundation repairs and new Foundation-only regression/build checks. Earlier Foundation-inclusive candidates, green matrices and review reports are historical, preserved in Git and external evidence; they do not approve this corrected candidate.
 
 The original tests baseline is `58fa1a9abf8b23faee93c5561c36e2172101480d`; the pinned develop target is `38a3d826df9b2ef2fbf96eca08efce5211386e68`. The bundled `low_seg2cat.phar` is restored byte-for-byte from that develop commit (SHA256 `b340d9b7922acf926a0ddb58e72be07953c5235519b3df90bb65fb170b81699d`). The original loader is unchanged. Campaign-added Foundation build/source and Foundation-only tests are omitted; every original baseline test remains.

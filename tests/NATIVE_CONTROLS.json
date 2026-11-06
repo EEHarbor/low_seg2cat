@@ -52,37 +52,22 @@
         "tests/scripts/process-worker.php": "4ceb9ded03e77ae5cdbf43c5ca9661d36f7459a864cafdc08025fc9f9e6eb2db",
         "tests/scripts/run-checked.py": "dd2f7278dca6b1e7ca5b740807398533d761261dd5562327df3a347dbd737a4e",
         "tests/scripts/test_branch_report.py": "b0e5f90955e99ebc2b2b5337779377aacfcf191f0be664008e9b7153353ae72e",
-        "tests/tests/Unit/BridgeTest.php": "ee45e3bc8898e1301ffab75e197b081f79e7e8fc204e1ce60252ae5b36b27843",
-        "tests/tests/Unit/BundledRegressionTest.php": "489ef69f16f3686bdb3e956b0987e5c39dc934bf8b517be2b5e1ecb9cfa51df0",
         "tests/tests/Unit/CompatibilityRegressionTest.php": "e96f8c972a9d0e8dca7de6af10bd35fd8df15395503e1697af02995c9bcd6fe8",
         "tests/tests/Unit/DatabaseFixtureTest.php": "77f97ce9592b692451c9de9795336f0accd8bf1375bda0eb98ee1aad68733d1b",
         "tests/tests/Unit/ExtensionTest.php": "db5d4408198420463292a4ac15a22520c215509e580b9d7a27c5849cfa7f2a08",
         "tests/tests/Unit/FacadeFixtureTest.php": "bd4e53d7e00d945e40c0cb49edb038aafa63b5a2da6f2ee41030fd22ececbf85",
-        "tests/tests/Unit/FoundationTest.php": "4db59d7e9e84f2a7a69de4a5d83b974718e4b0dbfea18599165fce1c2dc85197",
-        "tests/tests/Unit/LegacyBridgeTest.php": "6d4fcadadb9a976f1274e04d938f6bc70b2210292c5d0cd18ab196fa6dc22f2f",
-        "tests/tests/Unit/LicenseSubmissionTest.php": "d47afee8f111e7116f048d352bfd8a4f9d26e0abcce6b6a54eb68c4b06311c1f",
         "tests/tests/Unit/NativeAccessorFixtureTest.php": "a0c07dc29d68141c108525b07cef3ca7e6e56bf33be3f76fbe1716d79700c60a",
-        "tests/tests/Unit/NativeAccessorTest.php": "591c0c519bf8e8cbbf6f0ddcac57fefaa36f6a3734d226c5df492b7f0fad3c78",
-        "tests/tests/Unit/NativeArchiveAutoloadTest.php": "ef4b6152220e12b261fe268ad5ba09d7280cd8bb7b4db14c254fa1328cde6620",
         "tests/tests/Unit/NativeCliFixtureTest.php": "17a9a7b30a4399b54f3fa0b1aa71d99eacdbe30f6120c8f14298903377820496",
-        "tests/tests/Unit/NativeCompilationTest.php": "76fafcb7590c1c7ee70bf505e66d2090bb6065ee12a9df5c372751e808432646",
-        "tests/tests/Unit/NativeContextTest.php": "d009455f9cc8ef68a28afea74e4657107d6f02e13abd6b9a4173b458f44bd848",
-        "tests/tests/Unit/NativeFieldtypeLayoutTest.php": "0669bedb2fce86284a5dc2242a8d94ffce6c6f739ae40db9bbc85063197a1e44",
+        "tests/tests/Unit/NativeCompilationTest.php": "fb6a6005f2e0cc3ad6ae7597e1d9a1ccc7363ae0dc6496c5d87bc444bbf896b8",
+        "tests/tests/Unit/NativeContextTest.php": "97c18fd455e77edb040c599bc5c88c031d9b75e917e0c7fb96576439820f921a",
         "tests/tests/Unit/NativeJournalOwnershipTest.php": "dd7b44226df7926a6f9e5341743200e48d8f94191fa624ec352fd641ede3e878",
-        "tests/tests/Unit/NativeLegacyBehaviorTest.php": "03a6b7e62675c91fb78e22223e590d5cf1d48185ceefc82a5d9351a2bf1e0aab",
-        "tests/tests/Unit/NativeModuleNavigationTest.php": "23fcdcb5bb5a690a0fa4e8de06ee1375320f8e0d82007b3919da725cbcc0d871",
-        "tests/tests/Unit/NativeStubHelperTest.php": "75de8364246def41b07a7ba6ff804320ef6817d29f1ee745bf908373f8da9a79",
-        "tests/tests/Unit/NativeUpdaterCallbackTest.php": "7c94f64414a7f1182d566e8c378aab68017f0ac9d5ea8723ff60ac4924d769cd",
-        "tests/tests/Unit/PersistentCacheTest.php": "fa27e7f5f723c44724b83e4d2fc5255c6f2df0ce4e3a30afc36c6d670b8ee8da",
         "tests/tests/Unit/PrimaryViewFixtureTest.php": "01d0978ab9ff6dde3dbd45fd2231526cef7b7d4b678a6f3595e662d19030a2a8",
-        "tests/tests/Unit/PrimaryViewTest.php": "f796fc7426236706f8ff784dd1382062b4cc210fbbc8a5f145685d8daa288c04",
-        "tests/tests/Unit/ProceduralTest.php": "2630fd2b938d4526783f71dde1fd4c3859dd9bb428e93eda68ebf623f360103e",
+        "tests/tests/Unit/PrimaryViewTest.php": "43afbc12aa014b4ddf18352a3b1acb9e2539dfcf693ad4f8738fffd9188ee090",
+        "tests/tests/Unit/ProceduralTest.php": "a02771e6946a0bb20276ebbff12ad7d82bafda83e279e0f98f2502a408809e3e",
         "tests/tests/Unit/ProcessFixtureTest.php": "e8f15cd034ceab4430979f29ce9ce9f69c55f953bd9d0c186dac2f3261b7cd38",
-        "tests/tests/Unit/RemainingBaseTest.php": "6bd5505eaf49fde4ae46dd34e91fcde12585ab6d26cd69cdd1b9dc42e33f1583",
         "tests/tests/Unit/RunnerFixtureTest.php": "21463dff050390b55b73ca25b6fa7e5399e4ce06cd4ec1a779b073b9161c1a17",
         "tests/tests/Unit/SourceRegressionTest.php": "d78ad87594fe79e48592e62fc0170468ab1944c4e21e203e072a9242ce0de51b",
         "tests/tests/Unit/TestCase.php": "40f363aec85ef1bc6e8a07ca26c6a55c375c2d8ad55d926e5df3cffad39ab32c",
-        "tests/tests/Unit/VersionTest.php": "4a93544958a37dfbc023889680eeec434d286bda4097106565ffdcbbd07693e0",
         "tests/.phpunit/prepare-output.php": "3a2af0995514585bc2f6686e10db3c83b976f1df25a9862830d52d5ca500a2a8"
     },
     "cases": {
@@ -114,13 +99,13 @@
             "8.5": "e6fc5d0f14972ff29faa60b8867e6712fca0416a9d0cf887488e32ee42709d55"
         },
         "Tests\\NativeCompilationTest::testDiagnosticHarnessDetectsSuppressedDeprecation#1": {
-            "7.4": "e9b49e03359772fa09566d99ff35ef57798ac344b60eea16d63d9a0819436627",
-            "8.0": "e9b49e03359772fa09566d99ff35ef57798ac344b60eea16d63d9a0819436627",
-            "8.1": "e9b49e03359772fa09566d99ff35ef57798ac344b60eea16d63d9a0819436627",
-            "8.2": "e9b49e03359772fa09566d99ff35ef57798ac344b60eea16d63d9a0819436627",
-            "8.3": "e9b49e03359772fa09566d99ff35ef57798ac344b60eea16d63d9a0819436627",
-            "8.4": "e9b49e03359772fa09566d99ff35ef57798ac344b60eea16d63d9a0819436627",
-            "8.5": "e9b49e03359772fa09566d99ff35ef57798ac344b60eea16d63d9a0819436627"
+            "7.4": "0b30297b9a7b827fce0acea9d5f87933dbe0a9cb2de567a6f4a58807e3b36b4f",
+            "8.0": "0b30297b9a7b827fce0acea9d5f87933dbe0a9cb2de567a6f4a58807e3b36b4f",
+            "8.1": "0b30297b9a7b827fce0acea9d5f87933dbe0a9cb2de567a6f4a58807e3b36b4f",
+            "8.2": "0b30297b9a7b827fce0acea9d5f87933dbe0a9cb2de567a6f4a58807e3b36b4f",
+            "8.3": "0b30297b9a7b827fce0acea9d5f87933dbe0a9cb2de567a6f4a58807e3b36b4f",
+            "8.4": "0b30297b9a7b827fce0acea9d5f87933dbe0a9cb2de567a6f4a58807e3b36b4f",
+            "8.5": "0b30297b9a7b827fce0acea9d5f87933dbe0a9cb2de567a6f4a58807e3b36b4f"
         },
         "Tests\\NativeJournalOwnershipTest::testDeadlineReapsCheckedWrapperDescendants#1": {
             "7.4": "c8d90c3e7e76b1c85f0c6a3298089a8c95bcb989d37be4dfba91843f35dc833f",
@@ -5762,59 +5747,6 @@
             "journal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
             "native_errors_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         },
-        "e9b49e03359772fa09566d99ff35ef57798ac344b60eea16d63d9a0819436627": {
-            "case": {
-                "class": "Tests\\NativeCompilationTest",
-                "name": "testDiagnosticHarnessDetectsSuppressedDeprecation",
-                "file": "<REPO>/tests/tests/Unit/NativeCompilationTest.php",
-                "sha256": "76fafcb7590c1c7ee70bf505e66d2090bb6065ee12a9df5c372751e808432646"
-            },
-            "ordinal": 1,
-            "command": [
-                "<PHP>",
-                "-d",
-                "error_reporting=-1",
-                "-d",
-                "display_errors=stderr",
-                "-d",
-                "auto_prepend_file=<REPO>/tests/Support/diagnostics.php",
-                "-d",
-                "sys_temp_dir=<PROBE>",
-                "<PROBE>/probe.php"
-            ],
-            "environment": {
-                "LOW_SEG2CAT_DIRECT_ACCESS": "0",
-                "LOW_SEG2CAT_EE_VERSION": "7.5.0",
-                "LOW_SEG2CAT_MISSING_PHAR": "0",
-                "LOW_SEG2CAT_MODULE_NAV_THIRD_PATH": "",
-                "LOW_SEG2CAT_REAL_FIELDTYPE": "",
-                "LOW_SEG2CAT_REQUEST_TYPE": "PAGE",
-                "PHP_BINARY": "<PHP>",
-                "TEMP": "<PROBE>",
-                "TMP": "<PROBE>",
-                "TMPDIR": "<PROBE>"
-            },
-            "cwd": "<REPO>",
-            "timeout": 15,
-            "exit": 2,
-            "timed_out": false,
-            "semantic_completion": true,
-            "events": [
-                [
-                    16384,
-                    "diagnostic sentinel",
-                    "<PROBE>/probe.php",
-                    1
-                ]
-            ],
-            "fixtures_count": 1,
-            "fixtures_sha256": "63d5d11dd9295bb37250931973a4a2f07df188fa8e7e56cb56881598a21ae3b3",
-            "code_sha256": null,
-            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-            "stderr_sha256": "21e6533874b6f069170a5921992358a9b1387fc851fb9c01829409ddc2ada16b",
-            "journal_sha256": "b321e7810195410d0fd2a30e01dec54ae963b9027308973fd0687a16edb9c5c1",
-            "native_errors_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-        },
         "ee5c036ad96998545a43b975d0636767b7e4cd921b2e72ac988655886a69ec57": {
             "case": {
                 "class": "Tests\\RunnerFixtureTest",
@@ -9288,6 +9220,59 @@
             "stderr_sha256": "9700dcb402cae98b3a2caed5687282af3f5a69ca9d4bb650018880099dd79fdc",
             "journal_sha256": "dbc7b6ddb5e4df8ab4211038842bd142dd9630e5093bcb778ecc119b7225bf04",
             "native_errors_sha256": "70ea793078cfdcd966d839b16482c715d50db09cf91fc20bc63ae4df82bf3ac4"
+        },
+        "0b30297b9a7b827fce0acea9d5f87933dbe0a9cb2de567a6f4a58807e3b36b4f": {
+            "case": {
+                "class": "Tests\\NativeCompilationTest",
+                "name": "testDiagnosticHarnessDetectsSuppressedDeprecation",
+                "file": "<REPO>/tests/tests/Unit/NativeCompilationTest.php",
+                "sha256": "fb6a6005f2e0cc3ad6ae7597e1d9a1ccc7363ae0dc6496c5d87bc444bbf896b8"
+            },
+            "ordinal": 1,
+            "command": [
+                "<PHP>",
+                "-d",
+                "error_reporting=-1",
+                "-d",
+                "display_errors=stderr",
+                "-d",
+                "auto_prepend_file=<REPO>/tests/Support/diagnostics.php",
+                "-d",
+                "sys_temp_dir=<PROBE>",
+                "<PROBE>/probe.php"
+            ],
+            "environment": {
+                "LOW_SEG2CAT_DIRECT_ACCESS": "0",
+                "LOW_SEG2CAT_EE_VERSION": "7.5.0",
+                "LOW_SEG2CAT_MISSING_PHAR": "0",
+                "LOW_SEG2CAT_MODULE_NAV_THIRD_PATH": "",
+                "LOW_SEG2CAT_REAL_FIELDTYPE": "",
+                "LOW_SEG2CAT_REQUEST_TYPE": "PAGE",
+                "PHP_BINARY": "<PHP>",
+                "TEMP": "<PROBE>",
+                "TMP": "<PROBE>",
+                "TMPDIR": "<PROBE>"
+            },
+            "cwd": "<REPO>",
+            "timeout": 15,
+            "exit": 2,
+            "timed_out": false,
+            "semantic_completion": true,
+            "events": [
+                [
+                    16384,
+                    "diagnostic sentinel",
+                    "<PROBE>/probe.php",
+                    1
+                ]
+            ],
+            "fixtures_count": 1,
+            "fixtures_sha256": "63d5d11dd9295bb37250931973a4a2f07df188fa8e7e56cb56881598a21ae3b3",
+            "code_sha256": null,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "21e6533874b6f069170a5921992358a9b1387fc851fb9c01829409ddc2ada16b",
+            "journal_sha256": "b321e7810195410d0fd2a30e01dec54ae963b9027308973fd0687a16edb9c5c1",
+            "native_errors_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         }
     }
 }
